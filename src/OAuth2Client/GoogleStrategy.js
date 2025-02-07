@@ -22,7 +22,17 @@ let HandleGoogle_Login = async (req, res) => {
     console.log('userRes', userRes.data); 
 
     let find_User = await Authentication.findOne({ email: userRes.data.email });
-    console.log('find user',find_User);
+
+
+    res.cookie('token', hashEmail, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 7 * 1000,  
+      sameSite: 'Strict', 
+    });
+
+
+
 
     if (!find_User) {
       let find_Admin_Role = Admin_Role.findOne({ email: userRes.data.email });
@@ -44,7 +54,12 @@ let HandleGoogle_Login = async (req, res) => {
       if (Create_Admin) {
         res.status(200).json({ message: 'Admin Create ', user: Create_Admin });
 
-        res.cookie('token', hashEmail);
+        res.cookie('token', hashEmail, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          maxAge: 60 * 60 * 24 * 7 * 1000,  
+          sameSite: 'Strict', 
+        });
       }
     }
 
