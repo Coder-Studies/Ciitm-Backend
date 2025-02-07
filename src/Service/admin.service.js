@@ -274,34 +274,30 @@ export const Created_Frontend = async () => {
         ],
       },
 
-
-
       contactPage: {
-
         title: 'Contact Us',
         abort: 'Get in touch with us',
-    
+
         location: 'Dhanbad Jharkhand',
-    
+
         Principal: 'Abhishek Gupta (Principal)',
-    
       },
-    
-    
+
       Login: {
         title: 'Login',
-       paragraph: 'Welcome to [Institute Name], an institution dedicated to fostering innovation, knowledge, and personal growth. Our mission is to shape tomorrow’s leaders by offering exceptional educational opportunities and encouraging intellectual exploration.',
-    
-       image: 'https://s3-alpha-sig.figma.com/img/e725/38b8/a9f7d28b31be66c9f397e66d44dc014a?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=pp-4heoCh9xd8YPItETDX~QTN~d0oDajeXwHshV9LANgMJ2TCbzVOjuQJXswljm1mSY8n-TBWOTLDXzrWye73unLce~c3hKEFVIeKUuxLxDluzjUbgVsHHC51tiRdwKVmt0zaH9Z5ds7VsUC4JwetWFPvNcCPFJIJvgVNog0XY~cSq~3fZyBW9Z2AdLzXyc6yxBHDMXhJvsP46oEFkuN-2QHjiAGNlqlTbS58OsHCgAlwJuNFSSHVyjDUiEpmvP1c2j-CKDZWJ1aDwt0bKSTw-ejUJlqkfUHgVMytTjri7m46ksdSMgC7WcSMKXBMZ5vwa5qurKRTyZREVOgOrHeXA__'
+        paragraph:
+          'Welcome to [Institute Name], an institution dedicated to fostering innovation, knowledge, and personal growth. Our mission is to shape tomorrow’s leaders by offering exceptional educational opportunities and encouraging intellectual exploration.',
+
+        image:
+          'https://s3-alpha-sig.figma.com/img/e725/38b8/a9f7d28b31be66c9f397e66d44dc014a?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=pp-4heoCh9xd8YPItETDX~QTN~d0oDajeXwHshV9LANgMJ2TCbzVOjuQJXswljm1mSY8n-TBWOTLDXzrWye73unLce~c3hKEFVIeKUuxLxDluzjUbgVsHHC51tiRdwKVmt0zaH9Z5ds7VsUC4JwetWFPvNcCPFJIJvgVNog0XY~cSq~3fZyBW9Z2AdLzXyc6yxBHDMXhJvsP46oEFkuN-2QHjiAGNlqlTbS58OsHCgAlwJuNFSSHVyjDUiEpmvP1c2j-CKDZWJ1aDwt0bKSTw-ejUJlqkfUHgVMytTjri7m46ksdSMgC7WcSMKXBMZ5vwa5qurKRTyZREVOgOrHeXA__',
       },
-    
-    
+
       Sign_Up: {
         title: 'Sign Up',
-    
-       image: 'https://s3-alpha-sig.figma.com/img/9e53/f389/4c758a66dbf9be2bba871477a57a44ff?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=DE2qNFEd3fj5XMZeA4EYhLs4oUXu7VG9IjMEScYw6wkTQPaQtlKJI4o1z5cTda2gxD7HF93P2BX1TFR2ntcbdZj-7yNItn~PXbKmEXAjN4PFrj0S6ume~1t7sXBsf5aGhM9UPz8h76symhPdCE3RZT2wVc0OX9vb3ZsDG0nIXt73UcihxzNEQ5tF9kEN6oX5oCW9WvuQHB7k-PMZP4nAAIRyVO5aXYlRTreqfXh-u~ECWdl6oE2T5xRfUkrYjasdJwi0XQ2-jGg~bfvrNX1WV207krTE0UPECiEJtf5RUCcquoM2IE8CnmFNnODxC-K~I9S1DIdtRgKERQlH7un1qw__'
+
+        image:
+          'https://s3-alpha-sig.figma.com/img/9e53/f389/4c758a66dbf9be2bba871477a57a44ff?Expires=1739145600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=DE2qNFEd3fj5XMZeA4EYhLs4oUXu7VG9IjMEScYw6wkTQPaQtlKJI4o1z5cTda2gxD7HF93P2BX1TFR2ntcbdZj-7yNItn~PXbKmEXAjN4PFrj0S6ume~1t7sXBsf5aGhM9UPz8h76symhPdCE3RZT2wVc0OX9vb3ZsDG0nIXt73UcihxzNEQ5tF9kEN6oX5oCW9WvuQHB7k-PMZP4nAAIRyVO5aXYlRTreqfXh-u~ECWdl6oE2T5xRfUkrYjasdJwi0XQ2-jGg~bfvrNX1WV207krTE0UPECiEJtf5RUCcquoM2IE8CnmFNnODxC-K~I9S1DIdtRgKERQlH7un1qw__',
       },
-    
     });
 
     return Created_Frontend;
