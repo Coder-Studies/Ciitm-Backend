@@ -196,27 +196,21 @@ const FrontendSchema = new Schema({
 
         Number: {
           type: String,
-    
         },
 
         Price: {
           type: Number,
         },
-
-
-
       },
     ],
   },
 
-
   contactPage: {
-
     title: {
       type: String,
       required: true,
     },
-    abort:{
+    abort: {
       type: String,
       required: true,
     },
@@ -229,27 +223,24 @@ const FrontendSchema = new Schema({
     Principal: {
       type: String,
       required: true,
-    }
-
+    },
   },
-
 
   Login: {
     title: {
       type: String,
       required: true,
     },
-   paragraph:{
-     type: String,
-     required: true,
-   },
+    paragraph: {
+      type: String,
+      required: true,
+    },
 
-   image:{
-     type: String,
-     required: true,
-   }
+    image: {
+      type: String,
+      required: true,
+    },
   },
-
 
   Sign_Up: {
     title: {
@@ -257,14 +248,11 @@ const FrontendSchema = new Schema({
       required: true,
     },
 
-   image:{
-     type: String,
-     required: true,
-   }
+    image: {
+      type: String,
+      required: true,
+    },
   },
-
-
-
 });
 
 const Frontend = model('Frontend', FrontendSchema);

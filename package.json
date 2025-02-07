@@ -25,6 +25,7 @@
     "express-rate-limit": "7.4.1",
     "express-session": "1.18.0",
     "google-auth-library": "9.14.2",
+    "googleapis": "^144.0.0",
     "http-errors": "1.6.3",
     "i": "0.3.7",
     "joi": "17.13.3",

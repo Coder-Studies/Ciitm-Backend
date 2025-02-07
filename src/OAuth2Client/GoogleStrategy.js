@@ -1,94 +1,62 @@
-import { OAuth2Client } from 'google-auth-library';
-import AuthenticationSchema from '../models/AuthenticationSchema.model.js';
-import AdmissionSchems from '../models/Admission.model.js';
-// import { uploadOnCloudinary__Url } from '../utils/Cloudinary.js';
-import dotenv from 'dotenv';
-dotenv.config({
-  path: '../../.env',
-});
-import jwt from 'jsonwebtoken';
-import { uploadOnCloudinary } from '../utils/Cloudinary.js';
-
-const client = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID ||
-    '458973671107-qd3n0s6e1raf636h0akotaecuqu07q4n.apps.googleusercontent.com'
-);
+import { google } from 'googleapis';
+import Authentication from '../models/AuthenticationSchema.model.js';
+import Admin_Role from '../models/Admin_Role.model.js';
 
 let HandleGoogle_Login = async (req, res) => {
-  const { token } = req.body;
+  const token = req.query.token;
+
+  if (!token) {
+    return res.status(400).json({ message: 'Token is required' });
+  }
 
   try {
-    // Verify the token
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience:
-        process.env.GOOGLE_CLIENT_ID ||
-        '458973671107-qd3n0s6e1raf636h0akotaecuqu07q4n.apps.googleusercontent.com',
-    });
+    let Authentication_Instance = new Authentication();
+    let hashEmail = await Authentication_Instance.hashEmail(token);
 
-    const payload = ticket.getPayload();
-    const userId = payload['sub'];
-    const userEmail = payload['email'];
-    const email_verified = payload['email_verified'];
-    const userName = payload['name'];
-    const userImage = payload['picture'];
-    const issue = payload['iss'];
+    const oauth2Client = new google.auth.OAuth2();
+    oauth2Client.setCredentials({ access_token: token });
 
-    console.log(userEmail);
+    const oauth2 = google.oauth2({ version: 'v2', auth: oauth2Client });
+    const userRes = await oauth2.userinfo.get();
 
-    let FindUser = await AuthenticationSchema.findOne({
-      email: userEmail,
-      provider_Name: 'google',
-    });
+    console.log('userRes', userRes.data); 
 
-    console.log(FindUser);
+    let find_User = await Authentication.findOne({ email: userRes.data.email });
+    console.log('find user',find_User);
 
-    if (FindUser) {
-      const UserCookie = jwt.sign({ email: userEmail }, process.env.JWT_SECRET);
-      if (UserCookie) {
-        res.cookie('token', UserCookie);
-        req.session.token = UserCookie;
+    if (!find_User) {
+      let find_Admin_Role = Admin_Role.findOne({ email: userRes.data.email });
+
+      if (!find_Admin_Role) {
+        res
+          .status(401)
+          .json({ message: 'Failed to Sign Up You are not Verified Admin' });
       }
-    }
 
-    if (!FindUser) {
-      // Create user if not found
-
-      res
-        .status(201)
-        .json({ message: 'User Not Found', login: 'failed', registar: true });
-
-      let CreatedUser = await AuthenticationSchema.create({
-        provider_Name: 'google',
-        providerId: userId, // Assuming providerId is the unique ID
-        name: userName,
-        email: userEmail,
-        email_verified: email_verified,
-        issue: issue,
-        picture: userImage,
-        provider_displayName: userName,
+      let Create_Admin = await Authentication.create({
+        email: userRes.data.email,
+        name: userRes.data.name,
+        picture: userRes.data.picture,
+        email_verified: userRes.data.verified_email,
+        role: 'admin',
       });
 
-      let FindStudent = await AdmissionSchems.findById(CreatedUser._id);
+      if (Create_Admin) {
+        res.status(200).json({ message: 'Admin Create ', user: Create_Admin });
 
-      const UserCookie = jwt.sign({ email: userEmail }, process.env.JWT_SECRET);
-
-      // res.cookie('token', token,
-      if (UserCookie) {
-        res.cookie('token', UserCookie);
-        req.session.token = UserCookie;
+        res.cookie('token', hashEmail);
       }
-
-      return res.status(201).json({ message: 'User Created Successfully' });
     }
 
-    // If user exists, you can return the user information or handle it accordingly
-    return res
-      .status(200)
-      .json({ message: 'User Already Exists', user: FindUser });
+
+    res.status(200).json({ message: 'Login Success', user: find_User });
+
+  
   } catch (error) {
     console.error('Error verifying token:', error);
-    res.status(401).send(error.message);
+    res
+      .status(500)
+      .json({ message: 'Error during Google login', error: error.message });
   }
 };
 

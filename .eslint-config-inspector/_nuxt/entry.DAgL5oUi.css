@@ -368,9 +368,9 @@ video {
   font-style: normal;
   font-weight: 400;
   src: url(fonts/inter-fd636c17.woff2) format('woff2');
-  unicode-range: u+0102-0103, u+0110-0111, u+0128-0129, u+0168-0169,
-    u+01a0-01a1, u+01af-01b0, u+0300-0301, u+0303-0304, u+0308-0309, u+0323,
-    u+0329, u+1ea0-1ef9, u+20ab;
+  unicode-range: u+0102-0103, u+0110-0111, u+0128-0129, u+0168-0169, u+01a0-01a1,
+    u+01af-01b0, u+0300-0301, u+0303-0304, u+0308-0309, u+0323, u+0329,
+    u+1ea0-1ef9, u+20ab;
 }
 @font-face {
   font-display: swap;
@@ -397,9 +397,9 @@ video {
   font-style: normal;
   font-weight: 400;
   src: url(fonts/spacemono-0ebe5dba.woff2) format('woff2');
-  unicode-range: u+0102-0103, u+0110-0111, u+0128-0129, u+0168-0169,
-    u+01a0-01a1, u+01af-01b0, u+0300-0301, u+0303-0304, u+0308-0309, u+0323,
-    u+0329, u+1ea0-1ef9, u+20ab;
+  unicode-range: u+0102-0103, u+0110-0111, u+0128-0129, u+0168-0169, u+01a0-01a1,
+    u+01af-01b0, u+0300-0301, u+0303-0304, u+0308-0309, u+0323, u+0329,
+    u+1ea0-1ef9, u+20ab;
 }
 @font-face {
   font-display: swap;
@@ -1886,8 +1886,7 @@ details[open] .\[details\[open\]_\&\]\:rotate-90 {
 [shadow=''] {
   --un-shadow: var(--un-shadow-inset) 0 1px 3px 0
       var(--un-shadow-color, rgba(0, 0, 0, 0.1)),
-    var(--un-shadow-inset) 0 1px 2px -1px
-      var(--un-shadow-color, rgba(0, 0, 0, 0.1));
+    var(--un-shadow-inset) 0 1px 2px -1px var(--un-shadow-color, rgba(0, 0, 0, 0.1));
   box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow),
     var(--un-shadow);
 }
@@ -2292,8 +2291,7 @@ html.dark {
     'Noto Color Emoji';
   --un-shadow: var(--un-shadow-inset) 0 1px 3px 0
       var(--un-shadow-color, rgb(0 0 0 / 0.1)),
-    var(--un-shadow-inset) 0 1px 2px -1px
-      var(--un-shadow-color, rgb(0 0 0 / 0.1));
+    var(--un-shadow-inset) 0 1px 2px -1px var(--un-shadow-color, rgb(0 0 0 / 0.1));
   box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow),
     var(--un-shadow);
   box-shadow: 0 6px 30px #0000001a;
@@ -2303,8 +2301,8 @@ html.dark {
   background-color: #101828bf;
   --un-text-opacity: 1;
   color: rgb(208 213 221 / var(--un-text-opacity));
-  --un-shadow: var(--un-shadow-inset) 0 25px 50px -12px
-    var(--un-shadow-color, rgb(0 0 0 / 0.25));
+  --un-shadow: var(--un-shadow-inset) 0 25px 50px -12px var(--un-shadow-color, rgb(0
+          0 0 / 0.25));
   box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow),
     var(--un-shadow);
 }
