@@ -11,7 +11,7 @@ let HandleGoogle_Login = async (req, res) => {
 
   try {
     let Authentication_Instance = new Authentication();
-    let hashEmail = await Authentication_Instance.hashEmail(token);
+   
 
     const oauth2Client = new google.auth.OAuth2();
     oauth2Client.setCredentials({ access_token: token });
@@ -19,20 +19,16 @@ let HandleGoogle_Login = async (req, res) => {
     const oauth2 = google.oauth2({ version: 'v2', auth: oauth2Client });
     const userRes = await oauth2.userinfo.get();
 
-    console.log('userRes', userRes.data); 
+    console.log('userRes', userRes.data);
 
     let find_User = await Authentication.findOne({ email: userRes.data.email });
-
-
+    let hashEmail = await Authentication_Instance.hashEmail(find_User.email);
     res.cookie('token', hashEmail, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7 * 1000,  
-      sameSite: 'Strict', 
+      maxAge: 60 * 60 * 24 * 7 * 1000,
+      sameSite: 'Strict',
     });
-
-
-
 
     if (!find_User) {
       let find_Admin_Role = Admin_Role.findOne({ email: userRes.data.email });
@@ -51,22 +47,20 @@ let HandleGoogle_Login = async (req, res) => {
         role: 'admin',
       });
 
+      let hashEmail = await Authentication_Instance.hashEmail(Create_Admin.email);
       if (Create_Admin) {
         res.status(200).json({ message: 'Admin Create ', user: Create_Admin });
 
         res.cookie('token', hashEmail, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',
-          maxAge: 60 * 60 * 24 * 7 * 1000,  
-          sameSite: 'Strict', 
+          maxAge: 60 * 60 * 24 * 7 * 1000,
+          sameSite: 'Strict',
         });
       }
     }
 
-
     res.status(200).json({ message: 'Login Success', user: find_User });
-
-  
   } catch (error) {
     console.error('Error verifying token:', error);
     res

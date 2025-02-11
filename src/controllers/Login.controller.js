@@ -6,24 +6,27 @@ export let Login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    
+
     let Authentication_Instance = new AuthenticationSchema();
 
+  
+
     let HashEmail = await Authentication_Instance.hashEmail(email);
-    console.log(HashEmail);
 
     let Find_User = await AuthenticationSchema.findOne({ email: email });
 
     if (!Find_User) {
       return res.status(400).json({ message: 'User not found' });
     }
-    console.log(password, Find_User.password);
+
 
     let ComparePassword = await Authentication_Instance.comparePassword(
       password,
       Find_User.password
     );
 
-    console.log(ComparePassword);
+   
 
     if (!ComparePassword) {
       return res.status(400).json({ message: 'Invalid Password' });

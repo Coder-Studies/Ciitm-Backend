@@ -99,6 +99,7 @@ AuthenticationSchema.statics.checkRole = async function (email) {
 AuthenticationSchema.statics.DecordToken = async function (token) {
   try {
     let { email } = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('123',email);
     if (!email) {
       throw new Error('Unauthorized User: Missing email in token');
     }

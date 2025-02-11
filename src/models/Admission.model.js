@@ -3,9 +3,9 @@ dotenv.config();
 import { Schema, model } from 'mongoose';
 import { createTransport } from '../utils/SendMail.js';
 import otpGenerator from 'otp-generation';
+import Course from './Create_Course.model.js';
 import status from './Status.model.js';
 import Student_Course from './student-course.model.js';
-import Create_CourseModel from './Create_Course.model.js';
 
 const AdmissionSchema = new Schema({
   uniqueId: {
@@ -297,7 +297,7 @@ AdmissionSchema.methods.createStudentCourse = async function ({
   university,
 }) {
   try {
-    const foundCourse = await Create_CourseModel.findOne({
+    const foundCourse = await Course.findOne({
       courseName: courseName,
     });
 
@@ -352,6 +352,19 @@ AdmissionSchema.statics.findStudent = async function (uniqueId) {
 AdmissionSchema.query.admited = function (Boolean) {
   return this.where({ admited: Boolean });
 };
+
+
+AdmissionSchema.pre('createCollection', async function (next) {
+  try {
+
+    const Course_detail = await Course.findOne({ _id: this.course_Id });
+    this.fee.course_Fee = Course_detail.coursePrice;
+    this.fee.amount_due = Course_detail.coursePrice;
+    next();
+  } catch (error) {
+    throw new Error(error.message || 'Failed to generate unique id');
+  }
+});
 
 let Admission = model('Admission', AdmissionSchema);
 
