@@ -61,8 +61,7 @@ cron.schedule('0 0 31 12 *', async () => {
 
 // app.use(limiter);
 
-
-const whitelist = new Set([process.env.website_URL , 'http://localhost:5173']);
+const whitelist = new Set([process.env.website_URL, 'http://localhost:5173']);
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -72,8 +71,10 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
+  credentials: true,
 };
-app.use(cors(corsOptions)); // Apply CORS middleware
+
+app.use(cors(corsOptions));
 
 // Set the view engine (EJS)
 console.log(__dirname);
