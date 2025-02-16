@@ -43,3 +43,25 @@ export let ForgotPassword_Controller = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error', error });
   }
 };
+
+export let ResetPassword_Controller = async (req, res) => {
+    try {
+      let { otp, new_Password } = req.body;
+      let { otp: hashedOtp } = req.cookies;
+  
+      let isOtpValid = await bcrypt.compare(otp, hashedOtp);
+  
+      if (!isOtpValid) {
+        return res.status(400).json({ message: 'Invalid OTP' });
+      }
+  
+      let email = await Authentication.DecordToken(req.cookies.token);
+      let hashedPassword = await bcrypt.hash(new_Password, 10);
+  
+      await Authentication.updateOne({ email: email }, { password: hashedPassword });
+  
+      return res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+      return res.status(500).json({ message: 'Internal Server Error', error });
+    }
+  };
