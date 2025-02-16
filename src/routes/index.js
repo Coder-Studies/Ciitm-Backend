@@ -25,6 +25,7 @@ import { Login } from '../controllers/Login.controller.js';
 import { Find_Notice_Controller } from '../controllers/createNotice.controller.js';
 import { Find_Teacher_Controller } from '../controllers/teacher.controller.js';
 import { SignUp_Admin } from '../controllers/Admin_Sign_Up.controller.js';
+import { ForgotPassword_Controller } from '../controllers/forgotPassword.controller.js';
 
 var router = express.Router();
 
@@ -77,5 +78,7 @@ router.post(
 );
 
 router.get('/find/testimonial', Find_Testimonial_Controller);
+
+router.post('/forgot/password', ForgotPassword_Controller);
 
 export default router;
