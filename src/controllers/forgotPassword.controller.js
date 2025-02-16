@@ -48,6 +48,10 @@ export let ResetPassword_Controller = async (req, res) => {
     try {
       let { otp, new_Password } = req.body;
       let { otp: hashedOtp } = req.cookies;
+
+      if (!otp || !new_Password) {
+        return res.status(400).json({ message: 'OTP and new password are required' });
+      }
   
       let isOtpValid = await bcrypt.compare(otp, hashedOtp);
   
