@@ -10,21 +10,19 @@ export let ForgotPassword_Controller = async (req, res) => {
   try {
     let { email } = req.body;
 
-    // Step 1: Find the user in the database
-    let findUser = await Authentication.findOne({ email: email });
+    if (!email) {
+        return res.status(400).json({ message: 'Email is required' });
+    }    let findUser = await Authentication.findOne({ email: email });
 
     if (!findUser) {
       return res.status(400).json({ message: 'User not found' });
     }
 
-    // Step 2: Generate a secure OTP and hash it
-    let otp = crypto.randomBytes(3).toString('hex'); // Generate a 6-character OTP
+    let otp = crypto.randomBytes(3).toString('hex');
     let hashedOtp = await bcrypt.hash(otp, 10);
 
-    // Step 3: Set the OTP cookie
     res.cookie('otp', hashedOtp, { httpOnly: true, secure: true });
 
-    // Step 4: Send the OTP to the user's email
     let transporter = createTransport();
 
     let mailOptions = {
