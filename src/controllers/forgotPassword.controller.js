@@ -52,6 +52,10 @@ export let ResetPassword_Controller = async (req, res) => {
       if (!otp || !new_Password) {
         return res.status(400).json({ message: 'OTP and new password are required' });
       }
+
+      if (!hashedOtp) {
+        return res.status(400).json({ message: 'OTP expired' });
+      }
   
       let isOtpValid = await bcrypt.compare(otp, hashedOtp);
   
