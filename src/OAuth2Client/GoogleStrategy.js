@@ -31,7 +31,7 @@ let HandleGoogle_Login = async (req, res) => {
     });
 
     if (!find_User) {
-      let find_Admin_Role = Admin_Role.findOne({ email: userRes.data.email });
+      let find_Admin_Role = await Admin_Role.findOne({ email: userRes.data.email });
 
       if (!find_Admin_Role) {
         res
