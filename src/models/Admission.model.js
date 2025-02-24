@@ -353,10 +353,8 @@ AdmissionSchema.query.admited = function (Boolean) {
   return this.where({ admited: Boolean });
 };
 
-
 AdmissionSchema.pre('createCollection', async function (next) {
   try {
-
     const Course_detail = await Course.findOne({ _id: this.course_Id });
     this.fee.course_Fee = Course_detail.coursePrice;
     this.fee.amount_due = Course_detail.coursePrice;

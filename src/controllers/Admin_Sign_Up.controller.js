@@ -1,10 +1,22 @@
 import AuthenticationSchema from '../models/AuthenticationSchema.model.js';
 import Admin_Role from '../models/Admin_Role.model.js';
 import { uploadOnCloudinary } from '../utils/Cloudinary.js';
+import { SignUp_Validator } from '../validation/Auth.Validator.js';
 
 export let SignUp_Admin = async (req, res) => {
   try {
     const { name, email, password, confirm_Password } = req.body;
+
+    let { error } = SignUp_Validator.validate({
+      name: name,
+      email: email,
+      password: password,
+      confirm_Password: confirm_Password,
+    });
+
+    if (error) {
+      return res.status(400).json({ message: error.message });
+    }
 
     let Authentication_Instance = new AuthenticationSchema();
 

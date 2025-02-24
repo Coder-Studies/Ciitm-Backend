@@ -21,7 +21,7 @@ export const AdminVerify = async (req, res, next) => {
     }
 
     let email = await Authentication.DecordToken(token);
-    console.log('email',email);
+    console.log('email', email);
 
     if (!email) {
       return res.status(403).json({

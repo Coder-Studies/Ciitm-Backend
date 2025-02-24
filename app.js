@@ -14,6 +14,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import Notice from './src/models/Notice.model.js';
 import validateEnv from './src/validation/Env.Validation.js';
+import Authentication from './src/models/AuthenticationSchema.model.js';
 
 dotenv.config({
   path: '.env',

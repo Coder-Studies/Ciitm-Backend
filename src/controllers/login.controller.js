@@ -6,11 +6,7 @@ export let Login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    
-
     let Authentication_Instance = new AuthenticationSchema();
-
-  
 
     let HashEmail = await Authentication_Instance.hashEmail(email);
 
@@ -20,13 +16,10 @@ export let Login = async (req, res) => {
       return res.status(400).json({ message: 'User not found' });
     }
 
-
     let ComparePassword = await Authentication_Instance.comparePassword(
       password,
       Find_User.password
     );
-
-   
 
     if (!ComparePassword) {
       return res.status(400).json({ message: 'Invalid Password' });

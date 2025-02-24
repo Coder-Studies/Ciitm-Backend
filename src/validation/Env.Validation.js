@@ -4,8 +4,6 @@ dotenv.config({
   path: '../../.env',
 });
 
-console.log('data', process.env.MONGO_URL);
-
 let Env_Validator = Joi.object({
   MONGO_URL: Joi.string().uri().required().messages({
     'string.base': 'MONGO_URL must be a valid string',

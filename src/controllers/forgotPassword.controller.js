@@ -5,14 +5,14 @@ import { createTransport } from '../utils/SendMail.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
 export let ForgotPassword_Controller = async (req, res) => {
   try {
     let { email } = req.body;
 
     if (!email) {
-        return res.status(400).json({ message: 'Email is required' });
-    }    let findUser = await Authentication.findOne({ email: email });
+      return res.status(400).json({ message: 'Email is required' });
+    }
+    let findUser = await Authentication.findOne({ email: email });
 
     if (!findUser) {
       return res.status(400).json({ message: 'User not found' });
@@ -45,31 +45,36 @@ export let ForgotPassword_Controller = async (req, res) => {
 };
 
 export let ResetPassword_Controller = async (req, res) => {
-    try {
-      let { otp, new_Password } = req.body;
-      let { otp: hashedOtp } = req.cookies;
+  try {
+    let { otp, new_Password } = req.body;
+    let { otp: hashedOtp } = req.cookies;
 
-      if (!otp || !new_Password) {
-        return res.status(400).json({ message: 'OTP and new password are required' });
-      }
-
-      if (!hashedOtp) {
-        return res.status(400).json({ message: 'OTP expired' });
-      }
-  
-      let isOtpValid = await bcrypt.compare(otp, hashedOtp);
-  
-      if (!isOtpValid) {
-        return res.status(400).json({ message: 'Invalid OTP' });
-      }
-  
-      let email = await Authentication.DecordToken(req.cookies.token);
-      let hashedPassword = await bcrypt.hash(new_Password, 10);
-  
-      await Authentication.updateOne({ email: email }, { password: hashedPassword });
-  
-      return res.status(200).json({ message: 'Password updated successfully' });
-    } catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error', error });
+    if (!otp || !new_Password) {
+      return res
+        .status(400)
+        .json({ message: 'OTP and new password are required' });
     }
-  };
+
+    if (!hashedOtp) {
+      return res.status(400).json({ message: 'OTP expired' });
+    }
+
+    let isOtpValid = await bcrypt.compare(otp, hashedOtp);
+
+    if (!isOtpValid) {
+      return res.status(400).json({ message: 'Invalid OTP' });
+    }
+
+    let email = await Authentication.DecordToken(req.cookies.token);
+    let hashedPassword = await bcrypt.hash(new_Password, 10);
+
+    await Authentication.updateOne(
+      { email: email },
+      { password: hashedPassword }
+    );
+
+    return res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Internal Server Error', error });
+  }
+};
