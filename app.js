@@ -7,14 +7,13 @@ import cookieParser from 'cookie-parser';
 import lolcat from 'lolcatjs';
 import path from 'path';
 import cors from 'cors';
-import rateLimit from 'express-rate-limit';
+// import rateLimit from 'express-rate-limit';
 import db_connect from './src/middleware/db.connect.js';
 import routerMiddleWare from './src/middleware/router.middleware.js';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import Notice from './src/models/Notice.model.js';
 import validateEnv from './src/validation/Env.Validation.js';
-import Authentication from './src/models/AuthenticationSchema.model.js';
 
 dotenv.config({
   path: '.env',

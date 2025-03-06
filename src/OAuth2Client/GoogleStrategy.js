@@ -52,7 +52,9 @@ let HandleGoogle_Login = async (req, res) => {
       sameSite: 'Strict',
     });
 
-    res.status(200).json({ message: 'Login Success', user: find_User , token: hashEmail });
+    res
+      .status(200)
+      .json({ message: 'Login Success', user: find_User, token: hashEmail });
   } catch (error) {
     console.error('Error verifying token:', error);
     res

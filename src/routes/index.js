@@ -1,11 +1,8 @@
-import express, { Router } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
-import upload from '../utils/multerUtils.js';
-
-import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
-
 dotenv.config();
-
+import upload from '../utils/multerUtils.js';
+import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
 import { Handle_ContactForm } from '../controllers/contactForm.controller.js';
 import { getAlbum } from '../controllers/album.controller.js';
 import { findImage } from '../controllers/image.controller.js';
@@ -14,7 +11,6 @@ import handle_LogOut from '../controllers/LogOut.controller.js';
 import {
   Find_Student_Status_Controller,
   Handle_newStudent_Record,
-  Handle_StudentFee_Paid,
 } from '../controllers/StudentAdmission.controller.js';
 import {
   Create_Testimonial_Controller,
@@ -29,14 +25,25 @@ import {
   ForgotPassword_Controller,
   ResetPassword_Controller,
 } from '../controllers/forgotPassword.controller.js';
+import {
+  Find_Student_Payment_Info,
+  Handle_StudentFee_Paid,
+} from '../controllers/StudenyPayment.controller.js';
 
 var router = express.Router();
+
+router.post(
+  '/admission/student',
+  upload.single('Avtar'),
+  Handle_newStudent_Record
+);
 
 router.post('/auth/google', GoogleOAuth2);
 
 router.get('/frontend', Find_Frontend_Controller);
 
 router.post('/pay/fee', Handle_StudentFee_Paid);
+router.get('/find/student/payment/info', Find_Student_Payment_Info);
 
 router.post('/student/admission', Handle_newStudent_Record);
 
@@ -54,15 +61,9 @@ router.get('/find/teacher', Find_Teacher_Controller);
 
 router.get('/notice', Find_Notice_Controller);
 
-router.post(
-  '/admission/student',
-  upload.single('avtar'),
-  Handle_newStudent_Record
-);
-
 router.post('/contact/form/submit', Handle_ContactForm);
 
-router.post('/signup/admin', upload.single('Profile_Picture'), SignUp_Admin);
+router.post('/signup/admin', SignUp_Admin);
 
 router.get('/logOut', handle_LogOut);
 

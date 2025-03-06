@@ -75,8 +75,17 @@ AuthenticationSchema.methods.hashEmail = async function (email) {
 };
 
 AuthenticationSchema.methods.comparePassword = async function (password, hash) {
-  const match = await bcrypt.compare(password, hash);
-  return match;
+  try {
+    console.log('pass', password, 'hash ', hash);
+
+    const match = await bcrypt.compare(password, hash);
+    if (!match) {
+      throw new Error('Failed to Match Password');
+    }
+    return match;
+  } catch (error) {
+    throw new Error(`Error checking user role: ${error.message}`);
+  }
 };
 
 AuthenticationSchema.statics.checkRole = async function (email) {

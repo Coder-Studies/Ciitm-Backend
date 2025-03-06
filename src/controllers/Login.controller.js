@@ -5,12 +5,14 @@ import { uploadOnCloudinary } from '../utils/Cloudinary.js';
 export let Login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email);
 
     let Authentication_Instance = new AuthenticationSchema();
 
     let HashEmail = await Authentication_Instance.hashEmail(email);
 
     let Find_User = await AuthenticationSchema.findOne({ email: email });
+    console.log('Find User', Find_User);
 
     if (!Find_User) {
       return res.status(400).json({ message: 'User not found' });
@@ -33,6 +35,7 @@ export let Login = async (req, res) => {
       token: HashEmail,
     });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ message: error.message || 'Error logging in admin', error });

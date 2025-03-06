@@ -1,4 +1,3 @@
-import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import { create_Student, Sign_Up_Student } from '../Service/student.service.js';
 import StudentSchema from '../models/Admission.model.js';
@@ -7,24 +6,35 @@ import Create_CourseModel from '../models/Create_Course.model.js';
 import env from 'dotenv';
 import AdmissionValidationSchema from '../validation/AdmissionSchema.Joi.js';
 import status from '../models/Status.model.js';
-import { sendMail, Update_Status } from '../Service/admin.service.js';
-import { createTransport } from '../utils/SendMail.js';
+import { Update_Status } from '../Service/admin.service.js';
 import Update_Status_template from '../template/email/update.template.js';
-
 import { STUDENT_Constant } from '../constant/Student .constant.js';
 import Update_Status_Validation from '../validation/Update_Status_Validation.js';
 import { COURSE_Constant } from '../constant/Course.constant.js';
 import AuthenticationSchema from '../models/AuthenticationSchema.model.js';
 import { uploadOnCloudinary } from '../utils/Cloudinary.js';
-
+import multer from 'multer';
 env.config({
-  path: '../../.enx',
+  path: '../../.env',
 });
 
 export const Handle_newStudent_Record = async (req, res) => {
   try {
     const data = req.body;
-    let { filename } = req.file;
+
+
+    const { filename } = req.file;
+    console.log('File:', filename);
+
+    if (!req.file) {
+      return res.status(400).json({
+        message: 'No file uploaded',
+        error: true,
+      });
+    }
+
+
+
 
     let Cloudinary = await uploadOnCloudinary(filename);
 
@@ -70,7 +80,7 @@ export const Handle_newStudent_Record = async (req, res) => {
 
     let Admission = await create_Student({
       data: data,
-      courseId: find_course._id.toString(),
+      course: find_course,
       uniqueId: uniqueId,
       image_Url: Cloudinary.url,
     });
@@ -274,29 +284,3 @@ export const Update_Student_Status_Controller = async (req, res) => {
   }
 };
 
-// This Controller Allow Student and Parrent to Pay Student Fee
-export const Handle_StudentFee_Paid = (req, res) => {
-  let { amount } = req.body;
-
-  var instance = new Razorpay({
-    key_id: process.env.Razorpay_key,
-    key_secret: process.env.Razorpay_secret,
-  });
-
-  var options = {
-    amount: amount * 100, // amount in the smallest currency unit
-    currency: 'INR',
-    receipt: 'order_rcptid_11',
-    notes: {
-      purpose: 'Student Fee Payment',
-    },
-  };
-  instance.orders.create(options, function (err, order) {
-    console.log(order);
-    res.status(302).json({
-      message: 'Payment Created',
-      order,
-      created: true,
-    });
-  });
-};

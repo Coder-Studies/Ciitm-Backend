@@ -7,7 +7,7 @@ import { sendMail } from './admin.service.js';
 
 import { find_Course } from './client.service.js';
 
-export let create_Student = async ({ data, uniqueId, courseId, image_Url }) => {
+export let create_Student = async ({ data, uniqueId, course, image_Url }) => {
   try {
     const admission = await AdmissionSchema.create({
       uniqueId: uniqueId,
@@ -58,7 +58,19 @@ export let create_Student = async ({ data, uniqueId, courseId, image_Url }) => {
         twelfthGrade: data.twelfthGrade,
       },
 
-      course_Id: courseId,
+      fee: {
+        amount_due: course.course_Fee,
+        course_Fee: course.course_Fee,
+      },
+
+      fee: {
+        amount_paid: 0,
+        late_Fine: 0,
+        amount_due: 0,
+        course_Fee: 0,
+      },
+
+      course_Id: course._id,
       mode: data.mode,
       university: data.university,
     });
@@ -124,4 +136,28 @@ export let Sign_Up_Student = async ({
   console.log('Send_Sign_UP_Mail: 2', Send_Sign_UP_Mail);
 
   return Create_Student;
+};
+
+export let get_Payment_info = async ({ uniqueId }) => {
+  try {
+    let find_Student = await Admission.findOne({
+      uniqueId: uniqueId,
+    });
+
+    if (!find_Student) {
+      throw new Error('Student not found');
+    }
+
+    let find_Payment = await status.findOne({
+      student_Id: find_Student._id,
+    });
+
+    if (!find_Payment) {
+      throw new Error('Payment not found');
+    }
+
+    return find_Payment;
+  } catch (error) {
+    throw new Error('Failed to get Payment info');
+  }
 };

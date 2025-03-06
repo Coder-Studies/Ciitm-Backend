@@ -7,7 +7,6 @@ import { createTransport } from '../utils/SendMail.js';
  **/
 
 import Frontend from '../models/Frontend.model.js';
-import socialMedia from '../models/Social_Media.model.js';
 import Social_Link_Validator from '../validation/Social_Link.Joi.js';
 import Admin_Role from '../models/Admin_Role.model.js';
 import Notice from '../models/Notice.model.js';
