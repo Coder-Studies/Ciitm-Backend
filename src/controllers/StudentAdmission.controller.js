@@ -22,10 +22,6 @@ export const Handle_newStudent_Record = async (req, res) => {
   try {
     const data = req.body;
 
-
-    const { filename } = req.file;
-    console.log('File:', filename);
-
     if (!req.file) {
       return res.status(400).json({
         message: 'No file uploaded',
@@ -33,6 +29,9 @@ export const Handle_newStudent_Record = async (req, res) => {
       });
     }
 
+
+    const { filename } = req.file;
+    console.log('File:', filename);
 
 
 
@@ -188,7 +187,9 @@ export const Update_Student_Status_Controller = async (req, res) => {
       email: find_Student.student.email[0],
     });
 
+
     if (find_User) {
+      console.log('User:', find_User);
       return res.status(200).json({
         error: true,
         message: STUDENT_Constant.ALREADY_REGISTER,

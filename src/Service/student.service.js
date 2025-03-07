@@ -5,7 +5,7 @@ import status from '../models/Status.model.js';
 import Student_Course from '../models/student-course.model.js';
 import { sendMail } from './admin.service.js';
 
-import { find_Course } from './client.service.js';
+import { find_Course, find_Course_by_studentId } from './client.service.js';
 
 export let create_Student = async ({ data, uniqueId, course, image_Url }) => {
   try {
@@ -133,6 +133,20 @@ export let Sign_Up_Student = async ({
     `,
   });
 
+  AdmissionSchema.updateOne(
+    { email: email },
+    {
+      $set: { admited: true }
+    }
+  )
+  .then((result) => {
+    console.log('Update Result:', result);
+  })
+  .catch((err) => {
+    console.error('Error updating document:', err);
+  });
+  
+
   console.log('Send_Sign_UP_Mail: 2', Send_Sign_UP_Mail);
 
   return Create_Student;
@@ -140,6 +154,27 @@ export let Sign_Up_Student = async ({
 
 export let get_Payment_info = async ({ uniqueId }) => {
   try {
+
+
+    let Find_Student = await Admission.findOne({
+      uniqueId: uniqueId,
+    })
+
+    if (!Find_Student) {
+      throw new Error('Student not found');
+    };
+    
+
+    let isApproved = await Admission.findOne({
+      uniqueId: uniqueId,
+    }).select('admited'); 
+
+
+
+    if (!isApproved) {
+      throw new Error('You are not approved to pay the fee');
+    }
+
     let find_Student = await Admission.findOne({
       uniqueId: uniqueId,
     });
@@ -148,16 +183,24 @@ export let get_Payment_info = async ({ uniqueId }) => {
       throw new Error('Student not found');
     }
 
-    let find_Payment = await status.findOne({
-      student_Id: find_Student._id,
-    });
+ 
+    
+    let Course = await find_Course_by_studentId({id: find_Student._id.toString()});
 
-    if (!find_Payment) {
-      throw new Error('Payment not found');
+    let data = {
+      Student_id: find_Student.uniqueId,
+      student: find_Student.student,
+      course: Course,
+      fee: find_Student.fee,
     }
 
-    return find_Payment;
+
+    
+    return data;
+
+
   } catch (error) {
-    throw new Error('Failed to get Payment info');
+    console.error('Error:', error);
+    throw new Error(error.message || 'Failed to get Payment info');
   }
 };
