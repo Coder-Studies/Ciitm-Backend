@@ -1,5 +1,6 @@
 import Frontend from '../models/Frontend.model.js';
 import { Created_Frontend } from '../Service/admin.service.js';
+import { Update_Student_fee } from '../Service/student.service.js';
 
 export let Create_Frontend_Controller = async (req, res) => {
   try {
@@ -30,6 +31,8 @@ export let Create_Frontend_Controller = async (req, res) => {
 export let Find_Frontend_Controller = async (req, res) => {
   try {
     let Find_Frontend = await Frontend.find();
+
+    Update_Student_fee({ uniqueId: 'CIITM_BCA_595014', amount: 1000 });
 
     if (!Find_Frontend) {
       res.status(200).json({

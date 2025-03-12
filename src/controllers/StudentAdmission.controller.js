@@ -29,11 +29,8 @@ export const Handle_newStudent_Record = async (req, res) => {
       });
     }
 
-
     const { filename } = req.file;
     console.log('File:', filename);
-
-
 
     let Cloudinary = await uploadOnCloudinary(filename);
 
@@ -187,7 +184,6 @@ export const Update_Student_Status_Controller = async (req, res) => {
       email: find_Student.student.email[0],
     });
 
-
     if (find_User) {
       console.log('User:', find_User);
       return res.status(200).json({
@@ -284,4 +280,3 @@ export const Update_Student_Status_Controller = async (req, res) => {
     });
   }
 };
-

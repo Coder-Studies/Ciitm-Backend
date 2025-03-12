@@ -3,6 +3,7 @@ import AdmissionSchema from '../models/Admission.model.js';
 import Authentication from '../models/AuthenticationSchema.model.js';
 import status from '../models/Status.model.js';
 import Student_Course from '../models/student-course.model.js';
+import Fee from '../models/student-fee.model.js';
 import { sendMail } from './admin.service.js';
 
 import { find_Course, find_Course_by_studentId } from './client.service.js';
@@ -136,16 +137,15 @@ export let Sign_Up_Student = async ({
   AdmissionSchema.updateOne(
     { email: email },
     {
-      $set: { admited: true }
+      $set: { admited: true },
     }
   )
-  .then((result) => {
-    console.log('Update Result:', result);
-  })
-  .catch((err) => {
-    console.error('Error updating document:', err);
-  });
-  
+    .then((result) => {
+      console.log('Update Result:', result);
+    })
+    .catch((err) => {
+      console.error('Error updating document:', err);
+    });
 
   console.log('Send_Sign_UP_Mail: 2', Send_Sign_UP_Mail);
 
@@ -154,22 +154,17 @@ export let Sign_Up_Student = async ({
 
 export let get_Payment_info = async ({ uniqueId }) => {
   try {
-
-
     let Find_Student = await Admission.findOne({
       uniqueId: uniqueId,
-    })
+    });
 
     if (!Find_Student) {
       throw new Error('Student not found');
-    };
-    
+    }
 
     let isApproved = await Admission.findOne({
       uniqueId: uniqueId,
-    }).select('admited'); 
-
-
+    }).select('admited');
 
     if (!isApproved) {
       throw new Error('You are not approved to pay the fee');
@@ -183,24 +178,91 @@ export let get_Payment_info = async ({ uniqueId }) => {
       throw new Error('Student not found');
     }
 
- 
-    
-    let Course = await find_Course_by_studentId({id: find_Student._id.toString()});
+    let Course = await find_Course_by_studentId({
+      id: find_Student._id.toString(),
+    });
 
     let data = {
       Student_id: find_Student.uniqueId,
       student: find_Student.student,
       course: Course,
       fee: find_Student.fee,
-    }
+    };
 
-
-    
     return data;
-
-
   } catch (error) {
     console.error('Error:', error);
     throw new Error(error.message || 'Failed to get Payment info');
+  }
+};
+
+export let Create_Payment_Record = async (data) => {
+
+  let { amount_paid ,  course_Fee , payment_id ,  Unique_id} = data;
+
+console.log('amount_paid:', amount_paid);
+console.log('course_Fee:', course_Fee);
+console.log('payment_id:', payment_id);
+console.log('Unique_id:', Unique_id);
+
+  let Create_Fee = Fee.create({
+    Unique_id: Unique_id,
+    PaymentId: payment_id,
+    amountPaid: amount_paid,
+    paymentMethod: 'online_payment',
+    totalFee: course_Fee,
+  });
+
+  if (!Create_Fee) {
+    throw new Error('Failed to create Payment Record');
+  }
+
+  return Create_Fee;
+};
+
+export let Update_Student_fee = async ({ uniqueId, Paid_amount }) => {
+  try {
+    let find_Student_fee = await AdmissionSchema.findOne({
+      uniqueId: uniqueId,
+    }).select('fee');
+
+
+    console.log('find_Student_fee:', find_Student_fee);
+
+    let { amount_due , amount_paid } = find_Student_fee.fee;
+
+
+    if (!find_Student_fee) {
+      throw new Error('Student Fee not found');
+    }
+
+
+    let amount =  Number(Paid_amount + amount_paid);
+    let Due_Amount = Number(amount_due) - Paid_amount;
+    
+    
+    if(isNaN(amount) && isNaN(Due_Amount)){
+      throw Error('Amount and Due Amount is not a number');
+    }
+    
+
+    let Update_Fee = AdmissionSchema.updateOne(
+      { uniqueId: uniqueId },
+      {
+        $set: {
+          'fee.amount_paid': amount,
+          'fee.amount_due': Due_Amount,
+        },
+      }
+    );
+
+    if (!Update_Fee) {
+      return false;
+    }
+
+    return Update_Fee;
+  } catch (error) {
+    console.log('Error:', error);
+    throw new Error(error.message || 'Failed to Update Fee');
   }
 };

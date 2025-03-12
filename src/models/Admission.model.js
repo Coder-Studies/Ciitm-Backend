@@ -353,8 +353,6 @@ AdmissionSchema.query.admited = function (Boolean) {
   return this.where({ admited: Boolean });
 };
 
-
-
 AdmissionSchema.pre('save', async function (next) {
   try {
     const Course_detail = await Course.findOne({ _id: this.course_Id });

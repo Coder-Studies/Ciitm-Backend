@@ -26,8 +26,9 @@ import {
   ResetPassword_Controller,
 } from '../controllers/forgotPassword.controller.js';
 import {
+  Create_Order,
   Find_Student_Payment_Info,
-  Handle_StudentFee_Paid,
+  Verify_Payment,
 } from '../controllers/StudenyPayment.controller.js';
 
 var router = express.Router();
@@ -42,7 +43,8 @@ router.post('/auth/google', GoogleOAuth2);
 
 router.get('/frontend', Find_Frontend_Controller);
 
-router.post('/pay/fee', Handle_StudentFee_Paid);
+router.post('/create/payment', Create_Order);
+router.post('/pay/verify', Verify_Payment);
 router.get('/find/student/payment/info', Find_Student_Payment_Info);
 
 router.post('/student/admission', Handle_newStudent_Record);

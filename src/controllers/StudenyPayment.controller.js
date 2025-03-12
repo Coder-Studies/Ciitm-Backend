@@ -1,13 +1,13 @@
 import Razorpay from 'razorpay';
 import { Payment_Constant } from '../constant/Payment.constant.js';
-import { get_Payment_info } from '../Service/student.service.js';
+import {
+  Create_Payment_Record,
+  get_Payment_info,
+} from '../Service/student.service.js';
 
 export const Find_Student_Payment_Info = async (req, res) => {
   try {
     let Student_Id = req.query.uniqueId;
-
-
-
 
     if (!Student_Id) {
       throw {
@@ -16,13 +16,11 @@ export const Find_Student_Payment_Info = async (req, res) => {
       };
     }
 
-   let Student_Info =  await get_Payment_info({ uniqueId: Student_Id });
-   console.log('Student Info:- ', Student_Info);
+    let Student_Info = await get_Payment_info({ uniqueId: Student_Id });
+    console.log('Student Info:- ', Student_Info);
     return res.status(200).json({
       data: Student_Info,
     });
-
-  
   } catch (error) {
     return res.status(error.status || 403).json({
       message: error.message || Payment_Constant.FAIL_TO_Info,
@@ -31,26 +29,32 @@ export const Find_Student_Payment_Info = async (req, res) => {
   }
 };
 
-// This Controller Allow Student and Parrent to Pay Student Fee
-export const Handle_StudentFee_Paid = (req, res) => {
+let instance = new Razorpay({
+  key_id: process.env.Razorpay_key,
+  key_secret: process.env.Razorpay_secret,
+});
+
+export const Create_Order = (req, res) => {
   try {
     let { amount } = req.body;
 
-    var instance = new Razorpay({
-      key_id: process.env.Razorpay_key,
-      key_secret: process.env.Razorpay_secret,
-    });
-
-    var options = {
-      amount: amount * 100, // amount in the smallest currency unit
+    let options = {
+      amount: amount * 100,
       currency: 'INR',
-      receipt: 'order_rcptid_11',
+      receipt: 'order_' + Math.floor(Math.random() * 1000),
+      payment_capture: '1',
       notes: {
         purpose: 'Student Fee Payment',
       },
     };
+
     instance.orders.create(options, function (err, order) {
-      console.log(order);
+      if (err) {
+        throw {
+          status: 403,
+          message: Payment_Constant.FAIL_TO_PAY,
+        };
+      }
       res.status(201).json({
         message: 'Payment Created',
         order,
@@ -58,8 +62,55 @@ export const Handle_StudentFee_Paid = (req, res) => {
       });
     });
   } catch (error) {
+    console.log('Error:- ', error);
     return res.status(error.status || 403).json({
       message: error.message || Payment_Constant.FAIL_TO_PAY,
+      error: true,
+    });
+  }
+};
+
+export const Verify_Payment = async (req, res) => {
+  try {
+    const { payment_id, Unique_id, course_Fee } = req.body;
+
+    console.log('Payment ID body:- ', req.body);
+
+    if (!payment_id) {
+      return res.status(400).json({
+        message: 'Payment ID is required',
+        error: true,
+      });
+    }
+
+    const Fetch_Payment = await instance.payments.fetch(payment_id);
+
+    if (!Fetch_Payment || Fetch_Payment.status !== 'authorized') {
+      return res.status(400).json({
+        message: 'Payment verification failed or payment not captured',
+        error: true,
+      });
+    }
+
+
+    let Create_Pay_Record = await Create_Payment_Record({
+      Unique_id: Unique_id,
+      course_Fee: course_Fee,
+      payment_id: payment_id,
+      amount_paid: Fetch_Payment.amount / 100,
+    });
+
+
+
+    return res.status(200).json({
+      message: 'Payment Successful',
+      data: Create_Pay_Record,
+    });
+
+  } catch (error) {
+    console.error('Error 3:- ', error);
+    return res.status(500).json({
+      message: error.message || 'Failed to verify payment',
       error: true,
     });
   }
