@@ -226,27 +226,25 @@ export let Update_Student_fee = async ({ uniqueId, Paid_amount }) => {
       uniqueId: uniqueId,
     }).select('fee');
 
-
     console.log('find_Student_fee:', find_Student_fee);
-
-    let { amount_due , amount_paid } = find_Student_fee.fee;
-
 
     if (!find_Student_fee) {
       throw new Error('Student Fee not found');
     }
 
+    let { amount_due, amount_paid } = find_Student_fee.fee;
 
-    let amount =  Number(Paid_amount + amount_paid);
-    let Due_Amount = Number(amount_due) - Paid_amount;
-    
-    
-    if(isNaN(amount) && isNaN(Due_Amount)){
-      throw Error('Amount and Due Amount is not a number');
+    // Calculate the new paid amount and due amount
+    let amount = Number(Paid_amount) + Number(amount_paid);  // Ensure both are numbers
+    let Due_Amount = Number(amount_due) - Number(Paid_amount); // Ensure both are numbers
+
+    if (!Number.isFinite(amount) || !Number.isFinite(Due_Amount)) {
+      throw new Error('Amount and Due Amount must be valid finite numbers');
     }
     
 
-    let Update_Fee = AdmissionSchema.updateOne(
+    // Perform the update
+    let Update_Fee = await AdmissionSchema.updateOne(
       { uniqueId: uniqueId },
       {
         $set: {
@@ -256,7 +254,8 @@ export let Update_Student_fee = async ({ uniqueId, Paid_amount }) => {
       }
     );
 
-    if (!Update_Fee) {
+    // Check if the update was successful
+    if (Update_Fee.nModified === 0) {  // nModified tells if any document was modified
       return false;
     }
 

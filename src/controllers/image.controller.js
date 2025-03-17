@@ -171,3 +171,26 @@ export const findImage = async (req, res) => {
     });
   }
 };
+
+
+export const findAllImages = async (req, res) => {
+try {
+  
+  let Find_All_Images = await imageSchema.find().sort({ createdAt: -1 });
+  if(!Find_All_Images){
+    let error = new Error('No images found');
+    error.status = 404;
+    throw error;
+  }
+  res.status(200).json({
+    message: 'All Images found',
+    data: Find_All_Images,
+  });
+} catch (error) {
+  res.status(error.status || 500).json({
+    message: error.message || 'Error fetching images',
+    error: true,
+  });
+  
+}
+};

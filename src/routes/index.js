@@ -5,7 +5,7 @@ import upload from '../utils/multerUtils.js';
 import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
 import { Handle_ContactForm } from '../controllers/contactForm.controller.js';
 import { getAlbum } from '../controllers/album.controller.js';
-import { findImage } from '../controllers/image.controller.js';
+import { findAllImages, findImage } from '../controllers/image.controller.js';
 import { Find_Social_link } from '../controllers/SocialMedia.controller.js';
 import handle_LogOut from '../controllers/LogOut.controller.js';
 import {
@@ -74,6 +74,8 @@ router.get('/link', Find_Social_link);
 router.post('/login', Login);
 
 router.get('/albums', getAlbum);
+
+router.get('/gallery/image', findAllImages);
 
 router.get('/image/:Album__Name', findImage);
 
