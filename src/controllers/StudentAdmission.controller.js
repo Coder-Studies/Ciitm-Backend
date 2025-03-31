@@ -11,7 +11,7 @@ import Update_Status_template from '../template/email/update.template.js';
 import { STUDENT_Constant } from '../constant/Student .constant.js';
 import Update_Status_Validation from '../validation/Update_Status_Validation.js';
 import { COURSE_Constant } from '../constant/Course.constant.js';
-import AuthenticationSchema from '../models/AuthenticationSchema.model.js';
+import AuthenticationSchema from '../api/v1/Auth/Auth.model.mjs';
 import { uploadOnCloudinary } from '../utils/Cloudinary.js';
 import multer from 'multer';
 env.config({

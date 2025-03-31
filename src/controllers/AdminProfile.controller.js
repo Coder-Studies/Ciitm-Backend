@@ -1,4 +1,4 @@
-import Authentication_Schema from '../models/AuthenticationSchema.model.js';
+import Authentication_Schema from '../api/v1/Auth/Auth.model.mjs';
 import jwt from 'jsonwebtoken';
 import logger from '../middleware/loggerMiddleware.js';
 import dotenv from 'dotenv';

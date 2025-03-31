@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import logger from './loggerMiddleware.js';
-import Authentication from '../models/AuthenticationSchema.model.js';
+
+
+import Authentication from '../api/v1/Auth/Auth.model.mjs';
 
 dotenv.config({
   path: '../../.env',

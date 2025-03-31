@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 import upload from '../utils/multerUtils.js';
-import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
+// import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
 import { Handle_ContactForm } from '../controllers/contactForm.controller.js';
 import { getAlbum } from '../controllers/album.controller.js';
 import { findAllImages, findImage } from '../controllers/image.controller.js';
@@ -39,7 +39,7 @@ router.post(
   Handle_newStudent_Record
 );
 
-router.post('/auth/google', GoogleOAuth2);
+// router.post('/auth/google', GoogleOAuth2);
 
 router.get('/frontend', Find_Frontend_Controller);
 
@@ -65,13 +65,13 @@ router.get('/notice', Find_Notice_Controller);
 
 router.post('/contact/form/submit', Handle_ContactForm);
 
-router.post('/signup/admin', SignUp_Admin);
+// router.post('/signup/admin', SignUp_Admin);
 
-router.get('/logOut', handle_LogOut);
+// router.get('/logOut', handle_LogOut);
 
 router.get('/link', Find_Social_link);
 
-router.post('/login', Login);
+// router.post('/login', Login);
 
 router.get('/albums', getAlbum);
 

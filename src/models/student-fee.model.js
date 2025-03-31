@@ -13,7 +13,7 @@ const feeSchema = new Schema(
 
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'StudentAuthentication', 
+      ref: 'StudentAuthentication',
     },
 
     PaymentId: {
@@ -64,33 +64,24 @@ const feeSchema = new Schema(
 
 feeSchema.pre('save', async function (next) {
   try {
+    let find_Student = Admission.findOne({ uniqueId: this.Unique_id });
 
-
-
-
-
-
-   let find_Student = Admission.findOne({uniqueId: this.Unique_id});
-
-   if(!find_Student){
+    if (!find_Student) {
       throw new Error('Failed to Find Student');
-  }
-  
-  this.studentId = find_Student._id;
+    }
 
+    this.studentId = find_Student._id;
 
-  let Update_fee = await Update_Student_fee({
-    uniqueId: this.Unique_id,
-    Paid_amount: this.amountPaid,
-  });
+    let Update_fee = await Update_Student_fee({
+      uniqueId: this.Unique_id,
+      Paid_amount: this.amountPaid,
+    });
 
-
-  if(find_Student && Update_fee.acknowledged === true){
-    next();
-  } else {
-    throw new Error('Failed to Update Fee');
-  }
-
+    if (find_Student && Update_fee.acknowledged === true) {
+      next();
+    } else {
+      throw new Error('Failed to Update Fee');
+    }
   } catch (error) {
     throw new Error(error.message || 'Failed to Find Course');
   }

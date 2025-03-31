@@ -1,6 +1,6 @@
 import Admission from '../models/Admission.model.js';
 import AdmissionSchema from '../models/Admission.model.js';
-import Authentication from '../models/AuthenticationSchema.model.js';
+import Authentication from '../api/v1/Auth/Auth.model.mjs';
 import status from '../models/Status.model.js';
 import Student_Course from '../models/student-course.model.js';
 import Fee from '../models/student-fee.model.js';
@@ -197,13 +197,12 @@ export let get_Payment_info = async ({ uniqueId }) => {
 };
 
 export let Create_Payment_Record = async (data) => {
+  let { amount_paid, course_Fee, payment_id, Unique_id } = data;
 
-  let { amount_paid ,  course_Fee , payment_id ,  Unique_id} = data;
-
-console.log('amount_paid:', amount_paid);
-console.log('course_Fee:', course_Fee);
-console.log('payment_id:', payment_id);
-console.log('Unique_id:', Unique_id);
+  console.log('amount_paid:', amount_paid);
+  console.log('course_Fee:', course_Fee);
+  console.log('payment_id:', payment_id);
+  console.log('Unique_id:', Unique_id);
 
   let Create_Fee = Fee.create({
     Unique_id: Unique_id,
@@ -235,13 +234,12 @@ export let Update_Student_fee = async ({ uniqueId, Paid_amount }) => {
     let { amount_due, amount_paid } = find_Student_fee.fee;
 
     // Calculate the new paid amount and due amount
-    let amount = Number(Paid_amount) + Number(amount_paid);  // Ensure both are numbers
+    let amount = Number(Paid_amount) + Number(amount_paid); // Ensure both are numbers
     let Due_Amount = Number(amount_due) - Number(Paid_amount); // Ensure both are numbers
 
     if (!Number.isFinite(amount) || !Number.isFinite(Due_Amount)) {
       throw new Error('Amount and Due Amount must be valid finite numbers');
     }
-    
 
     // Perform the update
     let Update_Fee = await AdmissionSchema.updateOne(
@@ -255,7 +253,8 @@ export let Update_Student_fee = async ({ uniqueId, Paid_amount }) => {
     );
 
     // Check if the update was successful
-    if (Update_Fee.nModified === 0) {  // nModified tells if any document was modified
+    if (Update_Fee.nModified === 0) {
+      // nModified tells if any document was modified
       return false;
     }
 

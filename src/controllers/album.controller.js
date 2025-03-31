@@ -70,21 +70,16 @@ export const deleteAlbum = async (req, res) => {
 
     let findAlbum = await albumSchema.findById(id);
 
-
     if (!findAlbum) {
       throw new Error(Album_Contant.Not_Found);
-
     }
 
     let DeletedImage = await Delete_From_Cloudinary(findAlbum.aImage_url);
 
-
     if (DeletedImage.deleted) {
       let delete_Album = await albumSchema.findByIdAndDelete(id);
 
-
       if (!delete_Album) {
-  
         throw new Error(Album_Contant.Not_Deleted);
       }
 

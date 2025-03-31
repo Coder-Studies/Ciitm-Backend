@@ -92,7 +92,6 @@ export const Verify_Payment = async (req, res) => {
       });
     }
 
-
     let Create_Pay_Record = await Create_Payment_Record({
       Unique_id: Unique_id,
       course_Fee: course_Fee,
@@ -100,13 +99,10 @@ export const Verify_Payment = async (req, res) => {
       amount_paid: Fetch_Payment.amount / 100,
     });
 
-
-
     return res.status(200).json({
       message: 'Payment Successful',
       data: Create_Pay_Record,
     });
-
   } catch (error) {
     console.error('Error 3:- ', error);
     return res.status(500).json({

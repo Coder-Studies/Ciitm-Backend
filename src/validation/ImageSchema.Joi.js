@@ -1,4 +1,4 @@
-import User from '../models/AuthenticationSchema.model.js';
+import User from '../api/v1/Auth/Auth.model.mjs';
 import Joi from 'joi';
 
 export const ImageSchemaJoi = Joi.object({

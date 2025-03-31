@@ -14,6 +14,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import Notice from './src/models/Notice.model.js';
 import validateEnv from './src/validation/Env.Validation.js';
+import { TestRouter } from './src/routes/test.js';
 
 dotenv.config({
   path: '.env',
@@ -49,6 +50,8 @@ cron.schedule('0 0 31 12 *', async () => {
     console.error('Error deleting expired notices:', err);
   }
 });
+
+app.use('/api/test', TestRouter);
 
 // const limiter = rateLimit({
 //   windowMs: 15 * 60 * 1000, // 15 minutes

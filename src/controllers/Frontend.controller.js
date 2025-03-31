@@ -31,8 +31,6 @@ export let Find_Frontend_Controller = async (req, res) => {
   try {
     let Find_Frontend = await Frontend.find();
 
-
-
     if (!Find_Frontend) {
       res.status(200).json({
         message: 'No Frontend Found',

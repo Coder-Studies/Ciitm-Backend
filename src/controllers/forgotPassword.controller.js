@@ -1,4 +1,4 @@
-import Authentication from '../models/AuthenticationSchema.model.js';
+import Authentication from '../api/v1/Auth/Auth.model.mjs';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { createTransport } from '../utils/SendMail.js';

@@ -1,4 +1,4 @@
-import AuthenticationSchema from '../models/AuthenticationSchema.model.js';
+import AuthenticationSchema from '../api/v1/Auth/Auth.model.mjs';
 import Admin_Role from '../models/Admin_Role.model.js';
 import { uploadOnCloudinary } from '../utils/Cloudinary.js';
 
