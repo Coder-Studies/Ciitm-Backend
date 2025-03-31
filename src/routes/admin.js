@@ -36,7 +36,7 @@ import {
 import { Create_Course } from '../controllers/course.controller.js';
 import { Delete_Testimonial_Controller } from '../controllers/Tertimonials.controller.js';
 import { Create_Frontend_Controller } from '../controllers/Frontend.controller.js';
-import { Create_Admin_Role_Controller } from '../controllers/adminRole.controller.js';
+// import { Create_Admin_Role_Controller } from '../controllers/adminRole.controller.js';
 import { Create_Notice_Controller } from '../controllers/createNotice.controller.js';
 import { Send_Mail_Controller } from '../controllers/Mail.controller.js';
 import {
@@ -70,7 +70,7 @@ router.put('/update/status/:uniqueId', Update_Student_Status_Controller);
 
 router.get('/find/student', Find_Student_Controller);
 
-router.post('/role/create', upload.none(), Create_Admin_Role_Controller);
+// router.post('/role/create', upload.none(), Create_Admin_Role_Controller);
 
 router.put('/create/frontend', upload.none(), Create_Frontend_Controller);
 router.post(

@@ -2,7 +2,7 @@ import { response } from 'express';
 
 class SendResponse {
   success(res = response, statusCode, message, data) {
-    return this.res.status(statusCode).json({
+    return res.status(statusCode).json({
       message,
       data,
     });

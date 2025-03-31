@@ -8,7 +8,6 @@ import { createTransport } from '../utils/SendMail.js';
 
 import Frontend from '../models/Frontend.model.js';
 import Social_Link_Validator from '../validation/Social_Link.Joi.js';
-import Admin_Role from '../models/Admin_Role.model.js';
 import Notice from '../models/Notice.model.js';
 import TeacherSchema from '../models/Teacher.model.js';
 import status from '../models/Status.model.js';
@@ -321,18 +320,6 @@ export const sendMail = async ({ recipientEmail, subject, name, html }) => {
     return MailSend_toUser;
   } catch (error) {
     return error;
-  }
-};
-
-export const createRole = async (email) => {
-  try {
-    let Create_Admin = Admin_Role.create({
-      email: email,
-    });
-
-    return Create_Admin;
-  } catch (error) {
-    return new Error(error.message || 'Failed to create Admin Role');
   }
 };
 

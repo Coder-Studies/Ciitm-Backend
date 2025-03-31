@@ -34,7 +34,6 @@ class AuthController {
       const { email, password } = req.body;
       console.log('email', email);
       console.log('password', password);
-      
 
       let Authentication_Instance = new AuthenticationSchema();
 
