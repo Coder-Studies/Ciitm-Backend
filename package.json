@@ -4,14 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
+    "start": "node src/index..js",
+    "start:dev": "nodemon  src/index..js",
     "lint": "eslint .",
+    "tailwind:build": "npx @tailwindcss/cli -i src/api/v1/Email/css/input.css -o src/api/v1/Email/css/output.css --watch",
     "@eslint/config-inspector": "npx @eslint/config-inspector@latest",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.1",
     "bcryptjs": "2.4.3",
     "body-parser": "1.20.3",
     "cloudinary": "2.5.1",
@@ -40,7 +42,8 @@
     "pino-http": "10.3.0",
     "pino-pretty": "11.2.2",
     "razorpay": "2.9.5",
-    "swagger-ui-express": "5.0.1"
+    "swagger-ui-express": "5.0.1",
+    "tailwindcss": "^4.1.1"
   },
   "devDependencies": {
     "@eslint/js": "9.12.0",

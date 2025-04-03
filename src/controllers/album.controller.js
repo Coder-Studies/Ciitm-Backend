@@ -4,7 +4,7 @@ import fs from 'fs';
 import {
   uploadOnCloudinary,
   Delete_From_Cloudinary,
-} from '../utils/Cloudinary.js';
+} from '../utils/Cloudinary.mjs';
 import logger from '../middleware/loggerMiddleware.js';
 import { Album_Contant } from '../constant/Album.constant.js';
 

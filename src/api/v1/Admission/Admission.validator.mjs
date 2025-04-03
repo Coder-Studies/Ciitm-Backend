@@ -1,6 +1,6 @@
-import Joi from 'joi';
+import Joi from "joi";
 
-let AdmissionValidationSchema = Joi.object({
+export let AdmissionValidationSchema = Joi.object({
   firstName: Joi.string().required().min(5).trim().messages({
     'string.base': 'First Name should be a type of text',
     'string.empty': 'First Name cannot be an empty field',
@@ -211,5 +211,3 @@ let AdmissionValidationSchema = Joi.object({
     'string.empty': 'Course Name cannot be an empty value',
   }),
 });
-
-export default AdmissionValidationSchema;

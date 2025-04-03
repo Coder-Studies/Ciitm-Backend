@@ -1,3 +1,5 @@
+import AdmissionConstant from './Admission.constant.mjs';
+
 class Admission_Service {
   async Create_Student({ data, uniqueId, course, image_Url }) {
     try {
@@ -61,7 +63,7 @@ class Admission_Service {
       });
 
       if (!admission) {
-        throw Error('Fail to take Admission');
+        throw Error(AdmissionConstant.NOT_ADMITTED);
       }
 
       return admission;
@@ -70,3 +72,5 @@ class Admission_Service {
     }
   }
 }
+
+export default new Admission_Service();

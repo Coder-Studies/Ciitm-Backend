@@ -1,6 +1,6 @@
 import Testimonial from '../models/Testimonials.model.js';
 import { Create_Testimonial } from '../Service/client.service.js';
-import { Delete_From_Cloudinary } from '../utils/Cloudinary.js';
+import { Delete_From_Cloudinary } from '../utils/Cloudinary.mjs';
 
 export let Create_Testimonial_Controller = async (req, res) => {
   try {

@@ -1,6 +1,6 @@
 import AuthenticationSchema from '../api/v1/Auth/Auth.model.mjs';
 import Admin_Role from '../models/Admin_Role.model.js';
-import { uploadOnCloudinary } from '../utils/Cloudinary.js';
+import { uploadOnCloudinary } from '../utils/Cloudinary.mjs';
 import { SignUp_Validator } from '../validation/Auth.Validator.js';
 
 export let SignUp_Admin = async (req, res) => {

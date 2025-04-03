@@ -10,8 +10,8 @@ import Frontend from '../models/Frontend.model.js';
 import Social_Link_Validator from '../validation/Social_Link.Joi.js';
 import Notice from '../models/Notice.model.js';
 import TeacherSchema from '../models/Teacher.model.js';
-import status from '../models/Status.model.js';
-import Admission from '../models/Admission.model.js';
+// import status from '../models/Status.model.js';
+// import Admission from '../models/Admission.model.js';
 
 export const create_Admin = async () => {
   try {
@@ -385,40 +385,5 @@ export const create_Teacher = async (data) => {
     return Teacher;
   } catch (error) {
     return new Error(error.message || 'Error Creating Teacher');
-  }
-};
-
-export const Update_Status = async ({
-  uniqueId,
-  message,
-  applicationStatus,
-}) => {
-  console.log('message', message, 'application Status', applicationStatus);
-
-  try {
-    let Find_Student = await Admission.findOne({ uniqueId: uniqueId });
-    console.log(Find_Student.uniqueId);
-    if (!Find_Student) {
-      throw new Error('Fail To find Student');
-    }
-
-    let Update_Status = await status.findOneAndUpdate(
-      { student_id: Find_Student._id.toString() },
-      {
-        $set: {
-          message: message,
-          applicationStatus: applicationStatus,
-        },
-      },
-      { new: true }
-    );
-    console.log(Update_Status);
-
-    if (!Update_Status) {
-      throw new Error('Fail to Update Status');
-    }
-    return Update_Status;
-  } catch (error) {
-    throw new Error(error.message || 'Fail to Update Status');
   }
 };

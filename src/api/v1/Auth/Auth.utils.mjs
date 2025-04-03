@@ -1,3 +1,4 @@
+import Authentication from './Auth.model.mjs';
 import { SignUp_Validator } from './Auth.validator.mjs';
 
 class AuthUtility {
@@ -19,6 +20,11 @@ class AuthUtility {
       throw new Error(error.message);
     }
   }
+
+  FindByEmail = async (email) => {
+    return Authentication.findOne({ email: email });
+  };
+  
 }
 
 export default new AuthUtility();

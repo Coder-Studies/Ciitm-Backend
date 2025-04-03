@@ -13,9 +13,14 @@ class Role_Controller {
 
       let Create_Admin = await RoleService.create_Admin_Role(email);
 
-      SendResponse.success(res, StatusCodeConstant.CREATED , RoleConstant.ROLE_CREATED, Create_Admin);
+      SendResponse.success(
+        res,
+        StatusCodeConstant.CREATED,
+        RoleConstant.ROLE_CREATED,
+        Create_Admin
+      );
     } catch (error) {
-        console.log('error', error);
+      console.log('error', error);
       SendResponse.error(
         res,
         500,

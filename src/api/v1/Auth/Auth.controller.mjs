@@ -2,6 +2,7 @@ import SendResponse from '../../../utils/SendResponse.mjs';
 import AuthenticationSchema from './Auth.model.mjs';
 import AuthConstant from './Auth.constant.mjs';
 import AuthService from './Auth.service.mjs';
+import StatusCodeConstant from '../../../constant/StatusCode.constant.mjs';
 
 class AuthController {
   async SignUP_Admin(req, res) {
@@ -58,11 +59,13 @@ class AuthController {
 
       res.cookie('token', HashEmail);
 
-      return res.status(200).json({
-        message: 'Logged in successfully',
+     SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        AuthConstant.USER_LOGIN_SUCCESS,
         Find_User,
-        token: HashEmail,
-      });
+        HashEmail
+      );
     } catch (error) {
       console.log(error);
       return res

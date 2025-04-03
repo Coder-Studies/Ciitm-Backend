@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import {
   uploadOnCloudinary,
   Delete_From_Cloudinary,
-} from '../utils/Cloudinary.js';
+} from '../utils/Cloudinary.mjs';
 
 dotenv.config({ path: '../../.env' });
 

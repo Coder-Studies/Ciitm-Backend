@@ -7,7 +7,7 @@ import fs from 'fs';
 import {
   uploadOnCloudinary,
   Delete_From_Cloudinary,
-} from '../utils/Cloudinary.js';
+} from '../utils/Cloudinary.mjs';
 
 import { ImageSchemaJoi } from '../validation/ImageSchema.Joi.js';
 import Authentication from '../api/v1/Auth/Auth.model.mjs';
