@@ -1,4 +1,3 @@
-
 import { Schema, model } from 'mongoose';
 
 let student_Admission_Status = new Schema({

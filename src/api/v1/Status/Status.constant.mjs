@@ -7,7 +7,6 @@ const Status_Constant = {
   ALREADY_REGISTER: 'Already Registered',
   NOT_MAIL_SEND: 'Mail Not Send',
   STATUS_UPDATED: 'Status Updated',
-
 };
 
 export default Object.freeze(Status_Constant);

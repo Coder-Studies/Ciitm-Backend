@@ -65,7 +65,7 @@ let Env_Validator = Joi.object({
     'any.required': 'Razorpay_secret is required',
   }),
 
-  website_URL: Joi.string().uri().required().messages({
+  FRONTEND_URL: Joi.string().uri().required().messages({
     'string.base': 'website_URL must be a valid string',
     'any.required': 'website_URL is required',
     'string.uri': 'website_URL must be a valid URI',
@@ -97,7 +97,7 @@ async function validateEnv() {
     NODE_ENV: process.env.NODE_ENV,
     Razorpay_key: process.env.Razorpay_key,
     Razorpay_secret: process.env.Razorpay_secret,
-    website_URL: process.env.website_URL,
+    FRONTEND_URL: process.env.FRONTEND_URL,
     website_schema: process.env.website_schema,
     PORT: process.env.PORT,
   };

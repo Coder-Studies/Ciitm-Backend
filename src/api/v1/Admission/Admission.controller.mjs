@@ -13,12 +13,8 @@ import StudentCourseService from '../Student_Course/Student-Course.service.mjs';
 import EmailService from '../Email/Email.service.mjs';
 import SendResponse from '../../../utils/SendResponse.mjs';
 
-
-
-
-
 class AdmissionController {
-  create = async (req , res) => {
+  create = async (req, res) => {
     try {
       const data = req.body;
       let { courseName } = req.body;
@@ -62,19 +58,19 @@ class AdmissionController {
         course: find_course,
         uniqueId: uniqueId,
         image_Url: Cloudinary.url,
-      })
+      });
 
       if (!Admission) {
         throw new Error(AdmissionConstant.NOT_ADMITTED);
       }
 
-      let Created_Status =  await StatusService.createStatus(Admission._id);
+      let Created_Status = await StatusService.createStatus(Admission._id);
 
       if (!Created_Status) {
         throw new Error(StatusConstant.NOT_CREATED);
       }
 
-     await StudentCourseService.create({
+      await StudentCourseService.create({
         studentId: Admission._id,
         courseId: find_course._id,
         mode: data.mode,
@@ -87,25 +83,22 @@ class AdmissionController {
         recipientEmail: data.email,
         name: data.firstName + '' + data.lastName,
         uniqueId,
-      })
+      });
 
-        SendResponse.success(
-            res,
-            StatusCodeConstant.CREATED,
-            AdmissionConstant.ADMITTED,
-            Admission
-        );
-    
-    
+      SendResponse.success(
+        res,
+        StatusCodeConstant.CREATED,
+        AdmissionConstant.ADMITTED,
+        Admission
+      );
     } catch (error) {
-        SendResponse.error(
-            res,
-            StatusCodeConstant.INTERNAL_SERVER_ERROR,
-            error.message || AdmissionConstant.NOT_ADMITTED
-        );
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message || AdmissionConstant.NOT_ADMITTED
+      );
     }
   };
 }
-
 
 export default new AdmissionController();

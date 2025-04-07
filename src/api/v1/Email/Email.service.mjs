@@ -14,7 +14,7 @@ class Email_Service {
         throw new Error(error.details[0].message);
       }
 
-     await EmailUtils.sendReviewMail({
+      await EmailUtils.sendReviewMail({
         recipientEmail,
         name,
         uniqueId,

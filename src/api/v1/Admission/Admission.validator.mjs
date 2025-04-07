@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from 'joi';
 
 export let AdmissionValidationSchema = Joi.object({
   firstName: Joi.string().required().min(5).trim().messages({

@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node src/index..js",
-    "start:dev": "nodemon  src/index..js",
+    "start": "node src/index.mjs",
+    "start:dev": "nodemon  src/index.mjs",
     "lint": "eslint .",
     "tailwind:build": "npx @tailwindcss/cli -i src/api/v1/Email/css/input.css -o src/api/v1/Email/css/output.css --watch",
     "@eslint/config-inspector": "npx @eslint/config-inspector@latest",
@@ -53,5 +53,12 @@
     "globals": "15.11.0",
     "prettier": "3.3.3",
     "swagger-autogen": "2.23.7"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@parcel/watcher",
+      "@scarf/scarf",
+      "sleep"
+    ]
   }
 }

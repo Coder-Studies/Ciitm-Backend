@@ -24,4 +24,3 @@ export let Update_Status_Validation = joi.object({
       'any.required': `Application Status is a required field`,
     }),
 });
-

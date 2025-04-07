@@ -26,25 +26,3 @@ export let Create_Frontend_Controller = async (req, res) => {
     });
   }
 };
-
-export let Find_Frontend_Controller = async (req, res) => {
-  try {
-    let Find_Frontend = await Frontend.find();
-
-    if (!Find_Frontend) {
-      res.status(200).json({
-        message: 'No Frontend Found',
-      });
-    }
-
-    return res.status(200).json({
-      message: 'Frontend Found',
-      data: Find_Frontend,
-    });
-  } catch (error) {
-    return res.status(error.status || 500).json({
-      message: error.message || 'Failed to create Frontend',
-      error: true,
-    });
-  }
-};

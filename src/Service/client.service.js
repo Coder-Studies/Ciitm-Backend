@@ -1,12 +1,6 @@
 import Testimonial_Schema from '../models/Testimonials.model.js';
 import { uploadOnCloudinary } from '../utils/Cloudinary.mjs';
 
-
-
-
-
-
-
 export let Create_Testimonial = async ({ data, file }) => {
   try {
     let { filename } = file;
@@ -31,4 +25,3 @@ export let Create_Testimonial = async ({ data, file }) => {
     throw new Error(error.message || 'Failed to Find Course');
   }
 };
-

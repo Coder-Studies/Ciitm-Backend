@@ -4,16 +4,9 @@ import { Schema, model } from 'mongoose';
 
 import otpGenerator from 'otp-generation';
 
-
-
-
 import courseModel from '../Course/course.model.mjs';
 import status from '../Status/Status.model.mjs';
 import Student_Course from '../Student_Course/Student-Course.model.mjs';
-
-
-
-
 
 const AdmissionSchema = new Schema({
   uniqueId: {
@@ -244,8 +237,6 @@ AdmissionSchema.methods.generate_id = async function (courseName) {
   const uniqueId = `CIITM_${courseName}_${otp}`;
   return uniqueId;
 };
-
-
 
 AdmissionSchema.methods.createStudentCourse = async function ({
   studentId,

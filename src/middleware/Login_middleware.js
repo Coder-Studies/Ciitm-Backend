@@ -23,7 +23,6 @@ export const AdminVerify = async (req, res, next) => {
 
     let email = await Authentication.DecordToken(token);
 
-
     if (!email) {
       return res.status(403).json({
         message: 'Bad Request: Email Not Found',
@@ -34,7 +33,6 @@ export const AdminVerify = async (req, res, next) => {
     }
 
     const findRole = await Authentication.checkRole(email);
-
 
     if (findRole !== 'admin') {
       return res.status(403).json({

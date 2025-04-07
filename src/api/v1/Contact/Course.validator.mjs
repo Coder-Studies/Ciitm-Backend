@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 // Define Joi schema for validation
-const contactSchema = Joi.object({
+export const Create_Contact_Validator = Joi.object({
   cName: Joi.string().required().messages({
     'string.empty': 'Name is required',
     'any.required': 'Name is required',
@@ -21,5 +21,3 @@ const contactSchema = Joi.object({
     'any.required': 'Message is required',
   }),
 });
-
-export default contactSchema;

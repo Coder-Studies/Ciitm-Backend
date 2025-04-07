@@ -59,7 +59,7 @@ class AuthController {
 
       res.cookie('token', HashEmail);
 
-     SendResponse.success(
+      SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
         AuthConstant.USER_LOGIN_SUCCESS,

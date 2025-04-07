@@ -1,7 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { abort } from 'node:process';
 
-// Define the Frontend schema
 const FrontendSchema = new Schema({
   logo: {
     type: String,

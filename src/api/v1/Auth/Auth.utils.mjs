@@ -24,7 +24,6 @@ class AuthUtility {
   FindByEmail = async (email) => {
     return Authentication.findOne({ email: email });
   };
-  
 }
 
 export default new AuthUtility();
