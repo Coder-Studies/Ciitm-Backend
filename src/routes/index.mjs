@@ -69,8 +69,6 @@ router.get('/find/teacher', Find_Teacher_Controller);
 
 // router.get('/notice', Find_Notice_Controller);
 
-
-
 router.get('/link', Find_Social_link);
 
 router.get('/albums', getAlbum);

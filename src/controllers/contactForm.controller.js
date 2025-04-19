@@ -1,6 +1,4 @@
-
-
-// Work on V2 
+// Work on V2
 
 // // Retrieve All Contact Form Data from DataBase
 // export const get_FormData = async (req, res) => {

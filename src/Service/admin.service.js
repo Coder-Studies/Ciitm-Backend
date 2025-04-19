@@ -1,15 +1,10 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { createTransport } from '../utils/SendMail.js';
 
-/**
- * Importing models
- **/
+
 
 import Social_Link_Validator from '../validation/Social_Link.Joi.js';
-import Notice from '../models/Notice.model.js';
 import TeacherSchema from '../models/Teacher.model.js';
-
 
 export const create_Admin = async () => {
   try {
@@ -34,19 +29,7 @@ export const Create_Social_Link = async ({
   });
 };
 
-export const create_Notice = async ({ title, content, doc_link, type }) => {
-  try {
-    let Created_Notice = await Notice.create({
-      title: title,
-      content: content,
-      doc_link: doc_link,
-      type: type,
-    });
-    return Created_Notice;
-  } catch (error) {
-    return new Error(error.message || 'Failed to create Notice');
-  }
-};
+
 
 export const update_Social_Link = async (data) => {};
 
