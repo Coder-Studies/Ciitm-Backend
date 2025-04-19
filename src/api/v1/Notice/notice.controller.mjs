@@ -1,7 +1,11 @@
+import StatusCodeConstant from "../../../constant/StatusCode.constant.mjs";
 import { uploadOnCloudinary } from "../../../utils/Cloudinary.mjs";
 import SendResponse from "../../../utils/SendResponse.mjs";
 import Notice_Constants from "./notice.constant.mjs";
 import noticeService from "./notice.service.mjs";
+import noticeUtils from "./notice.utils.mjs";
+
+
 
 class Notice_Controller {
   Create = async (req, res) => {
@@ -18,19 +22,53 @@ class Notice_Controller {
         doc_link: doc.url,
       });
 
-     
+    
 
       SendResponse.success(
         res,
-        200,
+        StatusCodeConstant.CREATED,
         Notice_Constants.CREATED,
         Created_Notice
       );
     } catch (error) {
-      res.status(error.status || 500).json({
-        message: error.message || 'Error Creating Notice',
-        status: 'Failed',
-      });
+      console.log(error);
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message
+      );
+    }
+  };
+
+  Find = async (req, res) => {
+    try {
+ 
+      let Found_Notice = await noticeUtils.FIND(
+        parseInt(req.query.limit),
+        parseInt(req.query.page)
+      );
+
+      
+
+      if (!Found_Notice || Found_Notice.length <= 0) {
+        throw new Error(Notice_Constants.NOT_FOUND);
+      }
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        Notice_Constants.FIND,
+        Found_Notice
+      );
+
+
+    } catch (error) {
+      console.log(error);
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message
+      );
     }
   };
 }

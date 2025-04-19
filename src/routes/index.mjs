@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-import upload from '../utils/multerUtils.js';
+import upload from '../utils/multerUtils.mjs';
 
 // import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
 
