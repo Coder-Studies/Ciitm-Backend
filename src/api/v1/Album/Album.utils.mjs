@@ -2,7 +2,7 @@ import Album from './Album.model.mjs';
 
 class Album_Utils {
   findAll = async () => {
-    return Album.find();
+    return Album.find().sort({ createdAt: -1 });;
   };
 
   FindByAlbumName = async (albumName) => {

@@ -15,9 +15,8 @@ class Album_Service {
   };
 
   delete = async (albumId) => {
-
     let deletedAlbum = await AlbumUtils.findByIdAndDelete(albumId);
-    // let Delete_All_Image = 
+    // let Delete_All_Image =
 
     if (!deletedAlbum) {
       throw new Error(AlbumConstant.NOT_DELETED);

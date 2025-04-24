@@ -72,8 +72,6 @@ class Album_Controller {
 
       let Find_Album = await AlbumUtils.FindByAlbumId(albumId);
 
-
-
       if (!Find_Album) {
         throw new Error(AlbumConstant.ALBUM_NOT_FOUND);
       }
@@ -82,15 +80,11 @@ class Album_Controller {
         Find_Album.aImage_url
       );
 
- 
-
       if (!Delete__Cloudinary_Image.deleted) {
         throw new Error(AlbumConstant.NOT_DELETED);
       }
 
       let deletedAlbum = await AlbumService.delete(albumId);
-
-
 
       SendResponse.success(
         res,
@@ -100,6 +94,25 @@ class Album_Controller {
       );
     } catch (error) {
       console.log(error);
+      SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
+    }
+  };
+
+  getAlbum = async (req, res) => {
+    try {
+      let getAlbum = await AlbumUtils.findAll();
+
+      if (getAlbum.length < 0) {
+        throw new Error(AlbumConstant.ALBUM_NOT_FOUND);
+      }
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        AlbumConstant.ALBUM_FOUND,
+        getAlbum
+      );
+    } catch (error) {
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
   };
