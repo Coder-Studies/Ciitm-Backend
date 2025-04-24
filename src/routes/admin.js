@@ -23,11 +23,11 @@ import {
   get_FormData,
   view_FormData,
 } from '../controllers/contactForm.controller.js';
-import {
-  createAlbum,
-  getAlbum,
-  deleteAlbum,
-} from '../controllers/album.controller.js';
+// import {
+//   createAlbum,
+//   getAlbum,
+//   deleteAlbum,
+// } from '../controllers/album.controller.js';
 import { CreateImage, deleteImage } from '../controllers/image.controller.js';
 import {
   Create_Social_Link,
@@ -61,7 +61,7 @@ router.put('/profile/edit', upload.single('avatar'), Edit_Profile_Controller);
 
 router.get('/album', getAlbum);
 
-router.post('/create/album', upload.single('albumImage'), createAlbum);
+// router.post('/create/album', upload.single('albumImage'), createAlbum);
 
 router.post('/send/mail', upload.none(), Send_Mail_Controller);
 

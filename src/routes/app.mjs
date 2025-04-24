@@ -8,6 +8,7 @@ import { user } from './index.mjs';
 import { FrontendRouter } from '../api/v1/frontend/frontend.routes.mjs';
 import { ContactRouter } from '../api/v1/Contact/Contact.routes.mjs';
 import { NoticeRouter } from '../api/v1/Notice/notice.routes.mjs';
+import { AlbumRoutes } from '../api/v1/Album/Album.routes.mjs';
 
 app.use(
   '/api',
@@ -17,8 +18,9 @@ app.use(
   AdmissionRouter,
   FrontendRouter,
   ContactRouter,
-  user,
+  AlbumRoutes,
   NoticeRouter
+  // user,
 );
 
 export default app;

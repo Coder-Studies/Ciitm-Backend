@@ -11,7 +11,7 @@ const connectToDatabase = async () => {
 
     mongoose
       .connect(connectionString)
-      .then(() => lolcat.fromString(`Conected to Db!`));
+      .then(() => lolcat.fromString(`Connected to Db!`));
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
     lolcat.fromObject(error);

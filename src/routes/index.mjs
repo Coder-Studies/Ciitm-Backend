@@ -6,8 +6,8 @@ import upload from '../utils/multerUtils.mjs';
 
 // import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
 
-import { getAlbum } from '../controllers/album.controller.js';
-import { findAllImages, findImage } from '../controllers/image.controller.js';
+// import { getAlbum } from '../controllers/album.controller.js';
+// import { findAllImages, findImage } from '../controllers/image.controller.js';
 import { Find_Social_link } from '../controllers/SocialMedia.controller.js';
 // import handle_LogOut from '../controllers/LogOut.controller.js';
 // import {
@@ -71,11 +71,11 @@ router.get('/find/teacher', Find_Teacher_Controller);
 
 router.get('/link', Find_Social_link);
 
-router.get('/albums', getAlbum);
+// router.get('/albums', getAlbum);
 
-router.get('/gallery/image', findAllImages);
+// router.get('/gallery/image', findAllImages);
 
-router.get('/image/:Album__Name', findImage);
+// router.get('/image/:Album__Name', findImage);
 
 router.post(
   '/create/testimonial',

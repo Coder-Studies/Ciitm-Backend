@@ -1,8 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-
-
 import Social_Link_Validator from '../validation/Social_Link.Joi.js';
 import TeacherSchema from '../models/Teacher.model.js';
 
@@ -28,8 +26,6 @@ export const Create_Social_Link = async ({
     Number,
   });
 };
-
-
 
 export const update_Social_Link = async (data) => {};
 
