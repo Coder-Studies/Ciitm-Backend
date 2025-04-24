@@ -52,9 +52,13 @@ export const uploadOnCloudinary = async (localFilePath) => {
 
 export const Delete_From_Cloudinary = async (url) => {
   try {
-    let public_id = path.basename(url).split('.')[0] + path.extname(url);
+    let public_id = path.basename(url).split('.')[0] + '.' + url.split('.')[3];
+
+    console.log('Public ID:', public_id);
 
     let delete_Image = await cloudinary.uploader.destroy(public_id);
+
+    console.log('Delete Image:', delete_Image);
 
     if (delete_Image.result === 'ok') {
       fs.rmSync(`public/upload/${public_id}`);
@@ -75,12 +79,6 @@ export const Delete_From_Cloudinary = async (url) => {
 
     return failed_Delete_Image;
   } catch (error) {
-    let Error_Detail = {
-      public_id: `Error Deleting Image ${public_id}`,
-      message: error.message,
-      status: error.status,
-      error: true,
-    };
-    throw Error_Detail;
+    throw Error(error.message);
   }
 };

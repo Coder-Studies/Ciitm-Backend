@@ -9,6 +9,14 @@ class Album_Utils {
     console.log(albumName);
     return Album.findOne({ aName: albumName });
   };
+
+  FindByAlbumId = async (albumId) => {
+    return Album.findById(albumId);
+  };
+
+  findByIdAndDelete = async (albumId) => {
+    return Album.findByIdAndDelete(albumId);
+  };
 }
 
 export default new Album_Utils();

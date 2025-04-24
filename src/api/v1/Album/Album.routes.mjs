@@ -9,4 +9,6 @@ router.post(
   AlbumController.createAlbum
 );
 
+router.delete('/v1/admin/delete/album/:albumId', AlbumController.deleteAlbum);
+
 export { router as AlbumRoutes };
