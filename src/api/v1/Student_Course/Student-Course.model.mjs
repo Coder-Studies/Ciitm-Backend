@@ -33,7 +33,8 @@ const Student_course_Schema = new Schema(
     },
 
     endDate: {
-      type: Number,
+      type: Date,
+      default: new Date(),
       required: true,
     },
 

@@ -1,9 +1,10 @@
 import AdmissionConstant from './Admission.constant.mjs';
+import Admission from './Admission.model.mjs';
 
 class Admission_Service {
   async Create_Student({ data, uniqueId, course, image_Url }) {
     try {
-      const admission = await AdmissionSchema.create({
+      const admission = await Admission.create({
         uniqueId: uniqueId,
 
         student: {
@@ -68,7 +69,7 @@ class Admission_Service {
 
       return admission;
     } catch (error) {
-      console.error('Error:', error);
+      throw new Error(error.message);
     }
   }
 }

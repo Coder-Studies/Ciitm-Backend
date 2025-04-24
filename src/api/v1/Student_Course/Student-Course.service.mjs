@@ -4,14 +4,14 @@ import Student_Course from './Student-Course.model.mjs';
 class Student_Course_Service {
   create = async (data) => {
     try {
-      const { studentId, courseId, mode, university, startDate, endDate } =
-        data;
+      const { studentId, courseId, mode, university, endDate } = data;
+
       const newStudentCourse = await Student_Course.create({
         studentId,
         courseId,
         mode,
         university,
-        startDate,
+
         endDate,
       });
 

@@ -19,7 +19,7 @@ export const uploadOnCloudinary = async (localFilePath) => {
     let localFileName = path.basename(localFilePath);
 
     if (!localFilePath) {
-      return { error: 'No file path provided' };
+      throw new Error('File not found');
     }
 
     const uploadResult = await cloudinary.uploader

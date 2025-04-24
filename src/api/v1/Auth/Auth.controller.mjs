@@ -1,3 +1,4 @@
+import { request, response } from 'express';
 import SendResponse from '../../../utils/SendResponse.mjs';
 import AuthenticationSchema from './Auth.model.mjs';
 import AuthConstant from './Auth.constant.mjs';
@@ -30,11 +31,10 @@ class AuthController {
     }
   }
 
-  async Login(req, res) {
+  async Login(req = request, res = response) {
     try {
       const { email, password } = req.body;
-      console.log('email', email);
-      console.log('password', password);
+      console.log('req.body', req.body);
 
       let Authentication_Instance = new AuthenticationSchema();
 

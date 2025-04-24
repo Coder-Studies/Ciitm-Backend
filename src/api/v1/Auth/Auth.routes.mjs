@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import AuthController from './Auth.controller.mjs';
 const router = Router();
+import AuthController from './Auth.controller.mjs';
 
 router.post('/v1/auth/login', AuthController.Login);
 

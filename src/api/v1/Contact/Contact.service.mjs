@@ -1,9 +1,9 @@
-import ContactConstant from './Contact.constant.mjs';
+import Contact from './Contace.model.mjs';
 
 class Contact_Service {
   createContact = async (data) => {
     try {
-      const createdForm = await contactSchema.create(data);
+      const createdForm = await Contact.create(data);
       if (!createdForm) {
         throw new Error(ContactConstant.NOT_CREATED);
       }

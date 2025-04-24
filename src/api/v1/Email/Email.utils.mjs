@@ -6,8 +6,6 @@ class Email_Utils {
     try {
       let { recipientEmail, name, uniqueId } = data;
 
-      const jsx = await compile(mdxSource);
-
       let MailSend_toUser = await createTransport().sendMail({
         from: `"MERN Coding School"  ${envConstant.GMAIL_User}>`,
         to: `${recipientEmail}`,

@@ -17,76 +17,7 @@
 // import Album from '../models/album.model.js';
 // import path from 'path';
 
-// export const CreateImage = async (req, res) => {
-//   try {
-//     const { albumName } = req.body;
-//     const { filename } = req.file;
-//     const token = req.cookies.token;
-
-//     let email = await Authentication.DecordToken(token);
-
-//     let find_Admin = await Authentication.findOne({ email: email });
-
-//     if (!find_Admin) {
-//       return res.status(404).json({ message: Admin_Contant.Not_Found });
-//     }
-
-//     const findAlbum = await albumSchema.findOne({ aName: albumName });
-
-//     if (!findAlbum) {
-//       const error = new Error(Album_Contant.Not_Found);
-//       error.status = 404;
-//       throw error;
-//     }
-
-//     console.log('filename', filename);
-
-//     let Cloudinary = await uploadOnCloudinary(filename);
-
-//     if (!Cloudinary) {
-//       return res
-//         .status(400)
-//         .json({ message: 'Error uploading image to Cloudinary' });
-//     }
-
-//     const { error: validationError } = await ImageSchemaJoi.validateAsync({
-//       albumName: findAlbum.aName,
-//       userID: find_Admin._id.toString(),
-//       url: Cloudinary.url,
-//     });
-
-//     if (validationError) {
-//       throw new Error(validationError.message);
-//     }
-
-//     let createdImage = await imageSchema.create({
-//       userID: find_Admin._id.toString(),
-//       albumID: findAlbum._id,
-//       url: Cloudinary.url,
-//     });
-
-//     if (!createdImage) {
-//       let error = new Error(Image_Constant.Not_Created);
-//       error.status = 500;
-//       throw error;
-//     }
-
-//     findAlbum.images.push(createdImage._id.toString());
-//     await findAlbum.save();
-
-//     res.status(200).json({
-//       message: Image_Constant.Created,
-//       created: true,
-//       data: createdImage,
-//     });
-//   } catch (error) {
-//     console.error(error); // Use console.error for logging errors
-//     res.status(error.status || 500).json({
-//       message: error.message || Image_Constant.Not_Created,
-//       error: true,
-//     });
-//   }
-// };
+// export const CreateImage =
 
 // export const deleteImage = async (req, res) => {
 //   try {
@@ -141,37 +72,7 @@
 //   }
 // };
 
-// export const findImage = async (req, res) => {
-//   try {
-//     const { Album__Name } = req.params;
-
-//     const Find_Album = await albumSchema
-//       .findOne({ aName: Album__Name })
-//       .sort({ createdAt: -1 })
-//       .populate({
-//         path: 'images',
-//       });
-
-//     if (!Find_Album) {
-//       res.status(404).json({
-//         message: Image_Constant.Not_Found,
-//         error: true,
-//       });
-//     } else {
-//       res.status(200).json({
-//         message: Image_Constant.Find,
-//         data: Find_Album.images,
-//       });
-//     }
-//   } catch (error) {
-//     logger.error(`Error fetching images: ${error.message}`);
-//     res.status(error.status || 500).json({
-//       message: error.message || 'Error fetching images',
-//       error: true,
-//     });
-//     p;
-//   }
-// };
+// export const findImage =
 
 // export const findAllImages = async (req, res) => {
 //   try {

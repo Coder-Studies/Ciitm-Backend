@@ -25,12 +25,6 @@ class AdmissionController {
 
       const { filename } = req.file;
 
-      let Cloudinary = await uploadOnCloudinary(filename);
-
-      if (Cloudinary.error) {
-        throw new Error('Failed to Upload Image');
-      }
-
       const admissionInstance = new AdmissionSchema();
 
       const uniqueId = await admissionInstance.generate_id(courseName);
@@ -51,6 +45,12 @@ class AdmissionController {
 
       if (find_student) {
         throw new Error(AdmissionConstant.ALREADY_ADMITTED);
+      }
+
+      let Cloudinary = await uploadOnCloudinary(filename);
+
+      if (Cloudinary.error) {
+        throw new Error('Failed to Upload Image');
       }
 
       let Admission = await AdmissionService.Create_Student({
@@ -75,8 +75,7 @@ class AdmissionController {
         courseId: find_course._id,
         mode: data.mode,
         university: data.university,
-        startDate: data.startDate,
-        endDate: data.endDate,
+        endDate: new Date().getFullYear() + find_course.courseDuration,
       });
 
       await EmailService.sendReviewMail({
@@ -92,6 +91,7 @@ class AdmissionController {
         Admission
       );
     } catch (error) {
+      console.error('Error in create admission:', error);
       SendResponse.error(
         res,
         StatusCodeConstant.INTERNAL_SERVER_ERROR,

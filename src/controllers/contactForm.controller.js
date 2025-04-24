@@ -1,33 +1,7 @@
 // Work on V2
 
 // // Retrieve All Contact Form Data from DataBase
-// export const get_FormData = async (req, res) => {
-//   try {
-//     let perPage = parseInt(req.query.page) || 1;
-//     let limit = 5;
-
-//     const contactData = await contactSchema
-//       .find()
-//       .sort({ createdAt: -1 })
-//       .limit(limit)
-//       .skip((perPage - 1) * limit);
-
-//     if (contactData.length === 0) {
-//       res.status(404).json({
-//         message: 'No Contact Data Found in Database',
-//       });
-//     } else {
-//       res.json(contactData);
-//     }
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json({
-//       message: error.message,
-//       error: true,
-//     });
-//   }
-// };
-
+// export
 // // Delete Single Contact Form on the basic of ID.
 // export const delete_FormData = async (req, res) => {
 //   try {
