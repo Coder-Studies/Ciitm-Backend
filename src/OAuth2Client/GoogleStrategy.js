@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import Authentication from '../models/AuthenticationSchema.model.js';
+import Authentication from '../api/v1/Auth/Auth.model.mjs';
 import Admin_Role from '../models/Admin_Role.model.js';
 
 let HandleGoogle_Login = async (req, res) => {
@@ -18,7 +18,11 @@ let HandleGoogle_Login = async (req, res) => {
     const oauth2 = await google.oauth2({ version: 'v2', auth: oauth2Client });
     const userRes = await oauth2.userinfo.get();
 
+    console.log('User:', userRes.data);
+
     let find_User = await Authentication.findOne({ email: userRes.data.email });
+
+    console.log('User:', find_User);
 
     if (!find_User) {
       let find_Admin_Role = await Admin_Role.findOne({
@@ -29,18 +33,6 @@ let HandleGoogle_Login = async (req, res) => {
         res
           .status(401)
           .json({ message: 'Failed to Sign Up You are not Verified Admin' });
-      }
-
-      let Create_Admin = await Authentication.create({
-        email: userRes.data.email,
-        name: userRes.data.name,
-        picture: userRes.data.picture,
-        email_verified: userRes.data.verified_email,
-        role: 'admin',
-      });
-
-      if (!Create_Admin) {
-        return res.status(400).json({ message: 'Failed to create Admin' });
       }
     }
 

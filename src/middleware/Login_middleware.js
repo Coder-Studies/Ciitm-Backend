@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import logger from './loggerMiddleware.js';
-import Authentication from '../models/AuthenticationSchema.model.js';
+
+import Authentication from '../api/v1/Auth/Auth.model.mjs';
 
 dotenv.config({
   path: '../../.env',
@@ -21,7 +22,6 @@ export const AdminVerify = async (req, res, next) => {
     }
 
     let email = await Authentication.DecordToken(token);
-    console.log('email', email);
 
     if (!email) {
       return res.status(403).json({
@@ -33,7 +33,6 @@ export const AdminVerify = async (req, res, next) => {
     }
 
     const findRole = await Authentication.checkRole(email);
-    Authentication.findOne({ email: email });
 
     if (findRole !== 'admin') {
       return res.status(403).json({

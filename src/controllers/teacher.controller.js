@@ -1,6 +1,6 @@
 import TeacherSchema from '../models/Teacher.model.js';
 import { create_Teacher } from '../Service/admin.service.js';
-import { uploadOnCloudinary } from '../utils/Cloudinary.js';
+import { uploadOnCloudinary } from '../utils/Cloudinary.mjs';
 import Teacher_validation from '../validation/TeacherSchema.Joi.js';
 
 export let Create_Teacher_Controller = async (req, res) => {

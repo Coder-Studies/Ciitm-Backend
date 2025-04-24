@@ -1,4 +1,4 @@
-import Authentication from '../models/AuthenticationSchema.model.js';
+import Authentication from '../api/v1/Auth/Auth.model.mjs';
 
 export let Profile_Controller = async (req, res) => {
   try {
