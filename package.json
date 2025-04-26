@@ -10,7 +10,8 @@
     "tailwind:build": "npx @tailwindcss/cli -i src/api/v1/Email/css/input.css -o src/api/v1/Email/css/output.css --watch",
     "@eslint/config-inspector": "npx @eslint/config-inspector@latest",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "genKey": "node src/script/genKey.mjs"
   },
   "dependencies": {
     "@tailwindcss/cli": "4.1.1",
@@ -41,6 +42,7 @@
     "pino-http": "10.3.0",
     "pino-pretty": "11.2.2",
     "razorpay": "2.9.5",
+    "socket.io": "^4.8.1",
     "swagger-ui-express": "5.0.1",
     "tailwindcss": "^4.1.1"
   },

@@ -11,10 +11,16 @@ import { NoticeRouter } from '../api/v1/Notice/notice.routes.mjs';
 import { AlbumRoutes } from '../api/v1/Album/Album.routes.mjs';
 import { ImageRoutes } from '../api/v1/Image/Image.routes.mjs';
 import bodyParser from 'body-parser';
+import io from '../config/Socket/SocketServer.mjs';
+import SocketEvent from '../config/Socket/SocketEvent.mjs';
+
 
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// This listens for any new client (browser, mobile, etc.) that connects to your Socket.IO server.
+io.on('connection', (socket) => SocketEvent(socket));
 
 app.use(
   '/api',

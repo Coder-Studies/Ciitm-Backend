@@ -2,8 +2,6 @@ import Contact from './Contace.model.mjs';
 import ContactConstant from './Contact.constant.mjs';
 
 class Contact_Utils {
-
-
   FIND_ALL_CONTACT = async ({ perPage, limit }) => {
     try {
       const contactData = await Contact.find()
@@ -22,6 +20,5 @@ class Contact_Utils {
     }
   };
 }
-
 
 export default new Contact_Utils();
