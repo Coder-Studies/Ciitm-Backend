@@ -14,7 +14,6 @@ import bodyParser from 'body-parser';
 import io from '../config/Socket/SocketServer.mjs';
 import SocketEvent from '../config/Socket/SocketEvent.mjs';
 
-
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());

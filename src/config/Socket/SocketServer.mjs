@@ -25,8 +25,6 @@ const io = new Server(httpsServer, {
   allowEIO3: true, // Allow Engine.IO v3 clients to connect
 });
 
-
-
 let SocketPort = 3000;
 
 httpsServer.listen(SocketPort, () => {
