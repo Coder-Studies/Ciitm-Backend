@@ -19,6 +19,19 @@ class Contact_Utils {
       throw new Error(error.message);
     }
   };
+
+  FIND_NUMBER_OF_CONTACT = async () => {
+    try {
+      const contactCount = await Contact.countDocuments();
+      if (contactCount === 0) {
+        throw new Error(ContactConstant.NOT_FOUND);
+      }
+      return contactCount;
+    } catch (error) {
+      console.error(error.message);
+      throw new Error(error.message);
+    }
+  };
 }
 
 export default new Contact_Utils();

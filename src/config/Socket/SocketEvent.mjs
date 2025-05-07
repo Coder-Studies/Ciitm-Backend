@@ -1,4 +1,5 @@
 import FrontendSocket from '../../api/v1/frontend/frontend.socket.mjs';
+import DashBoard_Socket from '../../api/v1/Dashboard/Dashbord.socket.mjs';
 
 let SocketEvent = (socket) => {
   console.log('A user connected:', socket.id);
@@ -8,6 +9,7 @@ let SocketEvent = (socket) => {
   });
 
   FrontendSocket(socket);
+  DashBoard_Socket(socket);
 
   socket.emit('welcome', { message: 'Welcome to the Socket.IO Server' });
 };
