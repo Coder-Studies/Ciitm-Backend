@@ -1,6 +1,6 @@
 import frontendUtils from './frontend.utils.mjs';
 
-let FrontendSocket = async (socket) => {
+let FrontendSocket = async (io,socket) => {
   try {
     let findFrontend = await frontendUtils.findAll();
     console.log('findFrontend:', findFrontend);
@@ -12,9 +12,6 @@ let FrontendSocket = async (socket) => {
     socket.emit('frontend', findFrontend);
   } catch (error) {
     console.error('Error in FrontendSocket:', error.message);
-    socket.emit('error', {
-      error: error.message,
-    });
   }
 };
 

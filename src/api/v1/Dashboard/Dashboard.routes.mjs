@@ -1,5 +1,3 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-
-
-export { Router as DashBoard_Routes}
+export { Router as DashBoard_Routes };
