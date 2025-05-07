@@ -1,3 +1,4 @@
+import io from './config/Socket/SocketServer.mjs';
 import express from 'express';
 import app from './routes/app.mjs';
 import envConstant from './constant/env.constant.mjs';

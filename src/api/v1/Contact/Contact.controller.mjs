@@ -9,7 +9,6 @@ class Contact_Controller {
   create = async (req, res) => {
     try {
       const { cName, cEmail, cNumber, cMessage, cCountry } = req.body;
-      
 
       const { error } = Create_Contact_Validator.validate(req.body);
 
@@ -35,34 +34,29 @@ class Contact_Controller {
     }
   };
 
-
   get_FormData = async (req, res) => {
-      try {
-       
-        let { perPage, limit } = req.query;
+    try {
+      let { perPage, limit } = req.query;
 
-        let Find_Contact = await ContactUtils.FIND_ALL_CONTACT({
-          perPage: parseInt(perPage),
-          limit: parseInt(limit),
-        });
+      let Find_Contact = await ContactUtils.FIND_ALL_CONTACT({
+        perPage: parseInt(perPage),
+        limit: parseInt(limit),
+      });
 
-
-        SendResponse.success(
-          res,
-          StatusCodeConstant.SUCCESS,
-          ContactConstant.FOUND,
-          Find_Contact
-        );
-
-      } catch (error) {
-        SendResponse.error(
-          res,
-          StatusCodeConstant.INTERNAL_SERVER_ERROR,
-          error.message
-        );
-      }
-    };
-    
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        ContactConstant.FOUND,
+        Find_Contact
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message
+      );
+    }
+  };
 }
 
 export default new Contact_Controller();

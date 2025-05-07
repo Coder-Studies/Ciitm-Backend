@@ -5,6 +5,7 @@ class SendResponse {
     return res.status(statusCode).json({
       message,
       data,
+      success: true,
     });
   }
 
