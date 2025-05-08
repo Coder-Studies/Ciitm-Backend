@@ -15,7 +15,7 @@ class Image_Utils {
     } catch (error) {
       throw new Error(error.message);
     }
-  }
+  };
 }
 
 export default new Image_Utils();

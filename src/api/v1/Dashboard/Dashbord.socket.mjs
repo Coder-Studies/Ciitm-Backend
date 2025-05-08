@@ -15,7 +15,6 @@ let find_DashBoard_Data = async (io) => {
     let NUMBER_OF_IMAGE = await ImageUtils.NUMBER_OF_IMAGE();
     let NUMBER_OF_ALBUM = await AlbumUtils.NUMBER_OF_ALBUM();
     let Total_AMOUNT_PAID = await feeUtils.TOTAL_FEE_PAID();
-   
 
     // Prepare the dashboard data
     let DashBoard_Data = [
@@ -25,12 +24,12 @@ let find_DashBoard_Data = async (io) => {
         icon: 'https://cdn4.iconfinder.com/data/icons/people-40/48/student_female-1024.png',
         color: '#FF5733',
       },
-         {
-      name: 'Total Earnings',
-      value: '₹ ' + Total_AMOUNT_PAID,
-      icon: 'https://www.pngmart.com/files/7/Earnings-PNG-Photos.png',
-      color: '#FF5733',
-   },
+      {
+        name: 'Total Earnings',
+        value: '₹ ' + Total_AMOUNT_PAID,
+        icon: 'https://www.pngmart.com/files/7/Earnings-PNG-Photos.png',
+        color: '#FF5733',
+      },
       {
         name: 'Total Courses',
         value: NUMBER_OF_COURSES,
@@ -55,10 +54,7 @@ let find_DashBoard_Data = async (io) => {
         icon: 'https://icon-library.com/images/contact-app-icon/contact-app-icon-12.jpg',
         color: '#FF5733',
       },
-  
     ];
-
-
 
     // Emit the data back to the client that requested it
     io.emit('DashBoard_Data', {

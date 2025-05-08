@@ -24,7 +24,7 @@ class Album_Utils {
     } catch (error) {
       throw new Error(error.message);
     }
-  }
+  };
 }
 
 export default new Album_Utils();
