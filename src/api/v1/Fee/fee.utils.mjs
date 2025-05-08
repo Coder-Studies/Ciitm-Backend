@@ -17,4 +17,21 @@ class Fee_Utils {
 
     return Updated_Fee;
   };
+
+  TOTAL_FEE_PAID = async () => {
+    try {
+      let TOTAL_ADMISSION = await Admission.find({});
+      console.log(TOTAL_ADMISSION);
+
+      let Total_AMOUNT = 0;
+      for (let i = 0; i < TOTAL_ADMISSION.length; i++) {
+        Total_AMOUNT += TOTAL_ADMISSION[i].fee.amount_paid;
+      }
+      return Total_AMOUNT;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
+
+export default new Fee_Utils();

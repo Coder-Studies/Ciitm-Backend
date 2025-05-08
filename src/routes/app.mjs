@@ -18,9 +18,6 @@ app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// This listens for any new client (browser, mobile, etc.) that connects to your Socket.IO server.
-io.on('connection', (socket) => SocketEvent(socket));
-
 app.use(
   '/api',
   AuthRouter,

@@ -2,7 +2,7 @@ import io from './config/Socket/SocketServer.mjs';
 import express from 'express';
 import app from './routes/app.mjs';
 import envConstant from './constant/env.constant.mjs';
-import validateEnv from './validation/Env.Validation.js';
+import validateEnv from './validation/Env.Validation.mjs';
 import { db_connect } from './config/Db.config.mjs';
 import path from 'path';
 
@@ -16,6 +16,7 @@ import lolcat from 'lolcatjs';
 import cors from 'cors';
 
 import { fileURLToPath } from 'url';
+import SocketEvent from './config/Socket/SocketEvent.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,7 +35,7 @@ app.use(
   })
 );
 
-const whitelist = new Set([envConstant.FRONTEND_URL, 'http://localhost:5173']);
+const whitelist = new Set(['http://localhost:5173']);
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -60,6 +61,8 @@ app.use((req, res, next) => {
   next();
 });
 
+io.on('connection', (socket) => SocketEvent(socket));
+
 app.use((err, req, res, next) => {
   if (err) {
     console.error(err.stack);
@@ -67,20 +70,4 @@ app.use((err, req, res, next) => {
   }
 
   next();
-});
-
-let Start_App = async () => {
-  try {
-    await validateEnv();
-
-    db_connect();
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-};
-
-app.listen(envConstant.PORT, () => {
-  Start_App();
-  console.log(`Server is running on port ${envConstant.PORT}`);
 });

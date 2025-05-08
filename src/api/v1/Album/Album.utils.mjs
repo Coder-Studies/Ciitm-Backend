@@ -17,6 +17,14 @@ class Album_Utils {
   findByIdAndDelete = async (albumId) => {
     return Album.findByIdAndDelete(albumId);
   };
+  NUMBER_OF_ALBUM = async () => {
+    try {
+      let NUMBER_OF_ALBUM = (await Album.find({})).length;
+      return NUMBER_OF_ALBUM;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 export default new Album_Utils();

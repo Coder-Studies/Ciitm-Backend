@@ -9,8 +9,8 @@ let SocketEvent = (socket) => {
     console.log('User disconnected:', socket.id);
   });
 
-  FrontendSocket(io,socket);
-  DashBoard_Socket(io,socket);
+  FrontendSocket(io, socket);
+  DashBoard_Socket(io, socket);
 
   socket.emit('welcome', { message: 'Welcome to the Socket.IO Server' });
 };
