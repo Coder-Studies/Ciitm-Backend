@@ -6,7 +6,9 @@ import Authentication from '../api/v1/Auth/Auth.model.mjs';
 class Auth_Middleware {
   Admin = async (req = request, res = response, next = next) => {
     try {
-      const token = req.cookies.token;
+   
+      const token = req.cookies?.token || req.headers['authorization'];
+ 
 
       if (!token) {
         return res.status(403).json({
@@ -41,6 +43,7 @@ class Auth_Middleware {
 
       return next();
     } catch (error) {
+      console.error('Error in Admin Middleware:', error);
       return res.status(error.status || 401).json({
         message: error.message || 'Unauthorized User',
         admin: false,
