@@ -35,6 +35,7 @@ const io = new Server(httpsServer, {
 
 const PORT = envConstant.PORT || 8000;
 
+
 let Start_App = async () => {
   try {
     await validateEnv();
@@ -47,7 +48,7 @@ let Start_App = async () => {
 };
 
 // ✅ Start the unified server
-httpsServer.listen(PORT, () => {
+httpsServer.listen(PORT , '0.0.0.0', () => {
   console.log(`✅ HTTPS + WS server running on port ${PORT}`);
   Start_App();
 });

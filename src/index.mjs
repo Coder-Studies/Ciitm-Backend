@@ -35,7 +35,7 @@ app.use(
   })
 );
 
-const whitelist = new Set(['http://localhost:5173']);
+const whitelist = new Set([envConstant.FRONTEND_URL ,'http://localhost:5173']);
 
 const corsOptions = {
   origin: function (origin, callback) {
