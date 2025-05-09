@@ -1,13 +1,45 @@
 import AdmissionUtils from '../Admission/Admission.utils.mjs';
 import AlbumUtils from '../Album/Album.utils.mjs';
+import Authentication from '../Auth/Auth.model.mjs';
 import ContactUtils from '../Contact/Contact.utils.mjs';
 import courseUtils from '../Course/course.utils.mjs';
 import feeUtils from '../Fee/fee.utils.mjs';
 import ImageUtils from '../Image/Image.utils.mjs';
+import cookie from 'cookie';
 
 // This function will handle the logic of fetching the dashboard data
-let find_DashBoard_Data = async (io) => {
+let find_DashBoard_Data = async (io , socket) => {
   try {
+
+    const rawCookie = socket.handshake.headers?.cookie;
+    const cookies = cookie.parse(rawCookie || '');
+    const token = cookies?.token;
+
+
+   if (!token) {
+      socket.emit('DashBoard_Data', {
+        status: false,
+        message: 'Token not found',
+        DashBoard_Data: [],
+      });
+      return;
+    }
+
+
+          let email = await Authentication.DecordToken(token);
+    
+          if (!email) {
+           throw new Error('Unauthorized User: Missing email in token');
+          }
+
+       const findRole = await Authentication.checkRole(email);
+    
+          if (findRole !== 'admin') {
+   
+           throw new Error('Bad Request: You are Not Verified Admin');
+          }
+    
+
     // Fetch the number of contacts
     let NUMBER_OF_CONTACT = await ContactUtils.FIND_NUMBER_OF_CONTACT();
     let NUMBER_OF_ADMISSION = await AdmissionUtils.FIND_NUMBER_OF_ADMISSION();
@@ -63,10 +95,10 @@ let find_DashBoard_Data = async (io) => {
       DashBoard_Data,
     });
   } catch (error) {
-    console.error('Error fetching dashboard data:', error);
-    io.emit('DashBoard_Data', {
+  
+    socket.emit('DashBoard_Data', {
       status: false,
-      message: 'Error fetching data',
+      message: error.message || 'Error fetching dashboard data',
       DashBoard_Data: [],
     });
   }
@@ -75,9 +107,10 @@ let find_DashBoard_Data = async (io) => {
 // Socket event handler
 let DashBoard_Socket = (io, socket) => {
   // Listen for the 'Request_DashBoard_Data' event from the client
+ 
   socket.on('Request_DashBoard_Data', async () => {
     console.log('Request_DashBoard_Data event triggered');
-    await find_DashBoard_Data(io); // Call the function to fetch data and send it back to the client
+    await find_DashBoard_Data(io , socket); // Call the function to fetch data and send it back to the client
   });
 };
 

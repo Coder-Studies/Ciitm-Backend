@@ -17,7 +17,12 @@ class AuthController {
         role,
       });
 
-      res.cookie('token', HashEmail);
+      res.cookie('token', HashEmail, {
+        httpOnly: true,       // Prevent client-side JS access
+        secure:true, // HTTPS only in prod
+        sameSite: 'Strict',   // Prevent CSRF
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
 
       SendResponse.success(
         res,
@@ -57,7 +62,13 @@ class AuthController {
         return res.status(400).json({ message: 'Invalid Password' });
       }
 
-      res.cookie('token', HashEmail);
+      res.cookie('token', HashEmail, {
+        httpOnly: true,     
+        secure:true, 
+        sameSite: 'Strict', 
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
 
       SendResponse.success(
         res,

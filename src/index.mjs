@@ -17,23 +17,12 @@ import cors from 'cors';
 
 import { fileURLToPath } from 'url';
 import SocketEvent from './config/Socket/SocketEvent.mjs';
+import Socket_Middleware from './config/Socket/SocketMiddleWare.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(cookieParser());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      // secure: false, // Set to true if using HTTPS
-      maxAge: 24 * 60 * 60 * 1000, // Session expires after 24 hours
-    },
-  })
-);
 
 const whitelist = new Set([envConstant.FRONTEND_URL ,'http://localhost:5173']);
 
@@ -62,6 +51,7 @@ app.use((req, res, next) => {
 });
 
 io.on('connection', (socket) => SocketEvent(socket));
+io.use((socket, next)=> Socket_Middleware(socket , next))
 
 app.use((err, req, res, next) => {
   if (err) {

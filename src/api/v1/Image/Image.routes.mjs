@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import imageController from './image.controller.mjs';
 import upload from '../../../utils/multerUtils.mjs';
+import AuthMiddleware from '../../../middleware/Auth.middleware.mjs';
 const router = Router();
 
 router.post(
   '/v1/admin/create/image',
+  AuthMiddleware.Admin,
   upload.single('image'),
   imageController.create_Image
 );

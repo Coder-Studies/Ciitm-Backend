@@ -1,5 +1,4 @@
-import { readFileSync } from 'fs';
-import { createServer } from 'https';
+import { createServer } from 'http'; // Use 'https' if doing HTTPS
 import path from 'path';
 import { Server } from 'socket.io';
 import envConstant from '../../constant/env.constant.mjs';
@@ -9,18 +8,12 @@ import { db_connect } from '../Db.config.mjs';
 
 console.log(path.resolve());
 
-const Keypath = path.join(path.resolve(), 'src/key');
 
-// ✅ Create HTTPS server and attach Express app
-const httpsServer = createServer(
-  {
-    key: readFileSync(`${Keypath}/key.pem`),
-    cert: readFileSync(`${Keypath}/cert.pem`),
-  },
-  app
-);
 
-const io = new Server(httpsServer, {
+// ✅ Create HTTP server and attach Express app
+const httpServer = createServer(app);
+
+const io = new Server(httpServer, {
   cors: {
     origin: ['http://localhost:5173', 'https://www.growrichmindset.in'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -33,23 +26,20 @@ const io = new Server(httpsServer, {
   allowEIO3: true,
 });
 
-const PORT = process.env.PORT || envConstant.PORT || 8000;
+const PORT = envConstant.PORT || 8000;
 
-
-let Start_App = async () => {
+const Start_App = async () => {
   try {
     await validateEnv();
-
-    db_connect();
+    await db_connect(); // ⬅️ Ensure async function is awaited
   } catch (error) {
     console.error(error);
     process.exit(1);
   }
 };
 
-// ✅ Start the unified server
-httpsServer.listen(PORT , '0.0.0.0', () => {
-  console.log(`✅ HTTPS + WS server running on port ${PORT}`);
+httpServer.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ HTTP + WS server running on port ${PORT}`);
   Start_App();
 });
 
