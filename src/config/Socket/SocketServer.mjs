@@ -33,7 +33,7 @@ const io = new Server(httpsServer, {
   allowEIO3: true,
 });
 
-const PORT = envConstant.PORT || 8000;
+const PORT = process.env.PORT || envConstant.PORT || 8000;
 
 
 let Start_App = async () => {
