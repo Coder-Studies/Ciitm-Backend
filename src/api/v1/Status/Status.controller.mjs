@@ -88,31 +88,49 @@ class Status_Controller {
         if (!send_Update_mail) {
           throw new Error(EmailConstant.EMAIL_NOT_SEND);
         }
-      }
+      } else {
+        // Generate a more secure password
+        const password =
+          crypto.randomBytes(8).toString('hex') +
+          crypto.randomInt(1000, 9999).toString() +
+          '!@#$%^&*'[crypto.randomInt(0, 8)];
 
-      let password = crypto.randomBytes(2).toString('hex');
+        let HashPassword = await Authentication_Instance.hashPassword(password);
 
-      let HashPassword = await Authentication_Instance.hashPassword(password);
+        if (!HashPassword) {
+          throw new Error(AuthConstant.HASH_FAILED);
+        }
 
-      if (!HashPassword) {
-        throw new Error(AuthConstant.HASH_FAILED);
-      }
+        let Sign_Up_new_Student = await AuthService.CreateUser({
+          name:
+            find_Student.student.firstName +
+            ' ' +
+            find_Student.student.lastName,
+          email: find_Student.student.email[0],
+          password: HashPassword,
+        });
 
-      let Sign_Up_new_Student = await AuthService.CreateUser({
-        name: find_Student.student.firstName,
-        email: find_Student.student.email[0],
-        password: HashPassword,
-      });
+        if (!Sign_Up_new_Student) {
+          throw new Error(AuthConstant.USER_NOT_CREATED);
+        }
 
-      if (!Sign_Up_new_Student) {
-        throw new Error(AuthConstant.USER_NOT_CREATED);
+        // Send admission confirmation email with login details
+        await EmailService.sendAdmissionConfirmation({
+          studentName:
+            find_Student.student.firstName +
+            ' ' +
+            find_Student.student.lastName,
+          studentId: uniqueId,
+          email: find_Student.student.email[0],
+          password: password, // Send the original password before hashing
+        });
       }
 
       SendResponse.success(
         res,
         StatusCodeConstant.OK,
         STUDENT_Constant.STATUS_UPDATED,
-        Sign_Up_new_Student
+        Updated_Student_Status
       );
     } catch (error) {
       SendResponse.error(
