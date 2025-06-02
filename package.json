@@ -4,16 +4,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node src/index.mjs",
-    "start:dev": "nodemon  src/index.mjs",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "jest",
     "lint": "eslint .",
     "tailwind:build": "npx @tailwindcss/cli -i src/api/v1/Email/css/input.css -o src/api/v1/Email/css/output.css --watch",
     "@eslint/config-inspector": "npx @eslint/config-inspector@latest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "genKey": "node src/script/genKey.mjs",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+    "genKey": "node src/script/genKey.mjs"
   },
   "dependencies": {
     "@tailwindcss/cli": "4.1.1",
@@ -22,10 +21,10 @@
     "cloudinary": "2.5.1",
     "cookie": "^1.0.2",
     "cookie-parser": "1.4.7",
-    "cors": "2.8.5",
+    "cors": "^2.8.5",
     "debug": "2.6.9",
     "dotenv": "16.4.5",
-    "express": "4.21.2",
+    "express": "^4.21.2",
     "express-rate-limit": "7.4.1",
     "express-session": "1.18.1",
     "google-auth-library": "9.14.2",
@@ -60,6 +59,7 @@
     "eslint-plugin-prettier": "5.2.1",
     "globals": "15.11.0",
     "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
     "prettier": "3.3.3",
     "swagger-autogen": "2.23.7"
   },
