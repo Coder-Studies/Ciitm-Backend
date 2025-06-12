@@ -33,7 +33,7 @@ app.use(
   AlbumRoutes,
   ImageRoutes,
   NoticeRouter,
-  user
+  // user
 );
 
 export default app;

@@ -84,6 +84,8 @@ class AuthController {
         .json({ message: error.message || 'Error logging in admin', error });
     }
   }
+
+  // Google Login
 }
 
 export default new AuthController();

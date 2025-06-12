@@ -44,6 +44,9 @@ class Email_Controller {
       });
     }
   };
+
+  //  send Forgot Password Password Email
+
 }
 
 export default new Email_Controller();

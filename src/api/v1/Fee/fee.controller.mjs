@@ -1,5 +1,7 @@
 
 import SendResponse from "../../../utils/SendResponse.mjs";
+import StudentConstant from "../Student/Student.constant.mjs";
+import StudentUtils from "../Student/Student.utils.mjs";
 import { Payment_Constant } from "./fee.constant.mjs";
 
 const FeeController = {
@@ -16,7 +18,9 @@ Get_Fee_Info: async (req, res) => {
       };
     }
 
-    let Student_Info = await get_Payment_info({ uniqueId: Student_Id });
+    let Student_Info = await StudentUtils.FindByStudentId({
+      uniqueId: Student_Id,
+    });
 
 
     if (!Student_Info) {
