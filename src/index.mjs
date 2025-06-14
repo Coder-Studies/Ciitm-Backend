@@ -19,25 +19,25 @@ import { fileURLToPath } from 'url';
 import SocketEvent from './config/Socket/SocketEvent.mjs';
 import Socket_Middleware from './config/Socket/SocketMiddleWare.mjs';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
-
-const whitelist = new Set([envConstant.FRONTEND_URL ,'http://localhost:5173']);
+const whitelist = new Set([envConstant.FRONTEND_URL, 'http://localhost:5173']);
 
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.has(origin) || !origin) {
       callback(null, true);
     } else {
+      console.error(`CORS error: Origin ${origin} not allowed`);
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+app.use(cors(envConstant.isDevelopment ? corsOptions : { origin: envConstant.FRONTEND_URL, credentials: true }));
 
 app.use(express.static(path.join(path.resolve(), 'public')));
 app.use(
@@ -46,12 +46,13 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  lolcat.fromString(`Incoming request: ${req.method} ${req.url}`);
+  envConstant.isDevelopment ? lolcat.fromString(`\n${req.method} ${req.url} \n${new Date().toLocaleString()}\n`) : console.log(`\n${req.method} ${req.url} \n${new Date().toLocaleString()}\n`);
+
   next();
 });
 
 io.on('connection', (socket) => SocketEvent(socket));
-io.use((socket, next)=> Socket_Middleware(socket , next))
+io.use((socket, next) => Socket_Middleware(socket, next));
 
 app.use((err, req, res, next) => {
   if (err) {

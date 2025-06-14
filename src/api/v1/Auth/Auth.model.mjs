@@ -65,9 +65,8 @@ AuthenticationSchema.methods.hashPassword = async function (password) {
 AuthenticationSchema.methods.hashEmail = async function (email) {
   try {
     if (email) {
-      const JwtEmail = jwt.sign({ email: email }, process.env.JWT_SECRET , {
+      const JwtEmail = jwt.sign({ email: email }, process.env.JWT_SECRET, {
         expiresIn: '7d',
-        
       });
 
       if (JwtEmail) {

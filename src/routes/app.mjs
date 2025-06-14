@@ -20,8 +20,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-
-
 app.use(
   '/api',
   AuthRouter,

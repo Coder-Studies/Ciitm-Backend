@@ -1,5 +1,8 @@
 import EmailService from './Email.service.mjs';
-import { Payment_Confirmation_Validator, Admission_Confirmation_Validator } from './Email.validator.mjs';
+import {
+  Payment_Confirmation_Validator,
+  Admission_Confirmation_Validator,
+} from './Email.validator.mjs';
 import EmailConstant from './Email.constant.mjs';
 
 class Email_Controller {
@@ -44,6 +47,8 @@ class Email_Controller {
       });
     }
   };
+
+  //  send Forgot Password Password Email
 }
 
 export default new Email_Controller();

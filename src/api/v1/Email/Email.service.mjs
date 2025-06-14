@@ -16,7 +16,7 @@ class Email_Service {
         throw new Error(error.details[0].message);
       }
 
-      await EmailUtils.sendReviewMail({
+      return await EmailUtils.sendReviewMail({
         recipientEmail,
         name,
         uniqueId,
@@ -27,46 +27,46 @@ class Email_Service {
   };
 
   sendPaymentConfirmation = async ({
-  studentName,
-  studentId,
-  paymentId,
-  totalAmountDue,
-  amountPaid,
-  email,
-}) => {
-  try {
-    const result = await Payment_Confirmation_Template({
-      studentName,
-      studentId,
-      paymentId,
-      totalAmountDue,
-      amountPaid,
-      email,
-    });
-    return result; // ✅ Return the result
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+    studentName,
+    studentId,
+    paymentId,
+    totalAmountDue,
+    amountPaid,
+    email,
+  }) => {
+    try {
+      const result = await Payment_Confirmation_Template({
+        studentName,
+        studentId,
+        paymentId,
+        totalAmountDue,
+        amountPaid,
+        email,
+      });
+      return result; // ✅ Return the result
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 
-sendAdmissionConfirmation = async ({
-  studentName,
-  studentId,
-  email,
-  password,
-}) => {
-  try {
-    const result = await Admission_Confirmation_Template({
-      studentName,
-      studentId,
-      email,
-      password,
-    });
-    return result; // ✅ Return the result
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+  sendAdmissionConfirmation = async ({
+    studentName,
+    studentId,
+    email,
+    password,
+  }) => {
+    try {
+      const result = await Admission_Confirmation_Template({
+        studentName,
+        studentId,
+        email,
+        password,
+      });
+      return result; // ✅ Return the result
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 export default new Email_Service();

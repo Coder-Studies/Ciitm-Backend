@@ -172,6 +172,13 @@ const AdmissionSchema = new Schema({
     },
   },
 
+  semester: {
+    type: Number,
+    enum: [1, 2, 3, 4, 5],
+    default: 1,
+    required: true,
+  },
+
   dateOfAdmission: {
     type: Date,
     default: Date.now,

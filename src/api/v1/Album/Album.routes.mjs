@@ -11,7 +11,11 @@ router.post(
   AlbumController.createAlbum
 );
 
-router.delete('/v1/admin/delete/album/:albumId', AuthMiddleware.Admin, AlbumController.deleteAlbum);
+router.delete(
+  '/v1/admin/delete/album/:albumId',
+  AuthMiddleware.Admin,
+  AlbumController.deleteAlbum
+);
 
 router.get('/v1/user/get/album', AlbumController.getAlbum);
 

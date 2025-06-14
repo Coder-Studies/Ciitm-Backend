@@ -6,9 +6,7 @@ import Authentication from '../api/v1/Auth/Auth.model.mjs';
 class Auth_Middleware {
   Admin = async (req = request, res = response, next = next) => {
     try {
-   
       const token = req.cookies?.token || req.headers['authorization'];
- 
 
       if (!token) {
         return res.status(403).json({

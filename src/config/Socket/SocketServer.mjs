@@ -8,8 +8,6 @@ import { db_connect } from '../Db.config.mjs';
 
 console.log(path.resolve());
 
-
-
 // ✅ Create HTTP server and attach Express app
 const httpServer = createServer(app);
 
