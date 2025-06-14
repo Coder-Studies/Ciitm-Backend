@@ -11,16 +11,13 @@ import cookie from 'cookie';
 let find_DashBoard_Data = async (io, socket) => {
   try {
     const rawCookie = socket.handshake.headers?.cookie;
+    console.log('Raw Cookie:', rawCookie);
     const cookies = cookie.parse(rawCookie || '');
     const token = cookies?.token;
+    console.log('Cookies:', token);
 
     if (!token) {
-      socket.emit('DashBoard_Data', {
-        status: false,
-        message: 'Token not found',
-        DashBoard_Data: [],
-      });
-      return;
+     throw new Error('Unauthorized User: Missing token');
     }
 
     let email = await Authentication.DecordToken(token);
@@ -90,10 +87,8 @@ let find_DashBoard_Data = async (io, socket) => {
       DashBoard_Data,
     });
   } catch (error) {
-    socket.emit('DashBoard_Data', {
-      status: false,
+    socket.emit('error', {
       message: error.message || 'Error fetching dashboard data',
-      DashBoard_Data: [],
     });
   }
 };
