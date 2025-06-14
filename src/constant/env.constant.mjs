@@ -11,6 +11,7 @@ const env_Constant = {
   GMAIL_User: process.env.GMAIL_User,
   FRONTEND_URL: process.env.FRONTEND_URL,
   GMAIL_Password: process.env.GMAIL_Password,
+  isDevelopment: process.env.isDevelopment,
 };
 
 export default Object.freeze(env_Constant);

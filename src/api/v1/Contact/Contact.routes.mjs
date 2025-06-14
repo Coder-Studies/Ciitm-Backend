@@ -5,6 +5,10 @@ import AuthMiddleware from '../../../middleware/Auth.middleware.mjs';
 
 router.post('/v1/contact/create', ContactController.create);
 
-router.get('/v1/contact/admin/getContact', AuthMiddleware.Admin ,ContactController.get_FormData);
+router.get(
+  '/v1/contact/admin/getContact',
+  AuthMiddleware.Admin,
+  ContactController.get_FormData
+);
 
 export { router as ContactRouter };

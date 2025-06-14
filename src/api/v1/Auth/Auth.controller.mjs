@@ -18,9 +18,9 @@ class AuthController {
       });
 
       res.cookie('token', HashEmail, {
-        httpOnly: true,       // Prevent client-side JS access
-        secure:true, // HTTPS only in prod
-        sameSite: 'Strict',   // Prevent CSRF
+        httpOnly: true, // Prevent client-side JS access
+        secure: true, // HTTPS only in prod
+        sameSite: 'Strict', // Prevent CSRF
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
@@ -63,12 +63,11 @@ class AuthController {
       }
 
       res.cookie('token', HashEmail, {
-        httpOnly: true,     
-        secure:true, 
-        sameSite: 'Strict', 
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict',
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
-
 
       SendResponse.success(
         res,

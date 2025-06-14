@@ -8,15 +8,13 @@ import ImageUtils from '../Image/Image.utils.mjs';
 import cookie from 'cookie';
 
 // This function will handle the logic of fetching the dashboard data
-let find_DashBoard_Data = async (io , socket) => {
+let find_DashBoard_Data = async (io, socket) => {
   try {
-
     const rawCookie = socket.handshake.headers?.cookie;
     const cookies = cookie.parse(rawCookie || '');
     const token = cookies?.token;
 
-
-   if (!token) {
+    if (!token) {
       socket.emit('DashBoard_Data', {
         status: false,
         message: 'Token not found',
@@ -25,20 +23,17 @@ let find_DashBoard_Data = async (io , socket) => {
       return;
     }
 
+    let email = await Authentication.DecordToken(token);
 
-          let email = await Authentication.DecordToken(token);
-    
-          if (!email) {
-           throw new Error('Unauthorized User: Missing email in token');
-          }
+    if (!email) {
+      throw new Error('Unauthorized User: Missing email in token');
+    }
 
-       const findRole = await Authentication.checkRole(email);
-    
-          if (findRole !== 'admin') {
-   
-           throw new Error('Bad Request: You are Not Verified Admin');
-          }
-    
+    const findRole = await Authentication.checkRole(email);
+
+    if (findRole !== 'admin') {
+      throw new Error('Bad Request: You are Not Verified Admin');
+    }
 
     // Fetch the number of contacts
     let NUMBER_OF_CONTACT = await ContactUtils.FIND_NUMBER_OF_CONTACT();
@@ -95,7 +90,6 @@ let find_DashBoard_Data = async (io , socket) => {
       DashBoard_Data,
     });
   } catch (error) {
-  
     socket.emit('DashBoard_Data', {
       status: false,
       message: error.message || 'Error fetching dashboard data',
@@ -107,10 +101,10 @@ let find_DashBoard_Data = async (io , socket) => {
 // Socket event handler
 let DashBoard_Socket = (io, socket) => {
   // Listen for the 'Request_DashBoard_Data' event from the client
- 
+
   socket.on('Request_DashBoard_Data', async () => {
     console.log('Request_DashBoard_Data event triggered');
-    await find_DashBoard_Data(io , socket); // Call the function to fetch data and send it back to the client
+    await find_DashBoard_Data(io, socket); // Call the function to fetch data and send it back to the client
   });
 };
 

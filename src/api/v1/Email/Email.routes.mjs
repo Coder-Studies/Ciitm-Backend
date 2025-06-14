@@ -7,6 +7,9 @@ const router = express.Router();
 router.post('/payment-confirmation', EmailController.sendPaymentConfirmation);
 
 // Admission Confirmation Email Route
-router.post('/admission-confirmation', EmailController.sendAdmissionConfirmation);
+router.post(
+  '/admission-confirmation',
+  EmailController.sendAdmissionConfirmation
+);
 
-export default router; 
+export default router;

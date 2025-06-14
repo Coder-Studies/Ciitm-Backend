@@ -5,8 +5,6 @@ import {
   get_Payment_info,
 } from '../Service/student.service.js';
 
-
-
 let instance = new Razorpay({
   key_id: process.env.Razorpay_key,
   key_secret: process.env.Razorpay_secret,
