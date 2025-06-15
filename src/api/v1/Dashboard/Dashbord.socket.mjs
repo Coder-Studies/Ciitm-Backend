@@ -10,11 +10,9 @@ import cookie from 'cookie';
 // This function will handle the logic of fetching the dashboard data
 let find_DashBoard_Data = async (io, socket) => {
   try {
-    const rawCookie = socket.handshake.headers?.cookie;
-    console.log('Raw Cookie:', rawCookie);
-    const cookies = cookie.parse(rawCookie || '');
-    const token = cookies?.token;
-    console.log('Cookies:', token);
+    const token = socket.handshake.auth?.token;
+    
+   
 
     if (!token) {
      throw new Error('Unauthorized User: Missing token');
