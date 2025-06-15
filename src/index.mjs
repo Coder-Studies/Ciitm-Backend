@@ -13,6 +13,10 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import lolcat from 'lolcatjs';
 
+app.use(cookieParser());
+
+
+
 import cors from 'cors';
 
 import { fileURLToPath } from 'url';

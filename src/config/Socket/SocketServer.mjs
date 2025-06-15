@@ -17,12 +17,13 @@ const io = new Server(httpServer, {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-    transports: ['websocket', 'polling'],
   },
+  transports: ['websocket', 'polling'], 
   pingTimeout: 60000,
   pingInterval: 25000,
   allowEIO3: true,
 });
+
 
 const PORT = envConstant.PORT || 8000;
 

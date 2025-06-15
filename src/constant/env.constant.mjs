@@ -10,6 +10,7 @@ const env_Constant = {
   JWT_COOKIE_EXPIRES_IN: process.env.JWT_COOKIE_EXPIRES_IN,
   GMAIL_User: process.env.GMAIL_User,
   FRONTEND_URL: process.env.FRONTEND_URL,
+  NODE_ENV: process.env.NODE_ENV,
   GMAIL_Password: process.env.GMAIL_Password,
   isDevelopment: process.env.isDevelopment,
 };
