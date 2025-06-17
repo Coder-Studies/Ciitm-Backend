@@ -11,4 +11,10 @@ router.get(
   ContactController.get_FormData
 );
 
+router.delete(
+  '/v1/contact/admin/deleteContact/:id',
+  AuthMiddleware.Admin,
+  ContactController.delete_FormData
+);
+
 export { router as ContactRouter };

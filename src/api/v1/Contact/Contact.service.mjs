@@ -12,6 +12,18 @@ class Contact_Service {
       throw new Error(error.message || ContactConstant.NOT_CREATED);
     }
   };
+
+  deleteContact = async (id) => {
+    try {
+      const deletedForm = await Contact.findByIdAndDelete(id);
+      if (!deletedForm) {
+        throw new Error(ContactConstant.NOT_FOUND);
+      }
+      return deletedForm;
+    } catch (error) {
+      throw new Error(error.message || ContactConstant.NOT_FOUND);
+    }
+  };
 }
 
 export default new Contact_Service();

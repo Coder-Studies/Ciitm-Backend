@@ -57,6 +57,35 @@ class Contact_Controller {
       );
     }
   };
+
+  delete_FormData = async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      if (!id) {
+        throw new Error(ContactConstant.NOT_FOUND);
+      }
+
+      const deletedForm = await ContactService.deleteContact(id);
+
+      if (!deletedForm) {
+        throw new Error(ContactConstant.NOT_FOUND);
+      }
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        ContactConstant.DELETED,
+        deletedForm
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message
+      );
+    }
+  }
 }
 
 export default new Contact_Controller();
