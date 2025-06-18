@@ -64,31 +64,30 @@ class AuthController {
         return res.status(400).json({ message: 'Invalid Password' });
       }
 
- res.cookie('token', HashEmail, {
-  httpOnly: true,
-  secure: envConstant.NODE_ENV === 'production',           // Required when using SameSite=None
-  sameSite: envConstant.NODE_ENV === 'production' ? 'None' : 'Lax',       // Allows cross-origin cookie
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-});
+      res.cookie('token', HashEmail, {
+        httpOnly: true,
+        secure: envConstant.NODE_ENV === 'production', // Required when using SameSite=None
+        sameSite: envConstant.NODE_ENV === 'production' ? 'None' : 'Lax', // Allows cross-origin cookie
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
 
-
-let data = {
-  user: {
-    _id: Find_User._id,
-    name: Find_User.name,
-    email: Find_User.email,
-    email_verified: Find_User.email_verified,
-    profile_image: Find_User.picture,
-    role: Find_User.role,
-    isActice: Find_User.isActive,
-    token: HashEmail,
-  },
-};
+      let data = {
+        user: {
+          _id: Find_User._id,
+          name: Find_User.name,
+          email: Find_User.email,
+          email_verified: Find_User.email_verified,
+          profile_image: Find_User.picture,
+          role: Find_User.role,
+          isActice: Find_User.isActive,
+          token: HashEmail,
+        },
+      };
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
         AuthConstant.USER_LOGIN_SUCCESS,
-        data,
+        data
       );
     } catch (error) {
       console.log(error);

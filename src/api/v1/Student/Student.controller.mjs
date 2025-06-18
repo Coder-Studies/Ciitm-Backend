@@ -1,3 +1,1 @@
-class Student_Controller {
-    
-}
+class Student_Controller {}

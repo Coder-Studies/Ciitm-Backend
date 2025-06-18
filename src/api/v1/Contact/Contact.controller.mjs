@@ -85,7 +85,7 @@ class Contact_Controller {
         error.message
       );
     }
-  }
+  };
 }
 
 export default new Contact_Controller();

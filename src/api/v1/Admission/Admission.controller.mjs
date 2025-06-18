@@ -78,7 +78,7 @@ class AdmissionController {
         endDate: new Date().getFullYear() + find_course.courseDuration,
       });
 
-       let a = await EmailService.sendReviewMail({
+      let a = await EmailService.sendReviewMail({
         recipientEmail: data.email,
         name: data.firstName + '' + data.lastName,
         uniqueId,
