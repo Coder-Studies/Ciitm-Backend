@@ -1,5 +1,6 @@
 import courseConstant from './course.constant.mjs';
 import courseModel from './course.model.mjs';
+import courseUtils from './course.utils.mjs';
 import { courseValidationSchema } from './course.validator.mjs';
 
 class courseService {
@@ -10,10 +11,7 @@ class courseService {
       if (error) {
         throw new Error(`Validation error: ${error.details[0].message}`);
       }
-
-
-
-      // Check if course with the same code already exists
+      
       const existingCourse = await courseModel.findOne({
         courseCode: courseData.courseCode,
       });
@@ -27,6 +25,14 @@ class courseService {
       return CreatedCourse;
     } catch (error) {
       throw new Error(`Error creating course: ${error.message}`);
+    }
+  }
+
+  async getAllCourses() {
+    try {
+      return await courseUtils.FindAllCourses();
+    } catch (error) {
+      throw new Error(`Error fetching courses: ${error.message}`);
     }
   }
 }

@@ -6,7 +6,7 @@ import courseService from './course.service.mjs';
 const Course_Controller = {
   async createCourse(req, res) {
     try {
-      console.log('Creating course with data:', req.body);
+
       const newCourse = await courseService.createCourse(req.body);
       if (!newCourse) {
         throw new Error(courseConstant.COURSE_NOT_CREATED);
@@ -24,6 +24,29 @@ const Course_Controller = {
         res,
         StatusCodeConstant.INTERNAL_SERVER_ERROR,
         error.message || courseConstant.COURSE_NOT_CREATED
+      );
+    }
+  },
+
+  async FindAllCourses(req, res) {
+    try {
+      const courses = await courseService.getAllCourses();
+      if (courses.length === 0) {
+        throw new Error(courseConstant.COURSE_NOT_FOUND);
+      }
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        courseConstant.COURSES_FOUND,
+        courses
+      );
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message || courseConstant.COURSE_NOT_FOUND
       );
     }
   },

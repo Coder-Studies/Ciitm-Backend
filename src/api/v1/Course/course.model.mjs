@@ -38,6 +38,12 @@ let Course_Schema = new Schema({
     trim: true,
   },
 
+  imageUrl: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
   coursePrice: {
     type: Number,
     required: true,

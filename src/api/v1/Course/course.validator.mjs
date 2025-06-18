@@ -13,6 +13,12 @@ export const courseValidationSchema = Joi.object({
     'string.base': 'Course code must be a valid string',
     'string.min': 'Course code must have at least 3 characters',
   }),
+  imageUrl: Joi.string().trim().uri().required().messages({
+    'string.empty': 'Image URL cannot be empty',
+    'any.required': 'Image URL is required',
+    'string.base': 'Image URL must be a valid string',
+    'string.uri': 'Image URL must be a valid URI',
+  }),
   courseDescription: Joi.string().trim().required().messages({
     'string.empty': 'Course description cannot be empty',
     'any.required': 'Course description is required',

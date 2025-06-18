@@ -12,6 +12,17 @@ class Course_Utils {
       throw new Error(error.message);
     }
   };
+
+  FindAllCourses = async () => {
+    try {
+      let courses = await courseModel.find({}).sort({ createdAt: -1 });
+      
+    
+      return courses;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 export default new Course_Utils();
