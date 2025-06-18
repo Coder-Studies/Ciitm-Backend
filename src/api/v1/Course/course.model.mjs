@@ -26,6 +26,24 @@ let Course_Schema = new Schema({
     trim: true,
   },
 
+  courseEligibility: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
+  courseThumbnail: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
+  imageUrl: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
   coursePrice: {
     type: Number,
     required: true,

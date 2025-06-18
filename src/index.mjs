@@ -15,14 +15,11 @@ import lolcat from 'lolcatjs';
 
 app.use(cookieParser());
 
-
-
 import cors from 'cors';
 
 import { fileURLToPath } from 'url';
 import SocketEvent from './config/Socket/SocketEvent.mjs';
 import Socket_Middleware from './config/Socket/SocketMiddleWare.mjs';
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -41,7 +38,13 @@ const corsOptions = {
   credentials: true,
 };
 
-app.use(cors(envConstant.isDevelopment ? corsOptions : { origin: envConstant.FRONTEND_URL, credentials: true }));
+app.use(
+  cors(
+    envConstant.isDevelopment
+      ? corsOptions
+      : { origin: envConstant.FRONTEND_URL, credentials: true }
+  )
+);
 
 app.use(express.static(path.join(path.resolve(), 'public')));
 app.use(
@@ -50,7 +53,13 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  envConstant.isDevelopment ? lolcat.fromString(`\n${req.method} ${req.url} \n${new Date().toLocaleString()}\n`) : console.log(`\n${req.method} ${req.url} \n${new Date().toLocaleString()}\n`);
+  envConstant.isDevelopment
+    ? lolcat.fromString(
+        `\n${req.method} ${req.url} \n${new Date().toLocaleString()}\n`
+      )
+    : console.log(
+        `\n${req.method} ${req.url} \n${new Date().toLocaleString()}\n`
+      );
 
   next();
 });

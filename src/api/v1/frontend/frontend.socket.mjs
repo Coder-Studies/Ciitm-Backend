@@ -3,7 +3,6 @@ import frontendUtils from './frontend.utils.mjs';
 let FrontendSocket = async (io, socket) => {
   try {
     let findFrontend = await frontendUtils.findAll();
-  
 
     if (!findFrontend) {
       throw new Error('Frontend not found');

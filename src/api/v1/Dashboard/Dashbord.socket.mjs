@@ -11,11 +11,9 @@ import cookie from 'cookie';
 let find_DashBoard_Data = async (io, socket) => {
   try {
     const token = socket.handshake.auth?.token;
-    
-   
 
     if (!token) {
-     throw new Error('Unauthorized User: Missing token');
+      throw new Error('Unauthorized User: Missing token');
     }
 
     let email = await Authentication.DecordToken(token);
