@@ -1,5 +1,6 @@
 import TeacherConstant from './Teacher.constant.mjs';
 import TeacherSchema from './Teacher.model.mjs';
+import TeacherUtils from './Teacher.utils.mjs';
 import Teacher_validation from './Teacher.validator.mjs';
 
 class TeacherService {
@@ -29,6 +30,18 @@ class TeacherService {
     } catch (error) {
     
         throw new Error(error.message || TeacherConstant.Teacher_NotCreated);
+    }
+  }
+
+  FindAllTeachers() {
+    try {
+      let FindAllTeachers = TeacherUtils.FindAllTeachers();
+      if (!FindAllTeachers) {
+        throw new Error(TeacherConstant.Teacher_NotFound);
+      }
+      return FindAllTeachers;
+    } catch (error) {
+      throw new Error(error.message || TeacherConstant.Teacher_NotFound);
     }
   }
 

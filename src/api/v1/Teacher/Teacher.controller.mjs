@@ -47,6 +47,29 @@ class Teacher_Controller {
       );
     }
   }
+
+  async FindAllTeachers(req, res) {
+    try {
+      let FindAllTeachers = await TeacherService.FindAllTeachers();
+
+      if (FindAllTeachers.length === 0) {
+        throw new Error(TeacherConstant.Teacher_NotFound);
+      }
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        TeacherConstant.Find_Teacher,
+        FindAllTeachers
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message || TeacherConstant.Teacher_NotFound
+      );
+    }
+  }
 }
 
 export default new Teacher_Controller();
