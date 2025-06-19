@@ -1,7 +1,9 @@
 import { Router } from 'express';
+import StudentController from './Student.controller.mjs';
 const router = Router();
-import { StudentController } from './Student.controller.mjs';
 
-router.get('/student', StudentController.Get_Student_Info);
+
+
+router.get('/find/StudentBy', StudentController.FindByCourseAndSemester)
 
 export { router as StudentRouter };

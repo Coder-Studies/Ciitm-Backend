@@ -12,11 +12,6 @@ let Teacher_validation = Joi.object({
     'string.base': 'Email must be a string',
     'any.required': 'Email is required',
   }),
-  image: Joi.string().required().messages({
-    'string.empty': 'Image is empty',
-    'string.base': 'Image must be a string',
-    'any.required': 'Image is required',
-  }),
 
   role: Joi.string().required().messages({
     'string.empty': 'Role is empty',

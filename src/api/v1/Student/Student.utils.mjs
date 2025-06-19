@@ -6,10 +6,10 @@ class Student_Utils {
     return Admission.findOne({ uniqueId: studentId });
   };
 
-  FindStudentBySemisterAndCourse = async ({ semester, course }) => {
-    return Admission.find({ course: course }).select(
-      'uniqueId student.firstName student.middleName student.lastName contactNumber'
-    );
+  FindStudentBySemesterAndCourse = async ({ semester, course }) => {
+    return Admission.find({ course: course, semester: semester }).select(
+      'uniqueId student.firstName student.middleName student.lastName student.contactNumber'
+    ).limit().skip(0).sort({ createdAt: -1 });
   };
 
   Find_FeeByStudentId({ studentId }) {

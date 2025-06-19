@@ -11,17 +11,16 @@ class courseService {
       if (error) {
         throw new Error(`Validation error: ${error.details[0].message}`);
       }
-      
+
       const existingCourse = await courseModel.findOne({
         courseCode: courseData.courseCode,
       });
-
 
       if (existingCourse) {
         throw new Error(courseConstant.ALREADY_Created);
       }
 
-      let CreatedCourse =  await courseModel.create(courseData);
+      let CreatedCourse = await courseModel.create(courseData);
       return CreatedCourse;
     } catch (error) {
       throw new Error(`Error creating course: ${error.message}`);

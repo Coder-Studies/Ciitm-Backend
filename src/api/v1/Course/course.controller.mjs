@@ -7,7 +7,6 @@ import courseUtils from './course.utils.mjs';
 const Course_Controller = {
   async createCourse(req, res) {
     try {
-
       const newCourse = await courseService.createCourse(req.body);
       if (!newCourse) {
         throw new Error(courseConstant.COURSE_NOT_CREATED);
@@ -55,10 +54,9 @@ const Course_Controller = {
   async FindCourseById(req, res) {
     try {
       const courseId = req.params.id;
-      
 
       const course = await courseUtils.FindCourseById(courseId);
-   
+
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
@@ -66,7 +64,7 @@ const Course_Controller = {
         course
       );
     } catch (error) {
-     console.error('Error fetching course by ID:', error);
+      console.error('Error fetching course by ID:', error);
       SendResponse.error(
         res,
         StatusCodeConstant.INTERNAL_SERVER_ERROR,
