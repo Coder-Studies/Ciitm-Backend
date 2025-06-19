@@ -21,8 +21,6 @@ import {
   Find_Testimonial_Controller,
 } from '../controllers/Tertimonials.controller.js';
 
-import { Find_Teacher_Controller } from '../controllers/teacher.controller.js';
-
 // import { SignUp_Admin } from '../controllers/Admin_Sign_Up.controller.js';
 import {
   ForgotPassword_Controller,
@@ -60,8 +58,6 @@ router.get('/auth/google/failure', (req, res) => {
     error: true,
   });
 });
-
-router.get('/find/teacher', Find_Teacher_Controller);
 
 // router.post('/create/notice', Create_Notice_Controller);
 

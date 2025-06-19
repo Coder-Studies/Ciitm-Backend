@@ -1,0 +1,53 @@
+import TeacherConstant from './Teacher.constant.mjs';
+import TeacherSchema from './Teacher.model.mjs';
+import Teacher_validation from './Teacher.validator.mjs';
+
+class TeacherService {
+  createTeacher({ teacherData, imageUrl }) {
+    try {
+      let CreateTeacher = TeacherSchema.create({
+        name: teacherData.name,
+        email: teacherData.email,
+        image: imageUrl,
+        role: teacherData.role,
+        Specialization: teacherData.Specialization,
+        Experience: teacherData.Experience,
+        social_media: [
+          {
+            facebook: teacherData.facebook,
+            linkedin: teacherData.linkedin,
+            twitter: teacherData.twitter,
+            instagram: teacherData.instagram,
+          },
+        ],
+      });
+            if (!CreateTeacher) {
+                throw new Error(TeacherConstant.Teacher_NotCreated);
+            }
+
+      return CreateTeacher;
+    } catch (error) {
+    
+        throw new Error(error.message || TeacherConstant.Teacher_NotCreated);
+    }
+  }
+
+   validateTeacherData(teacherData) {
+    const { error } = Teacher_validation.validate({
+      name: teacherData.name,
+      email: teacherData.email,
+      role: teacherData.role,
+      Specialization: teacherData.Specialization,
+      Experience: teacherData.Experience,
+      instagram: teacherData.instagram,
+      facebook: teacherData.facebook,
+      linkedin: teacherData.linkedin,
+      twitter: teacherData.twitter,
+    });
+    if (error) {
+      throw new Error(error.details[0].message);
+    }
+  }
+}
+
+export default new TeacherService();
