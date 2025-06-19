@@ -23,6 +23,19 @@ class Course_Utils {
       throw new Error(error.message);
     }
   };
+
+  FindCourseById = async (courseId) => {
+    try {
+      let course = await courseModel.findById(courseId);
+      if (!course) {
+        throw new Error('Course not found');
+      }
+      return course;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
 }
 
 export default new Course_Utils();
