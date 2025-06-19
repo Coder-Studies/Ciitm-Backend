@@ -2,6 +2,7 @@ import StatusCodeConstant from '../../../constant/StatusCode.constant.mjs';
 import SendResponse from '../../../utils/SendResponse.mjs';
 import courseConstant from './course.constant.mjs';
 import courseService from './course.service.mjs';
+import courseUtils from './course.utils.mjs';
 
 const Course_Controller = {
   async createCourse(req, res) {
@@ -43,6 +44,29 @@ const Course_Controller = {
       );
     } catch (error) {
       console.error('Error fetching courses:', error);
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message || courseConstant.COURSE_NOT_FOUND
+      );
+    }
+  },
+
+  async FindCourseById(req, res) {
+    try {
+      const courseId = req.params.id;
+      
+
+      const course = await courseUtils.FindCourseById(courseId);
+   
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        courseConstant.COURSE_FOUND,
+        course
+      );
+    } catch (error) {
+     console.error('Error fetching course by ID:', error);
       SendResponse.error(
         res,
         StatusCodeConstant.INTERNAL_SERVER_ERROR,
