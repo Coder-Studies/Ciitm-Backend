@@ -5,7 +5,6 @@ import { Schema, model } from 'mongoose';
 import otpGenerator from 'otp-generation';
 
 import courseModel from '../Course/course.model.mjs';
-import status from '../Status/Status.model.mjs';
 import Student_Course from '../Student_Course/Student-Course.model.mjs';
 
 const AdmissionSchema = new Schema({
@@ -229,7 +228,7 @@ const AdmissionSchema = new Schema({
     ref: 'Status',
   },
 
-  admited: {
+  isAdmitted: {
     type: Boolean,
     default: false,
   },
@@ -305,8 +304,8 @@ AdmissionSchema.statics.findStudent = async function (uniqueId) {
   }
 };
 
-AdmissionSchema.query.admited = function (Boolean) {
-  return this.where({ admited: Boolean });
+AdmissionSchema.query.isAdmitted = function (Boolean) {
+  return this.where({ isAdmitted: Boolean });
 };
 
 AdmissionSchema.pre('save', async function (next) {

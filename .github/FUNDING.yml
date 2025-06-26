@@ -2,25 +2,13 @@
 # Support this project and help us build the best institute management system !
 # Your support helps us maintain and improve this educational technology platform.
 
-# Primary Funding Platforms
-github: # Add your GitHub username for GitHub Sponsors
-patreon: # Add your Patreon username
-open_collective: # Add your Open Collective project name
-ko_fi: # Add your Ko-fi username
-tidelift: # Add your Tidelift package name
-community_bridge: # Add your Community Bridge project name
-liberapay: # Add your Liberapay username
-issuehunt: # Add your IssueHunt username
-otechie: # Add your Otechie username
-lfx_crowdfunding: # Add your LFX Crowdfunding project name
 
 # Buy Me a Coffee
 buy_me_a_coffee: abhishek96z
 
 # Custom funding URLs
 custom: 
-  - "https://www.buymeacoffee.com/abhishek96z"
-  - "https://razorpay.me/@abhishek96z"
+  - "razorpay.me/@NexGenStudioDev"
 
 # How your donations help:
 # 🚀 Server hosting and maintenance costs

@@ -2,18 +2,25 @@ import StatusCodeConstant from "../../../constant/StatusCode.constant.mjs";
 import SendResponse from "../../../utils/SendResponse.mjs";
 import StudentConstant from "./Student.constant.mjs";
 import StudentUtils from "./Student.utils.mjs";
+import { studentSearchQuerySchema } from "./Student.validate.mjs";
 
 class Student_Controller {
    async FindByCourseAndSemester(req, res) {
         try {
-            const { course, semester } = req.query;
-            
+            const { course, semester , PerPage , Limit } = req.query;
 
-            if (!course || !semester) {
-                throw new Error('Course and semester are required parameters');
+           
+           let {error} =  studentSearchQuerySchema.validate(req.query);
+
+
+            if (error) {
+              throw new Error(error.details[0].message);
             }
 
-            const students = await StudentUtils.FindStudentBySemesterAndCourse(course, semester);
+            const students = await StudentUtils.FindStudentBySemesterAndCourse({ course, semester, PerPage, Limit });
+            // Log the students found for debugging
+            console.log('Students found:', students);
+
 
             if (students.length === 0) {
                 throw new Error(StudentConstant.STUDENT_NOT_FOUND);
