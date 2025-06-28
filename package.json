@@ -39,6 +39,7 @@
     "multer": "1.4.5-lts.2",
     "node-cron": "3.0.3",
     "nodemailer": "^6.9.15",
+    "nodemon": "^3.1.10",
     "npm": "10.8.3",
     "otp-generation": "1.0.5",
     "pino": "9.4.0",

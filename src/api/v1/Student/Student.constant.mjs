@@ -9,6 +9,9 @@ const STUDENT_Constant = {
   STUDENT_DELETED: 'Student Deleted',
   STUDENT_NOT_DELETED: 'Student Not Deleted',
   STUDENT_FOUND: 'Student Found',
+  UNIQUE_ID_VALID: 'Student ID is valid',
+  UNIQUE_ID_INVALID: 'Student ID is invalid',
+  INVALID_UNIQUE_ID: 'Unique ID is required and must be a string',
 };
 
 export default Object.freeze(STUDENT_Constant);
