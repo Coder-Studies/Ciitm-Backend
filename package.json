@@ -39,7 +39,6 @@
     "multer": "1.4.5-lts.2",
     "node-cron": "3.0.3",
     "nodemailer": "^6.9.15",
-    "nodemon": "^3.1.10",
     "npm": "10.8.3",
     "otp-generation": "1.0.5",
     "pino": "9.4.0",
@@ -61,6 +60,7 @@
     "eslint-plugin-prettier": "5.2.1",
     "globals": "15.11.0",
     "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
     "prettier": "3.3.3",
     "swagger-autogen": "2.23.7"
   },
