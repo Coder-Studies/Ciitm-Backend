@@ -4,11 +4,11 @@ import ForgotPasswordController from './ForgotPassword.controller.mjs';
 const forgotPasswordRouter = Router();
 
 /**
- * GET /v1/forgot-password/:email
+ * POST /v1/forgot-password
  * Initiates the forgot password process for a given email address
  */
-forgotPasswordRouter.get(
-  '/forgot-password/:email',
+forgotPasswordRouter.post(
+  '/forgot-password',
   ForgotPasswordController.forgotPasswordRequest
 );
 

@@ -20,33 +20,24 @@ class ForgotPasswordController {
       // Validate email using Joi validator
       const { error } = ForgotPasswordRequestValidator.validate({ email });
       if (error) {
-        return SendResponse.error(
-          res,
-          StatusCodeConstant.BAD_REQUEST,
-          error.details[0].message
-        );
+      return SendResponse.error(
+        res,
+        StatusCodeConstant.BAD_REQUEST,
+        error.details[0].message
+      );
       }
 
       const result = await ForgotPasswordService.initiatePasswordReset(email);
 
       SendResponse.success(
-        res,
-        StatusCodeConstant.SUCCESS,
-        result.message,
-        { email: email }
+      res,
+      StatusCodeConstant.SUCCESS,
+      result.message,
+      { email: email }
       );
     } catch (error) {
       console.error('Forgot Password Request Error:', error);
-      
-      // Check if it's a known error message
-      const isKnownError = Object.values(ForgotPasswordConstant).includes(error.message);
-      const statusCode = isKnownError ? StatusCodeConstant.BAD_REQUEST : StatusCodeConstant.INTERNAL_SERVER_ERROR;
-      
-      SendResponse.error(
-        res,
-        statusCode,
-        error.message || 'Error processing forgot password request'
-      );
+      this.handleError(error, res, 'Error processing forgot password request');
     }
   }
 
