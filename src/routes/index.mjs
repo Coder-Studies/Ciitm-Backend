@@ -3,6 +3,8 @@ import { Router } from 'express';
 const router = Router();
 
 import upload from '../utils/multerUtils.mjs';
+// Import new forgot password routes
+import forgotPasswordRouter from '../api/v1/forget-password/ForgotPassword.routes.mjs';
 
 // import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
 
@@ -83,7 +85,10 @@ router.delete('/delete/testimonial/:id', Delete_Testimonial_Controller);
 
 router.get('/find/testimonial', Find_Testimonial_Controller);
 
-router.post('/forgot/password', ForgotPassword_Controller);
-router.post('/reset/password', ResetPassword_Controller);
+// router.post('/forgot/password', ForgotPassword_Controller);
+// router.post('/reset/password', ResetPassword_Controller);
+
+// New improved forgot password routes - Use /v1 since /api is already prefixed in app.mjs
+router.use('/v1', forgotPasswordRouter);
 
 export { router as user };
