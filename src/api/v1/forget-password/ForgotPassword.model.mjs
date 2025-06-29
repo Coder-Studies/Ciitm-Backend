@@ -17,18 +17,17 @@ const ForgotPasswordSchema = new Schema(
     },
   },
   { 
-    timestamps: true,
-    // TTL index to automatically delete expired OTP records
-    expires: 600 // 10 minutes in seconds
+    timestamps: true
   }
 );
 
 // Index for automatic cleanup of expired documents
 ForgotPasswordSchema.index({ otpExpiry: 1 }, { expireAfterSeconds: 0 });
 
+const { randomInt } = require('crypto');
 ForgotPasswordSchema.statics.generateOTP = function() {
-  // Generate 6-digit OTP
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  // Generate 6-digit OTP using a cryptographically secure method
+  return randomInt(100000, 1000000).toString();
 };
 
 ForgotPasswordSchema.statics.createOTPExpiry = function() {
