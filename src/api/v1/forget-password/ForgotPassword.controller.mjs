@@ -11,11 +11,12 @@ import {
 class ForgotPasswordController {
   /**
    * Initiates forgot password process
-   * Endpoint: GET /api/v1/forgot-password/:email
+   * Endpoint: POST /api/v1/forgot-password/:email
    */
   async forgotPasswordRequest(req = request, res = response) {
     try {
-      const { email } = req.params;
+      console.log('Forgot Password Request:', req.body);
+      const { email } = req.body;
 
       // Validate email using Joi validator
       const { error } = ForgotPasswordRequestValidator.validate({ email });

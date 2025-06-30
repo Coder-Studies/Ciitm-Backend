@@ -48,11 +48,7 @@ class Student_Controller {
       const { uniqueId } = req.params;
 
       if (!uniqueId || typeof uniqueId !== 'string') {
-        return SendResponse.error(
-          res,
-          StatusCodeConstant.BAD_REQUEST,
-          StudentConstant.INVALID_UNIQUE_ID
-        );
+       throw new Error(StudentConstant.INVALID_UNIQUE_ID);
       }
 
       const student = await StudentUtils.FindByStudentId(uniqueId);
@@ -64,7 +60,7 @@ class Student_Controller {
 
       SendResponse.success(res, StatusCodeConstant.SUCCESS, message, {
         uniqueId,
-        isValid,
+        isValidated: isValid,
       });
     } catch (error) {
       SendResponse.error(

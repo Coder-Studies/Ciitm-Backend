@@ -17,6 +17,7 @@ import cookieParser from 'cookie-parser';
 import { CourseRouter } from '../api/v1/Course/course.routes.mjs';
 import { TeacherRouter } from '../api/v1/Teacher/Teacher.routes.mjs';
 import { StudentRouter } from '../api/v1/Student/Student.routes.mjs';
+import forgotPasswordRouter from '../api/v1/forget-password/ForgotPassword.routes.mjs';
 
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -32,6 +33,7 @@ app.use(
   FrontendRouter,
   ContactRouter,
   AlbumRoutes,
+  forgotPasswordRouter,
   ImageRoutes,
   NoticeRouter,
   user,

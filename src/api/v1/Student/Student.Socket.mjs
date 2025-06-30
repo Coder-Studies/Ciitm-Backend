@@ -1,7 +1,3 @@
-import SendResponse from '../../../utils/SendResponse.mjs';
-import { response } from 'express';
-import Admission from '../Admission/Admission.model.mjs';
-import AdmissionUtils from '../Admission/Admission.utils.mjs';
 import StudentUtils from './Student.utils.mjs';
 import StudentConstant from './Student.constant.mjs';
 

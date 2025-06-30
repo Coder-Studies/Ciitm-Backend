@@ -24,7 +24,7 @@ const ForgotPasswordSchema = new Schema(
 // Index for automatic cleanup of expired documents
 ForgotPasswordSchema.index({ otpExpiry: 1 }, { expireAfterSeconds: 0 });
 
-const { randomInt } = require('crypto');
+import { randomInt } from 'crypto';
 ForgotPasswordSchema.statics.generateOTP = function() {
   // Generate 6-digit OTP using a cryptographically secure method
   return randomInt(100000, 1000000).toString();
