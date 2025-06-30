@@ -4,7 +4,7 @@ import AuthMiddleware from '../../../middleware/Auth.middleware.mjs';
 
 const router = Router();
 
-router.get('/v1/status/find', StatusController.Find_Student_Status);
+router.get('/v1/status/find/:uniqueId', StatusController.Find_Student_Status);
 router.put(
   '/v1/status/update/:uniqueId',
   AuthMiddleware.Admin,
