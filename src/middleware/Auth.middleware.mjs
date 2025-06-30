@@ -7,6 +7,7 @@ class Auth_Middleware {
   Admin = async (req = request, res = response, next = next) => {
     try {
       const token = req.cookies?.token || req.headers['authorization'];
+      console.log('Token:', token);
 
       if (!token) {
         return res.status(403).json({

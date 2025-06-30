@@ -15,10 +15,9 @@ class Teacher_Controller {
         folder: 'Teachers',
       });
 
-       if (!Cloudinary) {
+      if (!Cloudinary) {
         throw new Error(TeacherConstant.Image_NotUploaded);
       }
-   
 
       let validatedData = await TeacherService.validateTeacherData(req.body);
 
@@ -26,7 +25,6 @@ class Teacher_Controller {
         teacherData: req.body,
         imageUrl: Cloudinary.url,
       });
-
 
       if (!CreateTeacher) {
         throw new Error(TeacherConstant.Teacher_NotCreated);
@@ -39,7 +37,6 @@ class Teacher_Controller {
         CreateTeacher
       );
     } catch (error) {
-
       SendResponse.error(
         res,
         StatusCodeConstant.BAD_REQUEST,

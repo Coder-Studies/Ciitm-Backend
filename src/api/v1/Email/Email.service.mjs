@@ -6,6 +6,7 @@ import Admission_Confirmation_Template from '../../../template/email/admission.t
 class Email_Service {
   sendReviewMail = async ({ recipientEmail, name, uniqueId }) => {
     try {
+     
       let { error } = Review_Validator.validate({
         recipientEmail,
         name,
@@ -16,11 +17,13 @@ class Email_Service {
         throw new Error(error.details[0].message);
       }
 
-      return await EmailUtils.sendReviewMail({
+      let Send_Review_Mail = await EmailUtils.sendReviewMail({
         recipientEmail,
         name,
         uniqueId,
       });
+
+      console.log('Send_Review_Mail:', Send_Review_Mail);
     } catch (error) {
       throw new Error(error);
     }

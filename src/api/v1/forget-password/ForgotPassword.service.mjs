@@ -6,6 +6,8 @@ import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import envConstant from '../../../constant/env.constant.mjs';
+import { console } from 'inspector';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,14 +16,14 @@ class ForgotPasswordService {
   async initiatePasswordReset(email) {
     // Check if user exists
     const user = await AuthenticationSchema.findOne({ email: email });
+    
     if (!user) {
       // To prevent user enumeration, we return a success message even if the user doesn't exist.
       // The email will simply not be sent, and the process stops here silently.
-      return {
-        success: true,
-        message: ForgotPasswordConstant.OTP_SENT_SUCCESS
-      };
+      throw Error(ForgotPasswordConstant.USER_NOT_FOUND);
     }
+
+    console.log('User found:', user);
 
     // Generate OTP
     const otp = ForgotPassword.generateOTP();
@@ -33,13 +35,13 @@ class ForgotPasswordService {
     // Store or update OTP record
     await ForgotPassword.findOneAndUpdate(
       { email: email },
-      { 
-        otp: hashedOTP, 
-        otpExpiry: otpExpiry 
+      {
+        otp: hashedOTP,
+        otpExpiry: otpExpiry,
       },
-      { 
-        upsert: true, 
-        new: true 
+      {
+        upsert: true,
+        new: true,
       }
     );
 
@@ -48,25 +50,27 @@ class ForgotPasswordService {
 
     return {
       success: true,
-      message: ForgotPasswordConstant.OTP_SENT_SUCCESS
+      message: ForgotPasswordConstant.OTP_SENT_SUCCESS,
     };
   }
 
   async sendOTPEmail(email, userName, otp) {
     const transporter = createTransport();
-    
+
     // Get the HTML template
     const htmlTemplate = this.getForgotPasswordTemplate(email, userName, otp);
 
+    console.log('HTML Template:', htmlTemplate);
+
     const mailOptions = {
-      from: `"MERN Coding School" <${process.env.GMAIL_User}>`,
+      from: `"MERN Coding School" <${envConstant.GMAIL_User}>`,
       to: email,
       subject: 'Password Reset OTP - MERN Coding School',
-      html: htmlTemplate
+      html: htmlTemplate,
     };
 
     const info = await transporter.sendMail(mailOptions);
-    
+
     if (!info.messageId) {
       throw new Error(ForgotPasswordConstant.EMAIL_SEND_FAILED);
     }
@@ -115,23 +119,32 @@ class ForgotPasswordService {
 
     return {
       success: true,
-      message: ForgotPasswordConstant.PASSWORD_RESET_SUCCESS
+      message: ForgotPasswordConstant.PASSWORD_RESET_SUCCESS,
     };
   }
 
   getForgotPasswordTemplate(email, userName, otp) {
     // Construct path to the HTML template file
-    const templatePath = path.join(__dirname, '../../../template/email/forgotPassword.html');
-    
+    const templatePath = path.join(
+      __dirname,
+      '../../../template/email/forgotPassword.html'
+    );
+
     // Read the HTML template file
     const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
-    
+    console.log('HTML Template Path:', templatePath , htmlTemplate);
+
     // Replace placeholders with actual values
+    console.log('email:', email);
+    console.log('userName:', userName);
+    console.log('otp:', otp);
     const processedTemplate = htmlTemplate
       .replace(/{{userName}}/g, userName)
-      .replace(/{{email}}/g, email)
-      .replace(/{{otp}}/g, otp);
-    
+      .replace(/{{otp}}/g, otp)
+      .replace(/{{userEmail}}/g, email);
+
+      console.log('Processed Template:', processedTemplate);
+
     return processedTemplate;
   }
 }

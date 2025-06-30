@@ -5,7 +5,6 @@ const router = Router();
 import upload from '../utils/multerUtils.mjs';
 // Import new forgot password routes
 
-
 // import GoogleOAuth2 from '../OAuth2Client/GoogleStrategy.js';
 
 // import { getAlbum } from '../controllers/album.controller.js';
@@ -86,6 +85,5 @@ router.get('/find/testimonial', Find_Testimonial_Controller);
 // router.post('/reset/password', ResetPassword_Controller);
 
 // New improved forgot password routes - Use /v1 since /api is already prefixed in app.mjs
-
 
 export { router as user };

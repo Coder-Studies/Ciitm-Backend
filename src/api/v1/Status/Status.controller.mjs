@@ -15,13 +15,18 @@ import StatusService from './Status.service.mjs';
 import AuthConstant from '../Auth/Auth.constant.mjs';
 import AuthService from '../Auth/Auth.service.mjs';
 import { Update_Status_Validation } from './status.validator.mjs';
+import StudentConstant from '../Student/Student.constant.mjs';
 
 class Status_Controller {
   Find_Student_Status = async (req, res) => {
     try {
       let { uniqueId } = req.params;
 
+      
+
       let find_Status = await StatusUtils.FIND_STATUS_BY_STUDENT_ID(uniqueId);
+
+      console.log('Found Status:', find_Status);
 
       if (!find_Status) {
         throw new Error(StatusConstant.STATUS_NOT_FOUND);
@@ -29,14 +34,15 @@ class Status_Controller {
 
       SendResponse.success(
         res,
-        StatusCodeConstant.OK,
+        StatusCodeConstant.SUCCESS,
         StatusConstant.STATUS_FOUND,
         find_Status
       );
     } catch (error) {
+      console.log('error' , error)
       SendResponse.error(
         res,
-        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        StatusCodeConstant.BAD_REQUEST,
         error.message
       );
     }
@@ -48,25 +54,22 @@ class Status_Controller {
       let { message, applicationStatus } = req.body;
 
       let find_Student = await StudentUtils.FindByStudentId(uniqueId);
+ 
 
-      let email = find_Student.student.email[0];
-
-      let find_User = await AuthUtils.FIND_USER_BY_EMAIL(email);
-
-      if (find_User) {
-        throw new Error(STUDENT_Constant.STUDENT_ALREADY_EXIST);
+      if(!find_Student){
+        throw new Error(StudentConstant.STUDENT_NOT_FOUND);
       }
+
+     
 
       let Authentication_Instance = new AuthenticationSchema();
 
-      if (!find_Student) {
-        throw new Error(STUDENT_Constant.STUDENT_NOT_FOUND);
-      }
-
+   
       let validate = Update_Status_Validation.validate({
         message,
         applicationStatus,
       });
+      console.log('Validation Result:', req.body , validate);
 
       if (validate.error) {
         throw new Error(validate.error.message);
@@ -79,15 +82,13 @@ class Status_Controller {
       });
 
       if (applicationStatus !== 'Approved') {
-        let send_Update_mail = await EmailService.sendReviewMail({
+         await EmailService.sendReviewMail({
           recipientEmail: find_Student.student.email[0],
           name: find_Student.student.firstName,
           uniqueId: uniqueId,
         });
 
-        if (!send_Update_mail) {
-          throw new Error(EmailConstant.EMAIL_NOT_SEND);
-        }
+      
       } else {
         // Generate a more secure password
         const password =
@@ -128,7 +129,7 @@ class Status_Controller {
 
       SendResponse.success(
         res,
-        StatusCodeConstant.OK,
+        StatusCodeConstant.SUCCESS,
         STUDENT_Constant.STATUS_UPDATED,
         Updated_Student_Status
       );

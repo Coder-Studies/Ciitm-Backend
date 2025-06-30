@@ -22,14 +22,13 @@ class TeacherService {
           },
         ],
       });
-            if (!CreateTeacher) {
-                throw new Error(TeacherConstant.Teacher_NotCreated);
-            }
+      if (!CreateTeacher) {
+        throw new Error(TeacherConstant.Teacher_NotCreated);
+      }
 
       return CreateTeacher;
     } catch (error) {
-    
-        throw new Error(error.message || TeacherConstant.Teacher_NotCreated);
+      throw new Error(error.message || TeacherConstant.Teacher_NotCreated);
     }
   }
 
@@ -45,7 +44,7 @@ class TeacherService {
     }
   }
 
-   validateTeacherData(teacherData) {
+  validateTeacherData(teacherData) {
     const { error } = Teacher_validation.validate({
       name: teacherData.name,
       email: teacherData.email,

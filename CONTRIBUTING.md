@@ -3,6 +3,7 @@
 Thank you for your interest in contributing to the CIITM Backend project! We welcome contributions from the community while maintaining the integrity and vision of this educational technology platform.
 
 ## 📋 Table of Contents
+
 - [Code of Conduct](#code-of-conduct)
 - [How to Contribute](#how-to-contribute)
 - [Project Vision](#project-vision)
@@ -27,6 +28,7 @@ By participating in this project, you agree to abide by our community standards:
 This project is the **intellectual property** of [abhishek-nexgen-dev](https://github.com/abhishek-nexgen-dev) and represents a vision for modernizing educational technology in India.
 
 ### ⚠️ Important Guidelines:
+
 - ✅ **Personal Use**: You can use this project for learning and add it to your resume
 - ✅ **Open Source Contributions**: Contribute features, bug fixes, and improvements
 - ❌ **No Commercial Hosting**: Don't host this as a commercial service
@@ -36,6 +38,7 @@ This project is the **intellectual property** of [abhishek-nexgen-dev](https://g
 ## 🚀 How to Contribute
 
 ### 1. Fork and Clone
+
 ```bash
 # Fork the repository on GitHub
 # Clone your fork
@@ -44,6 +47,7 @@ cd Ciitm-Backend
 ```
 
 ### 2. Set Up Development Environment
+
 ```bash
 # Install dependencies
 pnpm install
@@ -57,6 +61,7 @@ pnpm run start:dev
 ```
 
 ### 3. Create a Branch
+
 ```bash
 # Create a feature branch
 git checkout -b feature/your-feature-name
@@ -67,18 +72,21 @@ git checkout -b bugfix/issue-description
 ## 🛠️ Development Guidelines
 
 ### Code Style
+
 - **ESLint**: Follow the configured ESLint rules
 - **Prettier**: Use Prettier for code formatting
 - **ES6 Modules**: Use modern JavaScript/ES6+ features
 - **Comments**: Write clear, concise comments for complex logic
 
 ### Naming Conventions
+
 - **Files**: Use kebab-case for files (`user-controller.mjs`)
 - **Functions**: Use camelCase (`getUserData`)
 - **Constants**: Use UPPER_SNAKE_CASE (`API_VERSION`)
 - **Classes**: Use PascalCase (`UserService`)
 
 ### Testing
+
 ```bash
 # Run tests
 pnpm test
@@ -93,26 +101,31 @@ pnpm run lint
 ## 📝 Contribution Types
 
 ### 🐛 Bug Fixes
+
 - Fix existing bugs and issues
 - Improve error handling
 - Optimize performance
 
 ### ✨ New Features
+
 - Add new educational features
 - Improve user experience
 - Enhance security measures
 
 ### 📚 Documentation
+
 - Improve README and guides
 - Add code comments
 - Create API documentation
 
 ### 🎨 UI/UX Improvements
+
 - Enhance frontend integration
 - Improve responsive design
 - Add accessibility features
 
 ### 🔧 Infrastructure
+
 - Improve build processes
 - Add CI/CD improvements
 - Database optimizations
@@ -120,28 +133,34 @@ pnpm run lint
 ## 🔄 Pull Request Process
 
 ### Before Submitting
+
 1. **Test Thoroughly**: Ensure your changes work correctly
 2. **Run Tests**: All tests should pass
 3. **Code Quality**: Follow linting rules
 4. **Documentation**: Update relevant documentation
 
 ### PR Template
+
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Documentation update
 - [ ] Performance improvement
 
 ## Testing
+
 - [ ] Tests pass locally
 - [ ] New tests added (if applicable)
 - [ ] Manual testing completed
 
 ## Checklist
+
 - [ ] Code follows project guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated
@@ -149,6 +168,7 @@ Brief description of changes
 ```
 
 ### Review Process
+
 1. **Automated Checks**: Must pass all CI/CD checks
 2. **Code Review**: Maintainer will review your code
 3. **Feedback**: Address any requested changes
@@ -164,13 +184,16 @@ By contributing to this project, you agree that:
 4. **You cooperate** with the maintainer's vision and guidelines
 
 ### Resume/Portfolio Use
+
 ✅ **You are encouraged to:**
+
 - Add this project to your resume
 - Showcase your contributions in your portfolio
 - Mention your open-source contributions
 - Use this as a learning experience
 
 ❌ **You must not:**
+
 - Claim ownership of the project idea
 - Use it for commercial purposes without permission
 - Host it as a commercial service
@@ -179,6 +202,7 @@ By contributing to this project, you agree that:
 ## 🎓 Learning Opportunities
 
 Contributing to this project provides valuable learning in:
+
 - **Modern Node.js/Express.js** development
 - **MongoDB** database design
 - **Real-time communication** with Socket.io
@@ -198,18 +222,22 @@ Contributing to this project provides valuable learning in:
 ## 🔍 Issue Guidelines
 
 ### Before Creating an Issue
+
 1. **Search existing issues** to avoid duplicates
 2. **Check the documentation** and README first
 3. **Provide clear reproduction steps** for bugs
 4. **Include system information** (OS, Node.js version, etc.)
 
 ### Issue Templates
+
 #### Bug Report
+
 ```markdown
 **Bug Description**
 A clear description of the bug
 
 **Steps to Reproduce**
+
 1. Step one
 2. Step two
 3. Step three
@@ -221,6 +249,7 @@ What should happen
 What actually happens
 
 **Environment**
+
 - OS: [e.g., Windows 11, Ubuntu 22.04]
 - Node.js version: [e.g., 18.17.0]
 - Browser: [if applicable]
@@ -230,6 +259,7 @@ Screenshots, logs, or additional information
 ```
 
 #### Feature Request
+
 ```markdown
 **Feature Description**
 Clear description of the proposed feature
@@ -250,12 +280,14 @@ Mockups, examples, or references
 ## 🛡️ Security
 
 ### Reporting Security Issues
+
 - **DO NOT** create public issues for security vulnerabilities
 - **Email directly**: abhishek.nexgen.dev@gmail.com
 - **Subject**: "Security Issue - CIITM Backend"
 - **Include**: Detailed description and reproduction steps
 
 ### Security Best Practices
+
 - Keep dependencies updated
 - Follow OWASP guidelines
 - Use secure coding practices
@@ -265,6 +297,7 @@ Mockups, examples, or references
 ## 🔧 Environment Setup Details
 
 ### Required Software
+
 ```bash
 # Node.js (v18+ recommended)
 node --version
@@ -277,14 +310,18 @@ pnpm --version
 ```
 
 ### IDE Setup (VS Code Recommended)
+
 Install these extensions:
+
 - ESLint
 - Prettier
 - MongoDB for VS Code
 - REST Client (for API testing)
 
 ### Environment Variables
+
 Create `.env` file with these variables:
+
 ```env
 # Required
 MONGO_URL=mongodb://localhost:27017/ciitm_dev
@@ -302,12 +339,14 @@ Cloudinary_API_Secret=your_api_secret
 ## 📚 Documentation Standards
 
 ### Code Documentation
+
 - **Functions**: Document parameters and return values
 - **Classes**: Document purpose and usage
 - **Complex Logic**: Add inline comments
 - **API Endpoints**: Document request/response format
 
 ### Documentation Example
+
 ```javascript
 /**
  * Creates a new student admission record
@@ -326,6 +365,7 @@ async function createAdmission(admissionData) {
 ## 🧪 Testing Guidelines
 
 ### Test Structure
+
 ```bash
 src/
 ├── __tests__/              # Test files
@@ -335,6 +375,7 @@ src/
 ```
 
 ### Writing Tests
+
 ```javascript
 import { jest, describe, it, expect } from '@jest/globals';
 import { createAdmission } from '../api/v1/Admission/Admission.controller.mjs';
@@ -347,6 +388,7 @@ describe('Admission Controller', () => {
 ```
 
 ### Test Coverage
+
 - Aim for 80%+ code coverage
 - Test both success and error cases
 - Include edge cases
@@ -355,12 +397,15 @@ describe('Admission Controller', () => {
 ## 🚀 Release Process
 
 ### Version Numbering
+
 We follow [Semantic Versioning](https://semver.org/):
+
 - **MAJOR**: Breaking changes
 - **MINOR**: New features (backward compatible)
 - **PATCH**: Bug fixes (backward compatible)
 
 ### Release Checklist
+
 - [ ] All tests pass
 - [ ] Documentation updated
 - [ ] CHANGELOG.md updated
@@ -371,6 +416,7 @@ We follow [Semantic Versioning](https://semver.org/):
 ## 🌟 Best Practices
 
 ### Git Workflow
+
 ```bash
 # Always start from main
 git checkout main
@@ -388,6 +434,7 @@ git push origin feature/new-feature
 ```
 
 ### Commit Message Format
+
 ```
 type(scope): subject
 
@@ -397,6 +444,7 @@ footer (optional)
 ```
 
 Types:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -406,6 +454,7 @@ Types:
 - `chore`: Maintenance tasks
 
 ### Code Review Checklist
+
 - [ ] Code follows project conventions
 - [ ] Tests are included and pass
 - [ ] Documentation is updated
@@ -418,17 +467,21 @@ Types:
 We maintain a list of our top contributors:
 
 ### 🥇 Core Contributors
+
 - [abhishek-nexgen-dev](https://github.com/abhishek-nexgen-dev) - Project Creator & Maintainer
 
 ### 🥈 Major Contributors
-*Coming soon - your name could be here!*
+
+_Coming soon - your name could be here!_
 
 ### 🥉 Contributors
-*All contributors are listed in [CONTRIBUTORS.md](CONTRIBUTORS.md)*
+
+_All contributors are listed in [CONTRIBUTORS.md](CONTRIBUTORS.md)_
 
 ## 📊 Contribution Statistics
 
 We track and celebrate:
+
 - Lines of code contributed
 - Issues resolved
 - Features implemented
@@ -438,6 +491,7 @@ We track and celebrate:
 ## 🎯 Monthly Focus Areas
 
 We rotate focus areas monthly:
+
 - **January**: Security & Performance
 - **February**: Testing & Documentation
 - **March**: New Features
@@ -455,4 +509,4 @@ We rotate focus areas monthly:
 
 **Thank you for contributing to the future of education technology in India! 🇮🇳**
 
-*This project is maintained with ❤️ by [abhishek-nexgen-dev](https://github.com/abhishek-nexgen-dev)*
+_This project is maintained with ❤️ by [abhishek-nexgen-dev](https://github.com/abhishek-nexgen-dev)_

@@ -16,8 +16,8 @@ const ForgotPasswordSchema = new Schema(
       required: true,
     },
   },
-  { 
-    timestamps: true
+  {
+    timestamps: true,
   }
 );
 
@@ -25,12 +25,12 @@ const ForgotPasswordSchema = new Schema(
 ForgotPasswordSchema.index({ otpExpiry: 1 }, { expireAfterSeconds: 0 });
 
 import { randomInt } from 'crypto';
-ForgotPasswordSchema.statics.generateOTP = function() {
+ForgotPasswordSchema.statics.generateOTP = function () {
   // Generate 6-digit OTP using a cryptographically secure method
   return randomInt(100000, 1000000).toString();
 };
 
-ForgotPasswordSchema.statics.createOTPExpiry = function() {
+ForgotPasswordSchema.statics.createOTPExpiry = function () {
   // Create expiry time 10 minutes from now
   return new Date(Date.now() + 10 * 60 * 1000);
 };

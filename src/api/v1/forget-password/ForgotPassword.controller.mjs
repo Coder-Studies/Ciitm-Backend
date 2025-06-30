@@ -5,7 +5,7 @@ import ForgotPasswordConstant from './ForgotPassword.constant.mjs';
 import StatusCodeConstant from '../../../constant/StatusCode.constant.mjs';
 import {
   ForgotPasswordRequestValidator,
-  ValidatePasswordResetValidator
+  ValidatePasswordResetValidator,
 } from './ForgotPassword.validator.mjs';
 
 class ForgotPasswordController {
@@ -15,30 +15,28 @@ class ForgotPasswordController {
    */
   async forgotPasswordRequest(req = request, res = response) {
     try {
-      console.log('Forgot Password Request:', req.body);
+ 
       const { email } = req.body;
 
       // Validate email using Joi validator
       const { error } = ForgotPasswordRequestValidator.validate({ email });
       if (error) {
-      return SendResponse.error(
-        res,
-        StatusCodeConstant.BAD_REQUEST,
-        error.details[0].message
-      );
+       throw new Error(error.details[0].message);
       }
 
       const result = await ForgotPasswordService.initiatePasswordReset(email);
+      console.log('Forgot Password Result:', result);
 
-      SendResponse.success(
-      res,
-      StatusCodeConstant.SUCCESS,
-      result.message,
-      { email: email }
-      );
+      SendResponse.success(res, StatusCodeConstant.SUCCESS, result.message, {
+        email: email,
+      });
     } catch (error) {
       console.error('Forgot Password Request Error:', error);
-      this.handleError(error, res, 'Error processing forgot password request');
+      SendResponse.error(
+        res,
+        StatusCodeConstant.BAD_REQUEST,
+        error.message || ForgotPasswordConstant.GENERIC_ERROR
+      );
     }
   }
 
@@ -49,14 +47,15 @@ class ForgotPasswordController {
   async validatePasswordReset(req = request, res = response) {
     try {
       const { email, otp, newPassword } = req.body;
+      console.log('Request Body:', req.body);
 
       // Validate request body using Joi validator
       const { error } = ValidatePasswordResetValidator.validate({
         email,
         otp,
-        newPassword
+        newPassword,
       });
-      
+
       if (error) {
         return SendResponse.error(
           res,
@@ -71,19 +70,20 @@ class ForgotPasswordController {
         newPassword
       );
 
-      SendResponse.success(
-        res,
-        StatusCodeConstant.SUCCESS,
-        result.message,
-        { email: email }
-      );
+      SendResponse.success(res, StatusCodeConstant.SUCCESS, result.message, {
+        email: email,
+      });
     } catch (error) {
       console.error('Validate Password Reset Error:', error);
-      
+
       // Check if it's a known error message
-      const isKnownError = Object.values(ForgotPasswordConstant).includes(error.message);
-      const statusCode = isKnownError ? StatusCodeConstant.BAD_REQUEST : StatusCodeConstant.INTERNAL_SERVER_ERROR;
-      
+      const isKnownError = Object.values(ForgotPasswordConstant).includes(
+        error.message
+      );
+      const statusCode = isKnownError
+        ? StatusCodeConstant.BAD_REQUEST
+        : StatusCodeConstant.INTERNAL_SERVER_ERROR;
+
       SendResponse.error(
         res,
         statusCode,

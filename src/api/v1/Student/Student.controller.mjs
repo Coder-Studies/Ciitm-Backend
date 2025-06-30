@@ -8,6 +8,7 @@ class Student_Controller {
   async FindByCourseAndSemester(req, res) {
     try {
       const { course, semester, PerPage, Limit } = req.query;
+      console.log('FindByCourseAndSemester Request:', req.query);
 
       let { error } = studentSearchQuerySchema.validate(req.query);
 
@@ -17,7 +18,7 @@ class Student_Controller {
 
       const students = await StudentUtils.FindStudentBySemesterAndCourse({
         course,
-        semester,
+        semester: Number(semester),
         PerPage,
         Limit,
       });
@@ -48,11 +49,11 @@ class Student_Controller {
       const { uniqueId } = req.params;
 
       if (!uniqueId || typeof uniqueId !== 'string') {
-       throw new Error(StudentConstant.INVALID_UNIQUE_ID);
+        throw new Error(StudentConstant.INVALID_UNIQUE_ID);
       }
 
       const student = await StudentUtils.FindByStudentId(uniqueId);
-      const isValid = !!student;  // Assuming it will never be "{}"
+      const isValid = !!student; // Assuming it will never be "{}"
 
       const message = isValid
         ? StudentConstant.UNIQUE_ID_VALID
