@@ -4,19 +4,16 @@ import courseModel from '../Course/course.model.mjs';
 
 class Student_Utils {
   FindByStudentId = async (studentId) => {
-    return Admission.findOne({ uniqueId: studentId }).select(
-      'uniqueId student.firstName student.lastName student.middleName student.email student.contactNumber student.avtar fee isAdmitted semester course_Id'
-    );
+    return Admission.findOne({ uniqueId: studentId });
   };
 
   FindStudentIdByUniqueId = async (uniqueId) => {
-
     const student = await Admission.findOne({ uniqueId: uniqueId });
     if (!student) {
       throw new Error('Student not found');
     }
     return student._id;
-  }
+  };
 
   FindStudentBySemesterAndCourse = async ({
     semester,
@@ -42,7 +39,7 @@ class Student_Utils {
         skip: (PerPage - 1) * (Limit || 50),
       };
 
-      let a = Admission.find(query, null ,options).select(
+      let a = Admission.find(query, null, options).select(
         'uniqueId student.firstName student.lastName student.middleName student.email student.contactNumber isAdmitted'
       );
 
