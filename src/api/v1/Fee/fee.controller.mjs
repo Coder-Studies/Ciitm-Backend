@@ -55,6 +55,7 @@ const FeeController = {
   Update_Fee: async (req, res) => {
     try {
       let { uniqueId, paymentMethod, Paid_amount } = req.body;
+      console.log('Request Body:', req.body);
 
       let { fee, _id } = await feeUtils.TOTAL_FEE_PAID_BY_UNIQUE_ID(uniqueId);
 

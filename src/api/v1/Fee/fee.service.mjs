@@ -1,11 +1,13 @@
 import Admission from '../Admission/Admission.model.mjs';
 import Fee from './fee.model.mjs';
+import Crypto from 'crypto';
 
 class Fee_Service {
   Update_Student_fee = async ({
     uniqueId,
     Paid_amount,
     totalFee,
+    paymentId,
     paymentMethod,
   }) => {
     try {
@@ -32,8 +34,8 @@ class Fee_Service {
         { uniqueId: uniqueId },
         {
           $set: {
-            'fee.amount_paid': currentPaid += Paid_amount,
-            'fee.amount_due': currentDue -= Paid_amount,
+            'fee.amount_paid': Number(currentPaid) + Number(Paid_amount),
+            'fee.amount_due': Number(currentDue) - Number(Paid_amount),
           },
         },
         { new: true, runValidators: true }
@@ -44,12 +46,13 @@ class Fee_Service {
       }
 
       let feeCreate = await Fee.create({
-        Unique_id: uniqueId,
+        uniqueId: uniqueId,
         studentId: foundStudent._id,
         amountPaid: Paid_amount,
         totalFee: totalFee,
         dueFee: currentDue - Paid_amount,
         paymentMethod: paymentMethod,
+        paymentId:  paymentId || `PAY-${Crypto.randomBytes(16).toString('hex')}`,
       });
 
       return feeCreate;

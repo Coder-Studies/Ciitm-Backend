@@ -5,18 +5,23 @@ const { Schema } = mongoose;
 
 const feeSchema = new Schema(
   {
-    Unique_id: {
+    uniqueId: {
       type: String,
+      trim: true,
       required: true,
     },
 
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'StudentAuthentication',
+      required: true,
     },
 
-    PaymentId: {
+    paymentId: {
       type: String,
+      trim: true,
+      unique: true,
+
     },
 
     amountPaid: {
@@ -39,9 +44,7 @@ const feeSchema = new Schema(
     dueFee: {
       type: Number,
       required: true,
-      default: function () {
-        return Math.max(0, this.totalFee - this.amountPaid - this.discount);
-      },
+      default: 0, // Computed below in pre-save
     },
 
     paymentDate: {
@@ -59,11 +62,15 @@ const feeSchema = new Schema(
   { timestamps: true }
 );
 
+// Calculate dueFee before saving
+feeSchema.pre('save', function (next) {
+  this.dueFee = Math.max(0, this.totalFee - this.amountPaid - this.discount);
 
-feeSchema.methods.find_Fee = async function (feeId) {
-  let find_fee = await course.findById(feeId);
-  return find_fee.CPrice;
-};
+  next();
+});
+
+// If needed, you can define custom instance methods here
+// Example: feeSchema.methods.getSummary = function () { ... }
 
 const Fee = mongoose.model('Fee', feeSchema);
 
