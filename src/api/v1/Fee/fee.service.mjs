@@ -10,6 +10,7 @@ class Fee_Service {
     paymentId,
     paymentMethod,
   }) => {
+    console.log('Payment Id:', paymentId || `PAY-${Crypto.randomBytes(16).toString('hex')}`);
     try {
       console.log(
         'Update_Student_fee called with: fee Service',
@@ -52,7 +53,7 @@ class Fee_Service {
         totalFee: totalFee,
         dueFee: currentDue - Paid_amount,
         paymentMethod: paymentMethod,
-        paymentId:  paymentId || `PAY-${Crypto.randomBytes(16).toString('hex')}`,
+        PaymentId: paymentId || `PAY-${Crypto.randomBytes(16).toString('hex')}`,
       });
 
       return feeCreate;

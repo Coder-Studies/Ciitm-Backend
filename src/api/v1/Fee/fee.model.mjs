@@ -17,7 +17,7 @@ const feeSchema = new Schema(
       required: true,
     },
 
-    paymentId: {
+    PaymentId: {
       type: String,
       trim: true,
       unique: true,
