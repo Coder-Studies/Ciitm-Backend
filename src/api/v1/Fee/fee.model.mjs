@@ -1,25 +1,27 @@
 import mongoose from 'mongoose';
-import { Update_Student_fee } from '../Service/student.service.js';
-import Admission from '../Admission/Admission.model.mjs';
+
 
 const { Schema } = mongoose;
 
 const feeSchema = new Schema(
   {
-    Unique_id: {
+    uniqueId: {
       type: String,
+      trim: true,
       required: true,
     },
 
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'StudentAuthentication',
+      required: true,
     },
 
     PaymentId: {
       type: String,
-      required: true,
+      trim: true,
       unique: true,
+
     },
 
     amountPaid: {
@@ -42,9 +44,7 @@ const feeSchema = new Schema(
     dueFee: {
       type: Number,
       required: true,
-      default: function () {
-        return Math.max(0, this.totalFee - this.amountPaid - this.discount);
-      },
+      default: 0, // Computed below in pre-save
     },
 
     paymentDate: {
@@ -55,41 +55,22 @@ const feeSchema = new Schema(
 
     paymentMethod: {
       type: String,
-      enum: ['cash', 'credit_card', 'bank_transfer', 'online_payment'],
+      enum: ['Cash', 'Cheque', 'Online Transfer', 'UPI', 'Card Payment'],
       required: true,
     },
   },
   { timestamps: true }
 );
 
-feeSchema.pre('save', async function (next) {
-  try {
-    let find_Student = Admission.findOne({ uniqueId: this.Unique_id });
+// Calculate dueFee before saving
+feeSchema.pre('save', function (next) {
+  this.dueFee = Math.max(0, this.totalFee - this.amountPaid - this.discount);
 
-    if (!find_Student) {
-      throw new Error('Failed to Find Student');
-    }
-
-    this.studentId = find_Student._id;
-
-    let Update_fee = await Update_Student_fee({
-      uniqueId: this.Unique_id,
-      Paid_amount: this.amountPaid,
-    });
-
-    if (find_Student && Update_fee.acknowledged === true) {
-      next();
-    } else {
-      throw new Error('Failed to Update Fee');
-    }
-  } catch (error) {
-    throw new Error(error.message || 'Failed to Find Course');
-  }
+  next();
 });
-feeSchema.methods.find_Fee = async function (feeId) {
-  let find_fee = await course.findById(feeId);
-  return find_fee.CPrice;
-};
+
+// If needed, you can define custom instance methods here
+// Example: feeSchema.methods.getSummary = function () { ... }
 
 const Fee = mongoose.model('Fee', feeSchema);
 

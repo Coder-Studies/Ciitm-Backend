@@ -16,7 +16,7 @@ class ForgotPasswordService {
   async initiatePasswordReset(email) {
     // Check if user exists
     const user = await AuthenticationSchema.findOne({ email: email });
-    
+
     if (!user) {
       // To prevent user enumeration, we return a success message even if the user doesn't exist.
       // The email will simply not be sent, and the process stops here silently.
@@ -132,7 +132,7 @@ class ForgotPasswordService {
 
     // Read the HTML template file
     const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
-    console.log('HTML Template Path:', templatePath , htmlTemplate);
+    console.log('HTML Template Path:', templatePath, htmlTemplate);
 
     // Replace placeholders with actual values
     console.log('email:', email);
@@ -143,7 +143,7 @@ class ForgotPasswordService {
       .replace(/{{otp}}/g, otp)
       .replace(/{{userEmail}}/g, email);
 
-      console.log('Processed Template:', processedTemplate);
+    console.log('Processed Template:', processedTemplate);
 
     return processedTemplate;
   }

@@ -116,6 +116,25 @@ class Album_Controller {
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
   };
+
+  getAll_AlbumName = async (req, res) => {
+    try {
+      let getAlbum = await AlbumUtils.findAllAlbumName();
+
+      if (getAlbum.length < 0) {
+        throw new Error(AlbumConstant.ALBUM_NOT_FOUND);
+      }
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        AlbumConstant.ALBUM_FOUND,
+        getAlbum
+      );
+    } catch (error) {
+      SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
+    }
+  }
 }
 
 export default new Album_Controller();

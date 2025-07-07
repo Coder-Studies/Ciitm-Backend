@@ -22,8 +22,6 @@ class Status_Controller {
     try {
       let { uniqueId } = req.params;
 
-      
-
       let find_Status = await StatusUtils.FIND_STATUS_BY_STUDENT_ID(uniqueId);
 
       console.log('Found Status:', find_Status);
@@ -39,12 +37,8 @@ class Status_Controller {
         find_Status
       );
     } catch (error) {
-      console.log('error' , error)
-      SendResponse.error(
-        res,
-        StatusCodeConstant.BAD_REQUEST,
-        error.message
-      );
+      console.log('error', error);
+      SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
   };
 
@@ -54,22 +48,18 @@ class Status_Controller {
       let { message, applicationStatus } = req.body;
 
       let find_Student = await StudentUtils.FindByStudentId(uniqueId);
- 
 
-      if(!find_Student){
+      if (!find_Student) {
         throw new Error(StudentConstant.STUDENT_NOT_FOUND);
       }
 
-     
-
       let Authentication_Instance = new AuthenticationSchema();
 
-   
       let validate = Update_Status_Validation.validate({
         message,
         applicationStatus,
       });
-      console.log('Validation Result:', req.body , validate);
+      console.log('Validation Result:', req.body, validate);
 
       if (validate.error) {
         throw new Error(validate.error.message);
@@ -82,13 +72,11 @@ class Status_Controller {
       });
 
       if (applicationStatus !== 'Approved') {
-         await EmailService.sendReviewMail({
+        await EmailService.sendReviewMail({
           recipientEmail: find_Student.student.email[0],
           name: find_Student.student.firstName,
           uniqueId: uniqueId,
         });
-
-      
       } else {
         // Generate a more secure password
         const password =

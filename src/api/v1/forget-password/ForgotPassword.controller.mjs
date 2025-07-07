@@ -15,13 +15,12 @@ class ForgotPasswordController {
    */
   async forgotPasswordRequest(req = request, res = response) {
     try {
- 
       const { email } = req.body;
 
       // Validate email using Joi validator
       const { error } = ForgotPasswordRequestValidator.validate({ email });
       if (error) {
-       throw new Error(error.details[0].message);
+        throw new Error(error.details[0].message);
       }
 
       const result = await ForgotPasswordService.initiatePasswordReset(email);

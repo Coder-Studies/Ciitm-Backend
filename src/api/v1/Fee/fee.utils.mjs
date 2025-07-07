@@ -1,23 +1,18 @@
 import Admission from '../Admission/Admission.model.mjs';
 
 class Fee_Utils {
-  Update_Student_Fee = async ({ uniqueId, Paid_amount }) => {
-    let Updated_Fee = Admission.updateOne(
-      { uniqueId: uniqueId },
-      {
-        $set: {
-          'fee.amount_paid': amount,
-          'fee.amount_due': Due_Amount,
-        },
-      },
-      {
-        new: true,
-      }
+  Find_Fee_By_StudentId = async (uniqueId) => {
+    return Admission.findOne({ uniqueId }).select(
+      'uniqueId student.firstName student.lastName student.middleName student.email student.contactNumber student.avtar fee isAdmitted semester course_Id'
     );
-
-    return Updated_Fee;
   };
 
+  TOTAL_FEE_PAID_BY_UNIQUE_ID = async (uniqueId) => {
+    let fee = Admission.findOne({ uniqueId }).select(
+      'fee.course_Fee fee.amount_paid , _id'
+    );
+    return fee;
+  };
   TOTAL_FEE_PAID = async () => {
     try {
       let TOTAL_ADMISSION = await Admission.find({});

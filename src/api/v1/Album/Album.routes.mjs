@@ -17,6 +17,12 @@ router.delete(
   AlbumController.deleteAlbum
 );
 
+router.get(
+  '/v1/admin/get/all/albumName',
+  AuthMiddleware.Admin,
+  AlbumController.getAll_AlbumName
+);
+
 router.get('/v1/user/get/album', AlbumController.getAlbum);
 
 export { router as AlbumRoutes };
