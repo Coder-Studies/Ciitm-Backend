@@ -36,6 +36,8 @@ class Image_Controller {
       }
 
       let Cloudinary = await uploadOnCloudinary(filename);
+      console.log('Cloudinary Response:', Cloudinary.url);
+
 
       if (!Cloudinary) {
         throw new Error(AlbumConstant.CLOUDINARY_ERROR);
@@ -43,18 +45,26 @@ class Image_Controller {
 
       const { error: validationError } = Create_Image_Validator.validate({
         albumName: findAlbum.aName,
-        albumDescription: findAlbum.aDescription,
-        albumImageUrl: Cloudinary.url,
+        url: Cloudinary.url,
       });
+
+
 
       if (validationError) {
         throw new Error(validationError.message);
       }
 
+
+
+      // userID: userID,
+      // albumID: albumID,
+      // url: url,
+
       let createdImage = await ImageService.create({
-        albumName: findAlbum.aName,
-        albumDescription: findAlbum.aDescription,
-        albumImageUrl: Cloudinary.url,
+        userID: find_Admin._id.toString(),
+        albumID: findAlbum._id.toString(),
+
+        url: Cloudinary.url,
       });
 
       if (!createdImage) {
@@ -71,6 +81,7 @@ class Image_Controller {
         createdImage
       );
     } catch (error) {
+      console.error('Error in create_Image:', error);
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
   };
@@ -122,6 +133,8 @@ class Image_Controller {
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
   };
+
+  
 }
 
 export default new Image_Controller();

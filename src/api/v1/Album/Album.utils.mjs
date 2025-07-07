@@ -5,6 +5,10 @@ class Album_Utils {
     return Album.find().sort({ createdAt: -1 });
   };
 
+  findAllAlbumName = async () => {
+    return Album.find({}, { aName: 1, _id: 0 }).sort({ createdAt: -1 }).select('aName');
+  };
+
   FindByAlbumName = async (albumName) => {
     console.log(albumName);
     return Album.findOne({ aName: albumName });
