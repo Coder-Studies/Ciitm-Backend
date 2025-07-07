@@ -38,7 +38,7 @@ const ChatSocket = (io, socket) => {
       // Optional: Verify token if provided
       if (token) {
         try {
-          const email = await Authentication.DecordToken(token);
+          const email = await Authentication.DecodeToken(token);
           if (!email) {
             socket.emit('error', { message: 'Invalid token' });
             return;
@@ -114,7 +114,6 @@ const ChatSocket = (io, socket) => {
       socket.to('chat-room').emit('userJoinedNotification', {
         username,
         studentId,
-        timestamp: new Date().toISOString(),
       });
     }
   });
@@ -126,7 +125,6 @@ const ChatSocket = (io, socket) => {
       socket.to('chat-room').emit('userLeftNotification', {
         username,
         studentId,
-        timestamp: new Date().toISOString(),
       });
     }
   });

@@ -13,7 +13,7 @@ const env_Constant = {
   NODE_ENV: process.env.NODE_ENV,
   GMAIL_Password: process.env.GMAIL_Password,
   isDevelopment: process.env.isDevelopment,
-  HUGGING_FACE_API_KEY: process.env.HUGGING_FACE_API_KEY,
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 };
 
 export default Object.freeze(env_Constant);

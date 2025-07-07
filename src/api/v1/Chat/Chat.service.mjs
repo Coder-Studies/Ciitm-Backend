@@ -4,13 +4,25 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import envConstant from '../../../constant/env.constant.mjs';
+import Redis from 'ioredis';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const AI_REQUEST_COOLDOWN_MS = 10000; // 10 seconds
+const RECENT_MESSAGES_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
+
+const GEMINI_API_KEY = envConstant.GEMINI_API_KEY;
+if (!GEMINI_API_KEY) {
+  throw new Error('Google Gemini API key (GEMINI_API_KEY) is missing. Please set it in your environment variables.');
+}
+
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 class ChatService {
   constructor() {
-    this.userLastAiRequest = new Map(); // Track last AI request timestamp per user
     this.loadPrompt();
   }
 
@@ -33,7 +45,6 @@ class ChatService {
         avatar: messageData.avatar,
         content: messageData.content,
         isAI: messageData.isAI || false,
-        timestamp: messageData.timestamp || new Date(),
         originalQuestion: messageData.originalQuestion || null,
       });
 
@@ -48,7 +59,7 @@ class ChatService {
   async getRecentMessages(limit = 50) {
     try {
       const messages = await ChatMessage.find()
-        .sort({ timestamp: -1 })
+        .sort({ createdAt: -1 })
         .limit(limit)
         .select('-_id -__v -createdAt -updatedAt');
 
@@ -67,7 +78,6 @@ class ChatService {
       avatar,
       content: content.trim(),
       isAI,
-      timestamp: new Date().toISOString(),
       originalQuestion,
     };
   }
@@ -80,62 +90,33 @@ class ChatService {
     return content.substring(4).trim(); // Remove '/ai ' prefix
   }
 
-  canUserRequestAi(studentId) {
-    const lastRequest = this.userLastAiRequest.get(studentId);
+  async canUserRequestAi(studentId) {
+    const lastRequest = await redis.get(`chat:lastAiRequest:${studentId}`);
     if (!lastRequest) return true;
-    
+
     const now = Date.now();
-    const timeSinceLastRequest = now - lastRequest;
-    const cooldownPeriod = 10000; // 10 seconds
-    
-    return timeSinceLastRequest >= cooldownPeriod;
+    const timeSinceLastRequest = now - Number(lastRequest);
+
+    return timeSinceLastRequest >= AI_REQUEST_COOLDOWN_MS;
   }
 
-  updateUserAiRequestTime(studentId) {
-    this.userLastAiRequest.set(studentId, Date.now());
+  async updateUserAiRequestTime(studentId) {
+    await redis.set(`chat:lastAiRequest:${studentId}`, Date.now());
   }
 
   async callAiApi(question) {
     try {
-      // Using Hugging Face Inference API as a free option
-      const response = await fetch(
-        'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium',
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${envConstant.HUGGING_FACE_API_KEY || 'hf_demo'}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            inputs: `${this.systemPrompt}\n\nStudent Question: ${question}\n\nAnswer:`,
-            parameters: {
-              max_length: 150,
-              temperature: 0.7,
-              do_sample: true,
-              repetition_penalty: 1.1,
-            },
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`AI API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      
-      // Clean up the response for speech synthesis
-      let aiResponse = data[0]?.generated_text || 'I apologize, but I cannot process your question right now. Please try again later.';
-      
-      // Remove the original prompt and question from response
-      aiResponse = aiResponse.replace(this.systemPrompt, '').replace(/Student Question:.*?Answer:/s, '').trim();
-      
+      // Use Google Gemini (Generative AI) for response
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+      const prompt = `${this.systemPrompt}\n\nStudent Question: ${question}\n\nAnswer:`;
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      let aiResponse = response.text();
       // Clean up formatting for speech synthesis
       aiResponse = this.cleanResponseForSpeech(aiResponse);
-      
-      return aiResponse;
+      return aiResponse || 'I apologize, but I cannot process your question right now. Please try again later.';
     } catch (error) {
-      console.error('AI API Error:', error);
+      console.error('Gemini AI API Error:', error);
       return 'I apologize, but I cannot process your question right now. Please try again later.';
     }
   }
@@ -167,7 +148,7 @@ class ChatService {
       );
     }
 
-    if (!this.canUserRequestAi(studentId)) {
+    if (!await this.canUserRequestAi(studentId)) {
       return this.createMessage(
         'system',
         'AI',
@@ -177,7 +158,7 @@ class ChatService {
       );
     }
 
-    this.updateUserAiRequestTime(studentId);
+    await this.updateUserAiRequestTime(studentId);
 
     try {
       const aiResponse = await this.callAiApi(question);
@@ -219,7 +200,7 @@ class ChatService {
       const userMessages = totalMessages - aiMessages;
       
       const recentMessages = await ChatMessage.countDocuments({
-        timestamp: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } // Last 24 hours
+        createdAt: { $gte: new Date(Date.now() - RECENT_MESSAGES_WINDOW_MS) } // Last 24 hours
       });
 
       const topUsers = await ChatMessage.aggregate([

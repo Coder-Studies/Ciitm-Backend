@@ -29,10 +29,6 @@ const ChatMessageSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    timestamp: {
-      type: Date,
-      default: Date.now,
-    },
     originalQuestion: {
       type: String,
       default: null,
@@ -44,7 +40,6 @@ const ChatMessageSchema = new mongoose.Schema(
 );
 
 // Index for efficient queries
-ChatMessageSchema.index({ timestamp: -1 });
 ChatMessageSchema.index({ studentId: 1 });
 
 export default mongoose.model('ChatMessage', ChatMessageSchema);
