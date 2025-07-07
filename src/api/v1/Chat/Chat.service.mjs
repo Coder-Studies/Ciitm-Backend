@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import envConstant from '../../../constant/env.constant.mjs';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,33 +12,6 @@ class ChatService {
   constructor() {
     this.userLastAiRequest = new Map(); // Track last AI request timestamp per user
     this.loadPrompt();
-    this.initializeGemini();
-  }
-
-  initializeGemini() {
-    try {
-      if (!envConstant.GOOGLE_GEMINI_API_KEY) {
-        console.warn('Google Gemini API key not found. AI features will be limited.');
-        this.genAI = null;
-        this.model = null;
-        return;
-      }
-
-      this.genAI = new GoogleGenerativeAI(envConstant.GOOGLE_GEMINI_API_KEY);
-      this.model = this.genAI.getGenerativeModel({ 
-        model: "gemini-1.5-flash",
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 200,
-        },
-      });
-    } catch (error) {
-      console.error('Error initializing Google Gemini:', error);
-      this.genAI = null;
-      this.model = null;
-    }
   }
 
   loadPrompt() {
@@ -125,47 +97,45 @@ class ChatService {
 
   async callAiApi(question) {
     try {
-      // Check if Gemini is properly initialized
-      if (!this.model) {
-        console.error('Google Gemini model not initialized');
-        return 'I apologize, but I cannot process your question right now. Please try again later.';
+      // Using Hugging Face Inference API as a free option
+      const response = await fetch(
+        'https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium',
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${envConstant.HUGGING_FACE_API_KEY || 'hf_demo'}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            inputs: `${this.systemPrompt}\n\nStudent Question: ${question}\n\nAnswer:`,
+            parameters: {
+              max_length: 150,
+              temperature: 0.7,
+              do_sample: true,
+              repetition_penalty: 1.1,
+            },
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`AI API error: ${response.status}`);
       }
 
-      // Create the prompt with system instructions and user question
-      const prompt = `${this.systemPrompt}
-
-Student Question: ${question}
-
-Please provide a helpful, concise answer (under 150 words) that is suitable for text-to-speech. Avoid using markdown formatting, code blocks, or special symbols. Keep the language simple and natural.
-
-Answer:`;
-
-      // Generate content using Gemini
-      const result = await this.model.generateContent(prompt);
-      const response = await result.response;
-      let aiResponse = response.text();
-
+      const data = await response.json();
+      
       // Clean up the response for speech synthesis
+      let aiResponse = data[0]?.generated_text || 'I apologize, but I cannot process your question right now. Please try again later.';
+      
+      // Remove the original prompt and question from response
+      aiResponse = aiResponse.replace(this.systemPrompt, '').replace(/Student Question:.*?Answer:/s, '').trim();
+      
+      // Clean up formatting for speech synthesis
       aiResponse = this.cleanResponseForSpeech(aiResponse);
-
-      // Ensure the response is not empty
-      if (!aiResponse || aiResponse.trim().length === 0) {
-        return 'I apologize, but I cannot provide a proper answer right now. Please try rephrasing your question.';
-      }
-
+      
       return aiResponse;
     } catch (error) {
-      console.error('Google Gemini API Error:', error);
-      
-      // Handle specific error cases
-      if (error.message?.includes('API key')) {
-        return 'AI service is currently unavailable. Please contact support.';
-      }
-      
-      if (error.message?.includes('quota')) {
-        return 'AI service quota exceeded. Please try again later.';
-      }
-      
+      console.error('AI API Error:', error);
       return 'I apologize, but I cannot process your question right now. Please try again later.';
     }
   }
@@ -178,12 +148,9 @@ Answer:`;
       .replace(/`(.*?)`/g, '$1') // Remove code backticks
       .replace(/#{1,6}\s/g, '') // Remove header symbols
       .replace(/[<>]/g, '') // Remove angle brackets
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove markdown links, keep text
       .replace(/\n{2,}/g, ' ') // Replace multiple newlines with space
       .replace(/\n/g, ' ') // Replace single newlines with space
       .replace(/\s{2,}/g, ' ') // Replace multiple spaces with single space
-      .replace(/^\s*[-*]\s+/gm, '') // Remove bullet points
-      .replace(/^\s*\d+\.\s+/gm, '') // Remove numbered lists
       .trim();
   }
 
