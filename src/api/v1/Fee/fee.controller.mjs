@@ -22,12 +22,6 @@ const FeeController = {
 
       let Student_Info = await feeUtils.Find_Fee_By_StudentId(uniqueId);
 
-      // if (!Student_Info) {
-      //   throw {
-      //     status: 404,
-      //     message: Payment_Constant.FAILED_TO_FETCH_PAYMENT_INFO,
-      //   };
-      // }
 
       SendResponse.success(
         res,
@@ -46,10 +40,40 @@ const FeeController = {
     }
   },
 
+
+  get_fee_InfoByStudents : async (req, res) => {
+    try {
+      let { uniqueId } = req.query;
+       
+      console.log('Request Query:', req.query.uniqueId);
+
+      if (!uniqueId) {
+        throw new Error(Payment_Constant.UNIQE_ID_NOT_FOUND);
+      }
+      let Student_Info = await StudentUtils.FindByStudentId(uniqueId);
+
+      if (!Student_Info) {
+        throw new Error(StudentConstant.STUDENT_NOT_FOUND);
+      }
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        StudentConstant.STUDENT_FOUND,
+        Student_Info
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.BAD_REQUEST,
+        error.message || Payment_Constant.FAILED_TO_FETCH_PAYMENT_INFO
+      );
+    }
+  },  
+
   Create_Fee: async (req, res) => {
     // Implementation for creating fee
   },
-  Get_Fee: async (req, res) => {
+  Get_Fee_Info: async (req, res) => {
     // Implementation for getting fee
   },
   Update_Fee: async (req, res) => {
