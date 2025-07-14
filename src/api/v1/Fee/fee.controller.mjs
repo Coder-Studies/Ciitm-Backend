@@ -12,24 +12,21 @@ const FeeController = {
   Get_Fee_Info: async (req, res) => {
     try {
       let uniqueId = req.query.uniqueId;
-      console.log('Request Query:', req.query.uniqueId);
-
-      console.log('Student Info:', uniqueId);
+    
 
       if (!uniqueId) {
         throw new Error(Payment_Constant.UNIQE_ID_NOT_FOUND);
       }
 
       let Student_Info = await feeUtils.Find_Fee_By_StudentId(uniqueId);
+    
 
 
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
-        Payment_Constant.FETCH_PAYMENT_INFO_SUCCESS,
-        {
-          Student_Info: Student_Info,
-        }
+        Payment_Constant.FETCH_PAYMENT_INFO,
+        Student_Info,
       );
     } catch (error) {
       SendResponse.error(
@@ -43,6 +40,7 @@ const FeeController = {
 
   get_fee_InfoByStudents : async (req, res) => {
     try {
+     
       let { uniqueId } = req.query;
        
       console.log('Request Query:', req.query.uniqueId);

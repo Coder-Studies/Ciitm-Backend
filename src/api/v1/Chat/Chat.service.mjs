@@ -15,9 +15,7 @@ const __dirname = path.dirname(__filename);
 const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
 const GEMINI_API_KEY = envConstant.GEMINI_API_KEY;
-if (!GEMINI_API_KEY) {
-  throw new Error('Google Gemini API key (GEMINI_API_KEY) is missing. Please set it in your environment variables.');
-}
+
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 

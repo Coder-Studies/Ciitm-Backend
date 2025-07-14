@@ -106,13 +106,18 @@ AuthenticationSchema.statics.checkRole = async function (email) {
 
 AuthenticationSchema.statics.DecodeToken = async function (token) {
   try {
-    let { email } = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('123', email);
-    if (!email) {
-      throw new Error('Unauthorized User: Missing email in token');
+    if (!token) {
+      throw new Error('Token is missing');
     }
-    return email;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (!decoded || !decoded.email) {
+      throw new Error('Invalid token: Missing email in payload');
+    }
+
+    return decoded.email;
   } catch (error) {
+    console.error('Error decoding token:', error.message);
     throw new Error(`Error decoding token: ${error.message}`);
   }
 };
