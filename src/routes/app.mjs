@@ -19,6 +19,7 @@ import { TeacherRouter } from '../api/v1/Teacher/Teacher.routes.mjs';
 import { StudentRouter } from '../api/v1/Student/Student.routes.mjs';
 import forgotPasswordRouter from '../api/v1/forget-password/ForgotPassword.routes.mjs';
 import { Fee_Routes } from '../api/v1/Fee/fee.routes.mjs';
+import { ChatRouter } from '../api/v1/Chat/Chat.routes.mjs';
 
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +42,8 @@ app.use(
   Fee_Routes,
   CourseRouter,
   TeacherRouter,
-  StudentRouter
+  StudentRouter,
+  ChatRouter
 );
 
 export default app;
