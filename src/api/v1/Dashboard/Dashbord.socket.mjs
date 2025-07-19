@@ -1,11 +1,12 @@
 import AdmissionUtils from '../Admission/Admission.utils.mjs';
 import AlbumUtils from '../Album/Album.utils.mjs';
 import Authentication from '../Auth/Auth.model.mjs';
+import AuthUtils from '../Auth/Auth.utils.mjs';
 import ContactUtils from '../Contact/Contact.utils.mjs';
 import courseUtils from '../Course/course.utils.mjs';
 import feeUtils from '../Fee/fee.utils.mjs';
 import ImageUtils from '../Image/Image.utils.mjs';
-import cookie from 'cookie';
+
 
 // This function will handle the logic of fetching the dashboard data
 let find_DashBoard_Data = async (io, socket) => {
@@ -16,7 +17,7 @@ let find_DashBoard_Data = async (io, socket) => {
       throw new Error('Unauthorized User: Missing token');
     }
 
-    let email = await Authentication.DecordToken(token);
+    let email = await AuthUtils.DecodeToken(token);
 
     if (!email) {
       throw new Error('Unauthorized User: Missing email in token');

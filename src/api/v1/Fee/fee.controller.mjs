@@ -70,12 +70,10 @@ const FeeController = {
     }
   },  
 
-  Create_Fee: async (req, res) => {
-    // Implementation for creating fee
-  },
-  Get_Fee_Info: async (req, res) => {
-    // Implementation for getting fee
-  },
+  // Create_Fee: async (req, res) => {
+  //   // Implementation for creating fee
+  // },
+
   Update_Fee: async (req, res) => {
     try {
       let { uniqueId, paymentMethod, Paid_amount } = req.body;
@@ -115,9 +113,9 @@ const FeeController = {
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
   },
-  Delete_Fee: async (req, res) => {
-    // Implementation for deleting fee
-  },
+  // Delete_Fee: async (req, res) => {
+  //   // Implementation for deleting fee
+  // },
 };
 
 export default FeeController;

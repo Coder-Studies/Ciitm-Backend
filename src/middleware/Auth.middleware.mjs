@@ -1,10 +1,11 @@
 import express from 'express';
-const { request, response, next } = express;
+const { request, response } = express;
 
 import Authentication from '../api/v1/Auth/Auth.model.mjs';
+import AuthUtils from '../api/v1/Auth/Auth.utils.mjs';
 
 class Auth_Middleware {
-  Admin = async (req = request, res = response, next = next) => {
+  Admin = async (req = request, res = response, next) => {
     try {
       const token = req.cookies?.token || req.headers['authorization'];
       console.log('Token:', token);
@@ -18,7 +19,8 @@ class Auth_Middleware {
         });
       }
 
-      let email = await Authentication.DecordToken(token);
+      let email = await AuthUtils.DecodeToken(token);
+      console.log('Decoded Email:', email);
 
       if (!email) {
         return res.status(403).json({
@@ -40,7 +42,7 @@ class Auth_Middleware {
         });
       }
 
-      return next();
+      next();
     } catch (error) {
       console.error('Error in Admin Middleware:', error);
       return res.status(error.status || 401).json({
