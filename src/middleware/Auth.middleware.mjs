@@ -1,12 +1,13 @@
 import express from 'express';
-const { request, response } = express;
+const { request, response, next } = express;
+
 import Authentication from '../api/v1/Auth/Auth.model.mjs';
 import SendResponse from '../utils/SendResponse.mjs';
 import StatusCodeConstant from '../constant/StatusCode.constant.mjs';
 import AuthUtils from '../api/v1/Auth/Auth.utils.mjs';
 
 class Auth_Middleware {
-  Admin = async (req = request, res = response, next) => {
+  Admin = async (req = request, res = response, next = next) => {
     try {
       const token = req.cookies?.token || req.headers['authorization'];
       console.log('Token:', token);

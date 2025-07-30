@@ -11,7 +11,6 @@ const env_Constant = {
   GMAIL_User: process.env.GMAIL_User,
   FRONTEND_URL: process.env.FRONTEND_URL,
   NODE_ENV: process.env.NODE_ENV,
-  REDIS_URL: process.env.REDIS_URL,
   GMAIL_Password: process.env.GMAIL_Password,
   isDevelopment: process.env.isDevelopment,
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,

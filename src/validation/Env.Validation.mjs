@@ -10,12 +10,6 @@ let Env_Validator = Joi.object({
     'any.required': 'MONGO_URL is required',
     'string.uri': 'MONGO_URL must be a valid URI',
   }),
-  
-
-  GEMINI_API_KEY: Joi.string().required().messages({
-    'string.base': 'GEMINI_API_KEY must be a string',
-    'any.required': 'GEMINI_API_KEY is required',
-  }),
 
   SESSION_SECRET: Joi.string().min(8).required().messages({
     'string.base': 'SESSION_SECRET must be a string',
@@ -26,12 +20,6 @@ let Env_Validator = Joi.object({
   GOOGLE_CLIENT_ID: Joi.string().required().messages({
     'string.base': 'GOOGLE_CLIENT_ID must be a string',
     'any.required': 'GOOGLE_CLIENT_ID is required',
-  }),
-
-  REDIS_URL: Joi.string().uri().required().messages({
-    'string.base': 'REDIS_URL must be a valid string',
-    'any.required': 'REDIS_URL is required',
-    'string.uri': 'REDIS_URL must be a valid URI',
   }),
 
   JWT_SECRET: Joi.string().min(8).required().messages({
@@ -115,8 +103,6 @@ async function validateEnv() {
     NODE_ENV: process.env.NODE_ENV,
     Razorpay_key: process.env.Razorpay_key,
     Razorpay_secret: process.env.Razorpay_secret,
-    REDIS_URL: process.env.REDIS_URL,
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     FRONTEND_URL: process.env.FRONTEND_URL,
     website_schema: process.env.website_schema,
     PORT: process.env.PORT,

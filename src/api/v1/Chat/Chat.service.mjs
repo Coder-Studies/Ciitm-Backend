@@ -12,7 +12,7 @@ const RECENT_MESSAGES_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const redis = new Redis(envConstant.REDIS_URL || 'redis://localhost:6379');
+const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
 const GEMINI_API_KEY = envConstant.GEMINI_API_KEY;
 
