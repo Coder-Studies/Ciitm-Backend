@@ -91,6 +91,64 @@ DELETE /api/v1/admin/delete/albums
 GET /api/v1/admin/album
 ```
 
+### Delete Single Image
+```
+DELETE /api/v1/admin/delete/image/:id
+```
+
+**Response Example:**
+```json
+{
+  "message": "Image deleted successfully",
+  "deletionSummary": {
+    "imageDeletedFromDB": true,
+    "imageDeletedFromCloudinary": true,
+    "albumUpdated": true,
+    "cloudinaryError": null
+  },
+  "error": false
+}
+```
+
+### Delete Multiple Images (Bulk)
+```
+DELETE /api/v1/admin/delete/images
+```
+
+**Request Body:**
+```json
+{
+  "imageIds": ["64f...", "64g...", "64h..."]
+}
+```
+
+**Response Example:**
+```json
+{
+  "message": "Bulk deletion completed: 3/3 images deleted successfully",
+  "bulkResults": {
+    "totalImages": 3,
+    "imagesDeletedFromDB": 3,
+    "imagesDeletedFromCloudinary": 2,
+    "albumsUpdated": 2,
+    "errors": [],
+    "cloudinaryErrors": [
+      {
+        "imageId": "64f...",
+        "publicId": "sample_image",
+        "error": "Resource not found"
+      }
+    ]
+  },
+  "error": false
+}
+```
+
+### Get Albums
+```
+GET /api/v1/admin/album
+```
+
 ### Get All Images
 ```
 GET /api/v1/admin/images

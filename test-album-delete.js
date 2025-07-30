@@ -202,8 +202,112 @@ async function testBulkAlbumDeletion() {
   }
 }
 
+async function testImageDeletion() {
+  try {
+    console.log('\n\n🖼️  Testing Image Deletion Functionality\n');
+
+    // 1. Get all images
+    console.log('📋 Fetching all images...');
+    const imagesResponse = await fetch(`${BASE_URL}/images`);
+    const imagesData = await imagesResponse.json();
+    
+    if (imagesData.error) {
+      console.error('❌ Error fetching images:', imagesData.message);
+      return;
+    }
+
+    console.log(`✅ Found ${imagesData.data.length} images`);
+    
+    if (imagesData.data.length === 0) {
+      console.log('⚠️  No images found. Create some test images first.');
+      return;
+    }
+
+    // 2. Test single image deletion
+    const imageToDelete = imagesData.data[0];
+    console.log(`\n🗑️  Attempting to delete image: ${imageToDelete._id}`);
+    console.log(`   From album: ${imageToDelete.albumId?.title || 'Unknown'}`);
+
+    const startTime = Date.now();
+
+    const deleteResponse = await fetch(`${BASE_URL}/delete/image/${imageToDelete._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const deleteResult = await deleteResponse.json();
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+
+    if (deleteResult.error) {
+      console.error('❌ Image deletion failed:', deleteResult.message);
+      return;
+    }
+
+    console.log('\n✅ Image deletion completed!');
+    console.log(`⏱️  Deletion took: ${duration}ms`);
+    console.log('📊 Deletion Summary:');
+    console.log(`   Deleted from DB: ${deleteResult.deletionSummary.imageDeletedFromDB}`);
+    console.log(`   Deleted from Cloudinary: ${deleteResult.deletionSummary.imageDeletedFromCloudinary}`);
+    console.log(`   Album updated: ${deleteResult.deletionSummary.albumUpdated}`);
+
+    if (deleteResult.deletionSummary.cloudinaryError) {
+      console.log(`   Cloudinary error: ${deleteResult.deletionSummary.cloudinaryError}`);
+    }
+
+    // 3. Test bulk image deletion if there are more images
+    if (imagesData.data.length > 1) {
+      const imagesToDelete = imagesData.data.slice(1, Math.min(3, imagesData.data.length));
+      const imageIds = imagesToDelete.map(img => img._id);
+
+      console.log(`\n🗑️  Attempting bulk deletion of ${imageIds.length} images`);
+
+      const bulkStartTime = Date.now();
+
+      const bulkDeleteResponse = await fetch(`${BASE_URL}/delete/images`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ imageIds })
+      });
+
+      const bulkDeleteResult = await bulkDeleteResponse.json();
+      const bulkEndTime = Date.now();
+      const bulkDuration = bulkEndTime - bulkStartTime;
+
+      if (bulkDeleteResult.error) {
+        console.error('❌ Bulk image deletion failed:', bulkDeleteResult.message);
+        return;
+      }
+
+      console.log('\n✅ Bulk image deletion completed!');
+      console.log(`⏱️  Bulk deletion took: ${bulkDuration}ms`);
+      console.log('📊 Bulk Deletion Summary:');
+      console.log(`   Total images: ${bulkDeleteResult.bulkResults.totalImages}`);
+      console.log(`   Deleted from DB: ${bulkDeleteResult.bulkResults.imagesDeletedFromDB}`);
+      console.log(`   Deleted from Cloudinary: ${bulkDeleteResult.bulkResults.imagesDeletedFromCloudinary}`);
+      console.log(`   Albums updated: ${bulkDeleteResult.bulkResults.albumsUpdated}`);
+
+      if (bulkDeleteResult.bulkResults.cloudinaryErrors.length > 0) {
+        console.log('\n⚠️  Cloudinary Errors:');
+        bulkDeleteResult.bulkResults.cloudinaryErrors.forEach((error, index) => {
+          console.log(`   ${index + 1}. Image ID: ${error.imageId}`);
+          console.log(`      Public ID: ${error.publicId}`);
+          console.log(`      Error: ${error.error}`);
+        });
+      }
+    }
+
+  } catch (error) {
+    console.error('💥 Image deletion test failed:', error.message);
+  }
+}
+
 async function runAllTests() {
-  console.log('🧪 Starting Album Deletion Tests\n');
+  console.log('🧪 Starting Comprehensive Deletion Tests\n');
   console.log('='.repeat(50));
   
   await testSingleAlbumDeletion();
@@ -211,6 +315,10 @@ async function runAllTests() {
   console.log('\n' + '='.repeat(50));
   
   await testBulkAlbumDeletion();
+  
+  console.log('\n' + '='.repeat(50));
+  
+  await testImageDeletion();
   
   console.log('\n' + '='.repeat(50));
   console.log('🎉 All tests completed!');

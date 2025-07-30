@@ -28,7 +28,7 @@ import {
   deleteAlbum,
   deleteMultipleAlbums,
 } from '../controllers/album.controller.js';
-import { CreateImage, deleteImage, findAllImages } from '../controllers/image.controller.js';
+import { CreateImage, deleteImage, deleteMultipleImages, findAllImages } from '../controllers/image.controller.js';
 import {
   Create_Social_Link,
   Edit_Social_link,
@@ -86,6 +86,8 @@ router.delete('/delete/albums/:id', deleteAlbum);
 router.delete('/delete/albums', deleteMultipleAlbums);
 
 router.delete('/delete/image/:id', deleteImage);
+
+router.delete('/delete/images', deleteMultipleImages);
 
 router.post('/create/image', upload.single('imageFile'), CreateImage);
 
