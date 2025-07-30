@@ -104,6 +104,7 @@ AuthenticationSchema.statics.checkRole = async function (email) {
   }
 };
 
+
 AuthenticationSchema.statics.DecodeToken = async function (token) {
   try {
     if (!token) {
@@ -121,6 +122,7 @@ AuthenticationSchema.statics.DecodeToken = async function (token) {
     throw new Error(`Error decoding token: ${error.message}`);
   }
 };
+
 
 const Authentication = model('Authentication', AuthenticationSchema);
 
