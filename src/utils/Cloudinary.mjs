@@ -50,35 +50,62 @@ export const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-export const Delete_From_Cloudinary = async (url) => {
+export const Delete_From_Cloudinary = async (publicIdOrUrl) => {
   try {
-    let public_id = path.basename(url).split('.')[0] + '.' + url.split('.')[3];
+    let public_id;
+    
+    // If it's a URL, extract the public ID
+    if (publicIdOrUrl.includes('cloudinary.com') || publicIdOrUrl.includes('http')) {
+      // Extract public ID from Cloudinary URL
+      const urlParts = publicIdOrUrl.split('/');
+      const fileWithExtension = urlParts[urlParts.length - 1];
+      public_id = fileWithExtension.split('.')[0];
+    } else {
+      // It's already a public ID
+      public_id = publicIdOrUrl;
+    }
 
-    console.log('Public ID:', public_id);
+    console.log('Public ID to delete:', public_id);
 
     let delete_Image = await cloudinary.uploader.destroy(public_id);
 
-    console.log('Delete Image:', delete_Image);
+    console.log('Cloudinary delete result:', delete_Image);
 
-    if (delete_Image.result === 'ok') {
-      fs.rmSync(`public/upload/${public_id}`);
+    if (delete_Image.result === 'ok' || delete_Image.result === 'not found') {
+      // Try to remove local file if it exists
+      try {
+        const localPath = `public/upload/${public_id}`;
+        if (fs.existsSync(localPath)) {
+          fs.rmSync(localPath);
+        }
+      } catch (fsError) {
+        console.warn('Local file removal failed:', fsError.message);
+      }
 
       let delete_Image_Detail = {
-        message: `Image Deleted From Cloudinary ${public_id}`,
+        message: `Image deleted from Cloudinary: ${public_id}`,
         public_id: public_id,
         deleted: true,
+        cloudinaryResult: delete_Image.result
       };
 
       return delete_Image_Detail;
     }
 
     let failed_Delete_Image = {
-      message: 'Error Deleting Image',
+      message: `Failed to delete image from Cloudinary: ${delete_Image.result}`,
+      public_id: public_id,
       deleted: false,
+      cloudinaryResult: delete_Image.result
     };
 
     return failed_Delete_Image;
   } catch (error) {
-    throw Error(error.message);
+    console.error('Cloudinary deletion error:', error);
+    return {
+      message: `Error deleting from Cloudinary: ${error.message}`,
+      deleted: false,
+      error: error.message
+    };
   }
 };

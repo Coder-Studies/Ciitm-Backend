@@ -1,95 +1,155 @@
-// import jwt from 'jsonwebtoken';
-// import logger from '../middleware/loggerMiddleware.js';
-// import dotenv from 'dotenv';
-// import albumSchema from '../models/album.model.js';
-// import imageSchema from '../models/image.model.js';
-// import fs from 'fs';
-// import {
-//   uploadOnCloudinary,
-//   Delete_From_Cloudinary,
-// } from '../utils/Cloudinary.mjs';
+import jwt from 'jsonwebtoken';
+import logger from '../middleware/loggerMiddleware.js';
+import dotenv from 'dotenv';
+import Album from '../models/album.model.js';
+import Image from '../models/image.model.js';
+import {
+  uploadOnCloudinary,
+  Delete_From_Cloudinary,
+} from '../utils/Cloudinary.mjs';
 
-// import { ImageSchemaJoi } from '../validation/ImageSchema.Joi.js';
-// import Authentication from '../api/v1/Auth/Auth.model.mjs';
-// import { Admin_Contant } from '../constant/Admin.constant.js';
-// import { Album_Contant } from '../constant/Album.constant.js';
-// import { Image_Constant } from '../constant/Image.const.js';
-// import Album from '../models/album.model.js';
-// import path from 'path';
+dotenv.config();
 
-// export const CreateImage =
+export const CreateImage = async (req, res) => {
+  try {
+    const { title, description, albumId } = req.body;
+    const token = req.cookies.token;
 
-// export const deleteImage = async (req, res) => {
-//   try {
-//     let { id } = req.params;
+    if (!token) {
+      return res.status(401).json({
+        message: 'Unauthorized',
+        error: true
+      });
+    }
 
-//     let findImage = await imageSchema.findById(id).populate('albumID');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-//     if (!findImage) {
-//       let error = new Error('image Not Found');
-//       error.status = 404;
-//       throw error;
-//     }
+    if (!req.file) {
+      return res.status(400).json({
+        message: 'Image file is required',
+        error: true
+      });
+    }
 
-//     let findAlbum = await albumSchema.findById(findImage.albumID);
+ 
+    const cloudinaryResult = await uploadOnCloudinary(req.file.filename);
 
-//     let DeletedImage = await Delete_From_Cloudinary(findImage.url);
+    if (cloudinaryResult.error) {
+      return res.status(400).json({
+        message: 'Error uploading image to Cloudinary',
+        error: true
+      });
+    }
 
-//     let Delete_Image = imageSchema.findByIdAndDelete(id);
 
-//     if (DeletedImage.deleted) {
-//       let Delete_Image = await imageSchema.findByIdAndDelete(id);
+    const newImage = new Image({
+      title,
+      description,
+      url: cloudinaryResult.url,
+      publicId: cloudinaryResult.public_id,
+      albumId,
+      uploadedBy: decoded.id
+    });
 
-//       if (!Delete_Image) {
-//         let error = new Error('Error Deleting Image');
-//         error.status = 500;
-//         throw error;
-//       }
+    const savedImage = await newImage.save();
 
-//       let indexOf = (id) => findAlbum.images.indexOf(id);
+   
+    await Album.findByIdAndUpdate(albumId, {
+      $push: { images: savedImage._id }
+    });
 
-//       findAlbum.images.splice(indexOf(id), 1);
+    res.status(201).json({
+      message: 'Image created successfully',
+      data: savedImage,
+      error: false
+    });
 
-//       await findAlbum.save();
+  } catch (error) {
+    logger.error({ error }, 'Error creating image');
+    res.status(500).json({
+      message: 'Error creating image',
+      error: true
+    });
+  }
+};
 
-//       res.status(200).json({
-//         message: DeletedImage.message,
-//         public_id: DeletedImage.public_id,
-//         Delete_Image: Delete_Image,
-//       });
-//     } else {
-//       res.status(DeletedImage.stack || 404).json({
-//         message: DeletedImage.message,
-//         public_id: DeletedImage.public_id,
-//         findImage: findImage,
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       message: error.message,
-//       error: true,
-//     });
-//   }
-// };
+export const deleteImage = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-// export const findImage =
+    const findImage = await Image.findById(id).populate('albumId');
 
-// export const findAllImages = async (req, res) => {
-//   try {
-//     let Find_All_Images = await imageSchema.find().sort({ createdAt: -1 });
-//     if (!Find_All_Images) {
-//       let error = new Error('No images found');
-//       error.status = 404;
-//       throw error;
-//     }
-//     res.status(200).json({
-//       message: 'All Images found',
-//       data: Find_All_Images,
-//     });
-//   } catch (error) {
-//     res.status(error.status || 500).json({
-//       message: error.message || 'Error fetching images',
-//       error: true,
-//     });
-//   }
-// };
+    if (!findImage) {
+      return res.status(404).json({
+        message: 'Image not found',
+        error: true
+      });
+    }
+
+    const findAlbum = await Album.findById(findImage.albumId);
+
+   
+    const deletedImage = await Delete_From_Cloudinary(findImage.publicId);
+
+    if (deletedImage.deleted) {
+     
+      const deletedImageRecord = await Image.findByIdAndDelete(id);
+
+      if (!deletedImageRecord) {
+        return res.status(500).json({
+          message: 'Error deleting image from database',
+          error: true
+        });
+      }
+
+    
+      if (findAlbum) {
+        const imageIndex = findAlbum.images.indexOf(id);
+        if (imageIndex > -1) {
+          findAlbum.images.splice(imageIndex, 1);
+          await findAlbum.save();
+        }
+      }
+
+      res.status(200).json({
+        message: 'Image deleted successfully',
+        deletedFromCloudinary: deletedImage.message,
+        deletedFromDatabase: true,
+        error: false
+      });
+    } else {
+      res.status(400).json({
+        message: 'Failed to delete image from Cloudinary',
+        cloudinaryError: deletedImage.message,
+        error: true
+      });
+    }
+  } catch (error) {
+    logger.error({ error }, 'Error deleting image');
+    res.status(500).json({
+      message: 'Error deleting image',
+      error: true
+    });
+  }
+};
+
+export const findAllImages = async (req, res) => {
+  try {
+    const images = await Image.find()
+      .populate('albumId', 'title')
+      .populate('uploadedBy', 'name email')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      message: 'Images retrieved successfully',
+      data: images,
+      error: false
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error fetching images');
+    res.status(500).json({
+      message: 'Error fetching images',
+      error: true
+    });
+  }
+};

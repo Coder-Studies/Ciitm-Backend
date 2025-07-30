@@ -1,26 +1,28 @@
 import mongoose from 'mongoose';
 
-const albumSchema = new mongoose.Schema({
+const imageSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
     trim: true
   },
   description: {
     type: String,
     trim: true
   },
-  coverImage: {
-    type: String, // Cloudinary URL
+  url: {
+    type: String,
+    required: true
   },
-  coverImagePublicId: {
-    type: String, // Cloudinary public ID
+  publicId: {
+    type: String,
+    required: true
   },
-  images: [{
+  albumId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Image'
-  }],
-  createdBy: {
+    ref: 'Album',
+    required: true
+  },
+  uploadedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Authentication',
     required: true
@@ -29,4 +31,4 @@ const albumSchema = new mongoose.Schema({
   timestamps: true
 });
 
-export default mongoose.model('Album', albumSchema);
+export default mongoose.model('Image', imageSchema);
