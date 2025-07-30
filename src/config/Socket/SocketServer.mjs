@@ -29,7 +29,7 @@ const PORT = envConstant.PORT || 8000;
 const Start_App = async () => {
   try {
     await validateEnv();
-    await db_connect(); // ⬅️ Ensure async function is awaited
+    await db_connect();
   } catch (error) {
     console.error(error);
     process.exit(1);

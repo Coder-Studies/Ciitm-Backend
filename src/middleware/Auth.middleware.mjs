@@ -1,7 +1,8 @@
 import express from 'express';
 const { request, response } = express;
-
 import Authentication from '../api/v1/Auth/Auth.model.mjs';
+import SendResponse from '../utils/SendResponse.mjs';
+import StatusCodeConstant from '../constant/StatusCode.constant.mjs';
 import AuthUtils from '../api/v1/Auth/Auth.utils.mjs';
 
 class Auth_Middleware {
@@ -11,46 +12,25 @@ class Auth_Middleware {
       console.log('Token:', token);
 
       if (!token) {
-        return res.status(403).json({
-          message: 'Bad Request: Token Not Found',
-          admin: false,
-          Unauthorized: true,
-          error: true,
-        });
+        throw new Error('Token is missing');
       }
 
       let email = await AuthUtils.DecodeToken(token);
-      console.log('Decoded Email:', email);
 
       if (!email) {
-        return res.status(403).json({
-          message: 'Bad Request: Email Not Found',
-          admin: false,
-          Unauthorized: true,
-          error: true,
-        });
+       throw new Error('Invalid token: Missing email in payload');
       }
 
       const findRole = await Authentication.checkRole(email);
 
       if (findRole !== 'admin') {
-        return res.status(403).json({
-          message: 'Bad Request: You are Not Verified Admin',
-          Unauthorized: true,
-          admin: false,
-          error: true,
-        });
+       throw new Error('Unauthorized: Admin access required');
       }
 
       next();
     } catch (error) {
       console.error('Error in Admin Middleware:', error);
-      return res.status(error.status || 401).json({
-        message: error.message || 'Unauthorized User',
-        admin: false,
-        Unauthorized: true,
-        error: true,
-      });
+      SendResponse.error(res, StatusCodeConstant.UNAUTHORIZED , error.message)
     }
   };
 }

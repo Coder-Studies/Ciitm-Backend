@@ -57,6 +57,11 @@ let Env_Validator = Joi.object({
     'string.min': 'GMAIL_Password must have at least 8 characters',
   }),
 
+  GEMINI_API_KEY: Joi.string().required().messages({
+    'string.base': 'GEMINI_API_KEY must be a string',
+    'any.required': 'GEMINI_API_KEY is required',
+  }),
+
   NODE_ENV: Joi.string()
     .valid('development', 'production', 'test')
     .required()
@@ -105,6 +110,7 @@ async function validateEnv() {
     JWT_SECRET: process.env.JWT_SECRET,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     GMAIL_User: process.env.GMAIL_User,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
     GMAIL_Password: process.env.GMAIL_Password,
     NODE_ENV: process.env.NODE_ENV,
     Razorpay_key: process.env.Razorpay_key,

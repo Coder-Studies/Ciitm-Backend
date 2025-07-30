@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import Authentication from './Auth.model.mjs';
 import jwt from 'jsonwebtoken';
 import env_Constant from '../../../constant/env.constant.mjs';
@@ -38,6 +39,25 @@ class AuthUtility {
 
   FindByEmail = async (email) => {
     return Authentication.findOne({ email: email });
+  };
+
+
+  DecodeToken = async function (token) {
+    try {
+      if (!token) {
+        throw new Error('Token is missing');
+      }
+  
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (!decoded || !decoded.email) {
+        throw new Error('Invalid token: Missing email in payload');
+      }
+  
+      return decoded.email;
+    } catch (error) {
+      console.error('Error decoding token:', error.message);
+      throw new Error(`Error decoding token: ${error.message}`);
+    }
   };
 }
 
