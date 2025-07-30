@@ -26,6 +26,7 @@ import {
 import {
   getAlbum,
   deleteAlbum,
+  deleteMultipleAlbums,
 } from '../controllers/album.controller.js';
 import { CreateImage, deleteImage, findAllImages } from '../controllers/image.controller.js';
 import {
@@ -81,6 +82,8 @@ router.post(
 router.delete('/delete/testimonial/:id', Delete_Testimonial_Controller);
 
 router.delete('/delete/albums/:id', deleteAlbum);
+
+router.delete('/delete/albums', deleteMultipleAlbums);
 
 router.delete('/delete/image/:id', deleteImage);
 

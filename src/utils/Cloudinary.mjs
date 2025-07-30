@@ -109,3 +109,105 @@ export const Delete_From_Cloudinary = async (publicIdOrUrl) => {
     };
   }
 };
+
+export const Delete_Multiple_From_Cloudinary = async (publicIds) => {
+  try {
+    if (!Array.isArray(publicIds) || publicIds.length === 0) {
+      return {
+        message: 'No public IDs provided',
+        deleted: false,
+        results: []
+      };
+    }
+
+    console.log(`Batch deleting ${publicIds.length} images from Cloudinary`);
+
+    // Cloudinary supports batch deletion with up to 100 public IDs at once
+    const batchSize = 100;
+    const batches = [];
+    
+    for (let i = 0; i < publicIds.length; i += batchSize) {
+      batches.push(publicIds.slice(i, i + batchSize));
+    }
+
+    const batchResults = await Promise.all(
+      batches.map(async (batch) => {
+        try {
+          // Use Cloudinary's delete_resources method for batch deletion
+          const result = await cloudinary.api.delete_resources(batch);
+          return {
+            success: true,
+            deleted: result.deleted,
+            partial: result.partial,
+            rate_limit_allowed: result.rate_limit_allowed,
+            rate_limit_reset_at: result.rate_limit_reset_at
+          };
+        } catch (error) {
+          console.error('Batch deletion error:', error);
+          return {
+            success: false,
+            error: error.message,
+            batch
+          };
+        }
+      })
+    );
+
+    // Process results
+    let totalDeleted = 0;
+    let totalFailed = 0;
+    const failedIds = [];
+
+    batchResults.forEach(result => {
+      if (result.success) {
+        totalDeleted += Object.keys(result.deleted).length;
+        // Check for partial failures
+        if (result.partial) {
+          Object.entries(result.deleted).forEach(([publicId, status]) => {
+            if (status !== 'deleted') {
+              totalFailed++;
+              failedIds.push({ publicId, status });
+            }
+          });
+        }
+      } else {
+        totalFailed += result.batch ? result.batch.length : 0;
+        if (result.batch) {
+          result.batch.forEach(publicId => {
+            failedIds.push({ publicId, error: result.error });
+          });
+        }
+      }
+    });
+
+    // Clean up local files for successfully deleted images
+    publicIds.forEach(publicId => {
+      try {
+        const localPath = `public/upload/${publicId}`;
+        if (fs.existsSync(localPath)) {
+          fs.rmSync(localPath);
+        }
+      } catch (fsError) {
+        console.warn(`Local file removal failed for ${publicId}:`, fsError.message);
+      }
+    });
+
+    return {
+      message: `Batch deletion completed: ${totalDeleted} deleted, ${totalFailed} failed`,
+      deleted: totalFailed === 0,
+      totalRequested: publicIds.length,
+      totalDeleted,
+      totalFailed,
+      failedIds,
+      batchResults
+    };
+
+  } catch (error) {
+    console.error('Batch Cloudinary deletion error:', error);
+    return {
+      message: `Error in batch deletion: ${error.message}`,
+      deleted: false,
+      error: error.message
+    };
+  }
+};
