@@ -1,57 +1,5 @@
 import Joi from 'joi';
 
-// Unique_id: {
-//   type: String,
-//   required: true,
-// },
-
-// studentId: {
-//   type: mongoose.Schema.Types.ObjectId,
-//   ref: 'StudentAuthentication',
-// },
-
-// PaymentId: {
-//   type: String,
-//   required: true,
-//   unique: true,
-// },
-
-// amountPaid: {
-//   type: Number,
-//   required: true,
-//   default: 0,
-// },
-
-// discount: {
-//   type: Number,
-//   default: 0,
-// },
-
-// totalFee: {
-//   type: Number,
-//   required: true,
-//   min: 0,
-// },
-
-// dueFee: {
-//   type: Number,
-//   required: true,
-//   default: function () {
-//     return Math.max(0, this.totalFee - this.amountPaid - this.discount);
-//   },
-// },
-
-// paymentDate: {
-//   type: Date,
-//   default: Date.now,
-//   required: true,
-// },
-
-// paymentMethod: {
-//   type: String,
-//   enum: ['cash', 'credit_card', 'bank_transfer', 'online_payment'],
-//   required: true,
-// },
 
 export let UpdateFee_Validator = Joi.object({
   uniqueId: Joi.string().required().messages({
@@ -72,6 +20,21 @@ export let UpdateFee_Validator = Joi.object({
         "Payment method must be one of 'Cash', 'Cheque', 'Online Transfer', 'UPI', or 'Card Payment'",
     }),
 
+    PaymentType: Joi.string()
+    .valid(
+      'Admission Fee',
+      'Farewell Fee',
+      'Teacher Day Fee',
+      'Exam Fee',
+      'Semester Fee',
+      'Other'
+    ).required()
+    .messages({
+      'string.empty': 'Payment type is required',
+      'any.required': 'Payment type is required',
+      'any.only':
+        "Payment type must be one of 'Admission Fee', 'Farewell Fee', 'Teacher Day Fee', 'Exam Fee', 'Semester Fee', or 'Other'",
+    }),
   totalFee: Joi.number().required().messages({
     'number.base': 'Total fee must be a number',
     'any.required': 'Total fee is required',

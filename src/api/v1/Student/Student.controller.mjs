@@ -44,6 +44,39 @@ class Student_Controller {
     }
   }
 
+  
+
+  async Get_BILLING_INVOICE(req , res){
+    try {
+      const { uniqueId } = req.query;
+
+      console.log('Get_BILLING_INVOICE Request:', req.query);
+
+      if (!uniqueId) {
+        throw new Error(StudentConstant.UNIQUE_ID_NOT_FOUND);
+      }
+
+      const studentInfo = await StudentUtils.FindByStudentId(uniqueId);
+
+      if (!studentInfo) {
+        throw new Error(StudentConstant.STUDENT_NOT_FOUND);
+      }
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        'Billing invoice fetched successfully',
+        studentInfo
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message || 'Error fetching billing invoice'
+      );
+    }
+  }
+
   async validateUniqueId(req, res) {
     try {
       const { uniqueId } = req.params;

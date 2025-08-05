@@ -70,14 +70,59 @@ const FeeController = {
     }
   },  
 
+  get_Earnings: async (req, res) => {
+    try {
+      let { startDate, endDate } = req.query;
+      console.log('Request Query:', req.query);
+
+      if (!startDate) {
+        throw new Error(Payment_Constant.MISSING_QUERY_PARAMS);
+      }
+
+      // If only startDate is provided, use it for the whole day
+      if (!endDate) {
+        endDate = startDate;
+      }
+
+      // Convert to full-day ISO strings if only date is provided
+      if (/^\d{4}-\d{2}-\d{2}$/.test(startDate)) {
+        startDate = `${startDate}T00:00:00.000Z`;
+      }
+      if (/^\d{4}-\d{2}-\d{2}$/.test(endDate)) {
+        endDate = `${endDate}T23:59:59.999Z`;
+      }
+
+      let earnings = await feeUtils.Get_Earnings_By_Date_Range({
+        startDate,
+        endDate,
+      });
+
+      console.log('Earnings:', earnings);
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        Payment_Constant.EARNINGS_FETCHED_SUCCESSFULLY,
+        earnings
+      );
+    } catch (error) {
+      console.error('Error in get_Earnings:', error.message, error.stack);
+      SendResponse.error(
+        res,
+        StatusCodeConstant.BAD_REQUEST,
+        error.message || Payment_Constant.FAILED_TO_FETCH_EARNINGS
+      );
+    }
+  },
+
   // Create_Fee: async (req, res) => {
   //   // Implementation for creating fee
   // },
 
   Update_Fee: async (req, res) => {
     try {
-      let { uniqueId, paymentMethod, Paid_amount } = req.body;
-      console.log('Request Body:', req.body);
+      let { uniqueId, paymentMethod, Paid_amount , PaymentType} = req.body;
+   
 
       let { fee, _id } = await feeUtils.TOTAL_FEE_PAID_BY_UNIQUE_ID(uniqueId);
 
@@ -90,6 +135,7 @@ const FeeController = {
         Student_id: String(_id),
         paymentMethod,
         Paid_amount,
+        PaymentType,
         totalFee: fee.course_Fee,
       });
 
