@@ -53,6 +53,19 @@ const feeSchema = new Schema(
       required: true,
     },
 
+    PaymentType: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+
+
+    status: {
+      type: String,
+      enum: ['Pending', 'Completed'],
+      default: 'Pending',
+    },
+
     paymentMethod: {
       type: String,
       enum: ['Cash', 'Cheque', 'Online Transfer', 'UPI', 'Card Payment'],
@@ -72,6 +85,11 @@ feeSchema.pre('save', function (next) {
 // If needed, you can define custom instance methods here
 // Example: feeSchema.methods.getSummary = function () { ... }
 
+
+
 const Fee = mongoose.model('Fee', feeSchema);
+
+
+
 
 export default Fee;

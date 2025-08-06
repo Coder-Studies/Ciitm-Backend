@@ -9,17 +9,13 @@ class Fee_Service {
     totalFee,
     paymentId,
     paymentMethod,
+    PaymentType,
   }) => {
-    console.log('Payment Id:', paymentId || `PAY-${Crypto.randomBytes(16).toString('hex')}`);
+  
     try {
-      console.log(
-        'Update_Student_fee called with: fee Service',
-        uniqueId,
-        Paid_amount,
-        totalFee,
-        paymentMethod,
-      );
+   
 
+      console.log('Payment Type:', PaymentType);
       // Await the findOne call
       let foundStudent = await Admission.findOne({ uniqueId: uniqueId });
 
@@ -52,6 +48,7 @@ class Fee_Service {
         amountPaid: Paid_amount,
         totalFee: totalFee,
         dueFee: currentDue - Paid_amount,
+        PaymentType: PaymentType,
         paymentMethod: paymentMethod,
         PaymentId: paymentId || `PAY-${Crypto.randomBytes(16).toString('hex')}`,
       });
