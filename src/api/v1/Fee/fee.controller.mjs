@@ -70,6 +70,28 @@ const FeeController = {
     }
   },  
 
+
+  get_StudentBillByPaymentId: async (req, res) => {
+    try {
+      let PaymentId = req.query.paymentId;
+      let getBillInfo = await feeService.get_StudentBillByPaymentId(PaymentId);
+
+     SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        Payment_Constant.FETCH_PAYMENT_INFO,
+        getBillInfo
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.BAD_REQUEST,
+        error.message || Payment_Constant.FAILED_TO_FETCH_PAYMENT_INFO
+      );
+    }
+
+ },
+
   get_Earnings: async (req, res) => {
     try {
       let { startDate, endDate } = req.query;
