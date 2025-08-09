@@ -104,11 +104,13 @@ class Fee_Utils {
               ],
             },
             paymentType: '$PaymentType',
+            Payment_id: '$PaymentId',
             amount: '$amountPaid',
             status: '$status',
           },
         },
       ]);
+      console.log('Earnings fetched:', earnings);
       return earnings;
     } catch (error) {
       throw new Error(error.message);

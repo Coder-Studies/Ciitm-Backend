@@ -72,6 +72,10 @@ const FeeController = {
   get_StudentBillByPaymentId: async (req, res) => {
     try {
       let PaymentId = req.query.paymentId;
+      console.log('Payment Id' , PaymentId)
+      if(!PaymentId) {
+        throw new Error('Please Provide Payment Id')
+      }
       let getBillInfo = await feeService.get_StudentBillByPaymentId(PaymentId);
 
      SendResponse.success(
