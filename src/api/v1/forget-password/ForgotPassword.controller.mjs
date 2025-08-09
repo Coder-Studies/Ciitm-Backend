@@ -24,7 +24,7 @@ class ForgotPasswordController {
       }
 
       const result = await ForgotPasswordService.initiatePasswordReset(email);
-      console.log('Forgot Password Result:', result);
+   
 
       SendResponse.success(res, StatusCodeConstant.SUCCESS, result.message, {
         email: email,

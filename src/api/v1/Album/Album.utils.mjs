@@ -10,7 +10,7 @@ class Album_Utils {
   };
 
   FindByAlbumName = async (albumName) => {
-    console.log(albumName);
+
     return Album.findOne({ aName: albumName });
   };
 

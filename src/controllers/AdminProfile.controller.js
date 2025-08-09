@@ -30,10 +30,7 @@ export const Edit_Profile_Controller = async (req, res) => {
 
     let { name, email } = await req.body;
 
-    console.log('name', name);
-    console.log('email', email);
-    console.log('req file', req.file);
-
+ 
     logger.info(
       {
         name: name,
@@ -49,7 +46,7 @@ export const Edit_Profile_Controller = async (req, res) => {
     console.warn(findUser);
 
     if (!req.file) {
-      console.log('hii');
+    
 
       const updatedUser = await Authentication_Schema.findOneAndUpdate(
         { email: decoded.email },
@@ -74,8 +71,7 @@ export const Edit_Profile_Controller = async (req, res) => {
       let { filename } = await req.file;
 
       let Deleted_Image = await Delete_From_Cloudinary(findUser.Public_Id);
-      console.log(Deleted_Image.error);
-      console.log('delete hua', Deleted_Image);
+   
 
       if (!Deleted_Image.error) {
         const Cloudinary = await uploadOnCloudinary(filename); // Assuming `uploadOnCloudinary` returns Cloudinary data

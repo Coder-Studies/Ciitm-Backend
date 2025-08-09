@@ -23,7 +23,7 @@ class ForgotPasswordService {
       throw Error(ForgotPasswordConstant.USER_NOT_FOUND);
     }
 
-    console.log('User found:', user);
+
 
     // Generate OTP
     const otp = ForgotPassword.generateOTP();
@@ -60,7 +60,7 @@ class ForgotPasswordService {
     // Get the HTML template
     const htmlTemplate = this.getForgotPasswordTemplate(email, userName, otp);
 
-    console.log('HTML Template:', htmlTemplate);
+ 
 
     const mailOptions = {
       from: `"MERN Coding School" <${envConstant.GMAIL_User}>`,
@@ -132,18 +132,15 @@ class ForgotPasswordService {
 
     // Read the HTML template file
     const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
-    console.log('HTML Template Path:', templatePath, htmlTemplate);
+   
 
-    // Replace placeholders with actual values
-    console.log('email:', email);
-    console.log('userName:', userName);
-    console.log('otp:', otp);
+
     const processedTemplate = htmlTemplate
       .replace(/{{userName}}/g, userName)
       .replace(/{{otp}}/g, otp)
       .replace(/{{userEmail}}/g, email);
 
-    console.log('Processed Template:', processedTemplate);
+  
 
     return processedTemplate;
   }

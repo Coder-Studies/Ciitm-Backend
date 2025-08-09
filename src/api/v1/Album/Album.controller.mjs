@@ -16,7 +16,6 @@ class Album_Controller {
       let { albumName, albumDescription } = req.body;
       let { filename } = req.file;
 
-      console.log('filename', filename);
 
       if (!filename) {
         throw new Error(AlbumConstant.IMAGE_NOT_FOUND);

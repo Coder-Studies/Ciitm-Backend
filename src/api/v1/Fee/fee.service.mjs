@@ -15,7 +15,7 @@ class Fee_Service {
     try {
    
 
-      console.log('Payment Type:', PaymentType);
+  
       // Await the findOne call
       let foundStudent = await Admission.findOne({ uniqueId: uniqueId });
 

@@ -24,7 +24,6 @@ class Status_Controller {
 
       let find_Status = await StatusUtils.FIND_STATUS_BY_STUDENT_ID(uniqueId);
 
-      console.log('Found Status:', find_Status);
 
       if (!find_Status) {
         throw new Error(StatusConstant.STATUS_NOT_FOUND);
@@ -59,8 +58,7 @@ class Status_Controller {
         message,
         applicationStatus,
       });
-      console.log('Validation Result:', req.body, validate);
-
+   
       if (validate.error) {
         throw new Error(validate.error.message);
       }

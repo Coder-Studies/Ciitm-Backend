@@ -36,7 +36,7 @@ class Image_Controller {
       }
 
       let Cloudinary = await uploadOnCloudinary(filename);
-      console.log('Cloudinary Response:', Cloudinary.url);
+    
 
 
       if (!Cloudinary) {

@@ -12,9 +12,7 @@ const FeeController = {
   Get_Fee_Info: async (req, res) => {
     try {
       let uniqueId = req.query.uniqueId;
-      console.log('Request Query:', req.query.uniqueId);
-
-      console.log('Student Info:', uniqueId);
+  
 
       if (!uniqueId) {
         throw new Error(Payment_Constant.UNIQE_ID_NOT_FOUND);
@@ -95,7 +93,7 @@ const FeeController = {
   get_Earnings: async (req, res) => {
     try {
       let { startDate, endDate } = req.query;
-      console.log('Request Query:', req.query);
+
 
       if (!startDate) {
         throw new Error(Payment_Constant.MISSING_QUERY_PARAMS);
@@ -119,7 +117,7 @@ const FeeController = {
         endDate,
       });
 
-      console.log('Earnings:', earnings);
+
 
       SendResponse.success(
         res,

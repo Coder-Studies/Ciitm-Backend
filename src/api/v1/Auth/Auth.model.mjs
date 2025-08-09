@@ -80,7 +80,7 @@ AuthenticationSchema.methods.hashEmail = async function (email) {
 
 AuthenticationSchema.methods.comparePassword = async function (password, hash) {
   try {
-    console.log('pass', password, 'hash ', hash);
+  
 
     const match = await bcrypt.compare(password, hash);
     if (!match) {

@@ -22,7 +22,7 @@ class Email_Service {
         uniqueId,
       });
 
-      console.log('Send_Review_Mail:', Send_Review_Mail);
+   
     } catch (error) {
       throw new Error(error);
     }
