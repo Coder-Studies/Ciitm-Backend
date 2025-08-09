@@ -23,7 +23,7 @@ class Student_Utils {
   }) => {
     try {
       const Find_Course = await courseModel.findOne({ courseName: course });
-      console.log('Found Course:', Find_Course);
+     
       if (!Find_Course) {
         throw new Error(courseConstant.COURSE_NOT_FOUND);
       }
@@ -32,7 +32,7 @@ class Student_Utils {
         course_Id: String(Find_Course._id),
       };
 
-      console.log('Query for finding students:', query);
+ 
 
       const options = {
         limit: Limit || 50,
@@ -44,7 +44,7 @@ class Student_Utils {
       );
 
       return a.exec().then((students) => {
-        console.log('Students found:', students);
+    
         return students;
       });
     } catch (error) {

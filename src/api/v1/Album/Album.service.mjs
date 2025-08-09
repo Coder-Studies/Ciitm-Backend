@@ -4,7 +4,7 @@ import AlbumUtils from './Album.utils.mjs';
 
 class Album_Service {
   create = async ({ albumName, albumDescription, Url }) => {
-    console.log('Album Service', albumName, albumDescription, Url);
+ 
     let createdAlbum = await Album.create({
       aName: albumName,
       aDescription: albumDescription,

@@ -12,9 +12,7 @@ const FeeController = {
   Get_Fee_Info: async (req, res) => {
     try {
       let uniqueId = req.query.uniqueId;
-      console.log('Request Query:', req.query.uniqueId);
-
-      console.log('Student Info:', uniqueId);
+  
 
       if (!uniqueId) {
         throw new Error(Payment_Constant.UNIQE_ID_NOT_FOUND);
@@ -70,10 +68,36 @@ const FeeController = {
     }
   },  
 
+
+  get_StudentBillByPaymentId: async (req, res) => {
+    try {
+      let PaymentId = req.query.paymentId;
+      console.log('Payment Id' , PaymentId)
+      if(!PaymentId) {
+        throw new Error('Please Provide Payment Id')
+      }
+      let getBillInfo = await feeService.get_StudentBillByPaymentId(PaymentId);
+
+     SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        Payment_Constant.FETCH_PAYMENT_INFO,
+        getBillInfo
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.BAD_REQUEST,
+        error.message || Payment_Constant.FAILED_TO_FETCH_PAYMENT_INFO
+      );
+    }
+
+ },
+
   get_Earnings: async (req, res) => {
     try {
       let { startDate, endDate } = req.query;
-      console.log('Request Query:', req.query);
+
 
       if (!startDate) {
         throw new Error(Payment_Constant.MISSING_QUERY_PARAMS);
@@ -97,7 +121,7 @@ const FeeController = {
         endDate,
       });
 
-      console.log('Earnings:', earnings);
+
 
       SendResponse.success(
         res,

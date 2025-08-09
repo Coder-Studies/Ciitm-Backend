@@ -95,7 +95,7 @@ let DashBoard_Socket = (io, socket) => {
   // Listen for the 'Request_DashBoard_Data' event from the client
 
   socket.on('Request_DashBoard_Data', async () => {
-    console.log('Request_DashBoard_Data event triggered');
+ 
     await find_DashBoard_Data(io, socket); // Call the function to fetch data and send it back to the client
   });
 };

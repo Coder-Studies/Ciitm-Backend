@@ -104,11 +104,13 @@ class Fee_Utils {
               ],
             },
             paymentType: '$PaymentType',
+            Payment_id: '$PaymentId',
             amount: '$amountPaid',
             status: '$status',
           },
         },
       ]);
+      console.log('Earnings fetched:', earnings);
       return earnings;
     } catch (error) {
       throw new Error(error.message);
@@ -124,7 +126,7 @@ class Fee_Utils {
   TOTAL_FEE_PAID = async () => {
     try {
       let TOTAL_ADMISSION = await Admission.find({});
-      console.log(TOTAL_ADMISSION);
+  
 
       let Total_AMOUNT = 0;
       for (let i = 0; i < TOTAL_ADMISSION.length; i++) {

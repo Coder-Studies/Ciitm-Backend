@@ -84,7 +84,7 @@ class AdmissionController {
         uniqueId,
       });
 
-      console.log('Email sent:', a);
+   
       SendResponse.success(
         res,
         StatusCodeConstant.CREATED,
