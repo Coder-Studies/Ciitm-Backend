@@ -1,7 +1,7 @@
 // src/api/v1/Contact/__tests__/Contact.test.mjs
 import { jest } from '@jest/globals';
 
-// 1️⃣ Mock Contact model
+// Mock Contact model
 jest.unstable_mockModule('../Contace.model.mjs', () => ({
   default: {
     create: jest.fn(),
@@ -9,7 +9,7 @@ jest.unstable_mockModule('../Contace.model.mjs', () => ({
   },
 }));
 
-// 2️⃣ Mock constants
+// Mock constants
 jest.unstable_mockModule('../Contact.constant.mjs', () => ({
   default: {
     NOT_CREATED: 'Contact Form Not Created Successfully',
@@ -17,7 +17,7 @@ jest.unstable_mockModule('../Contact.constant.mjs', () => ({
   },
 }));
 
-// 3️⃣ Import after mocks
+// Import after mocks
 const Contact = (await import('../Contace.model.mjs')).default;
 const ContactConstant = (await import('../Contact.constant.mjs')).default;
 const ContactService = (await import('../Contact.service.mjs')).default;
@@ -27,9 +27,7 @@ describe('ContactService', () => {
     jest.clearAllMocks();
   });
 
-  // =========================
   // createContact
-  // =========================
   describe('createContact', () => {
     it('should create a contact successfully', async () => {
       const mockContact = { id: '1', name: 'John Doe' };
@@ -58,9 +56,7 @@ describe('ContactService', () => {
     });
   });
 
-  // =========================
   // deleteContact
-  // =========================
   describe('deleteContact', () => {
     it('should delete a contact successfully', async () => {
       const mockDeleted = { id: '1', name: 'John Doe' };
