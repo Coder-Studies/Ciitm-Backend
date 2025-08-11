@@ -1,4 +1,5 @@
 import Contact from './Contace.model.mjs';
+import ContactConstant from './Contact.constant.mjs';
 
 class Contact_Service {
   createContact = async (data) => {
