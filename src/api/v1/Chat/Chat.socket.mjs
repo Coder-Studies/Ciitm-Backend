@@ -1,6 +1,5 @@
 import ChatService from './Chat.service.mjs';
-import Authentication from '../Auth/Auth.model.mjs';
-
+import AuthUtility from '../Auth/Auth.utils.mjs';
 const ChatSocket = (io, socket) => {
   console.log('Chat socket connected:', socket.id);
 
@@ -11,6 +10,7 @@ const ChatSocket = (io, socket) => {
   socket.on('requestRecentMessages', async () => {
     try {
       const recentMessages = await ChatService.getRecentMessages(50);
+      console.log('Recent messages sent to user:', recentMessages);
       socket.emit('recentMessages', recentMessages);
     } catch (error) {
       console.error('Error fetching recent messages:', error);
@@ -22,6 +22,7 @@ const ChatSocket = (io, socket) => {
   socket.on('newMessage', async (data) => {
     try {
       const { studentId, username, content, avatar, token } = data;
+      console.log(`New message from ${username} (${studentId}):`, content);
 
       // Validate input
       if (!studentId || !username || !content) {
@@ -38,7 +39,8 @@ const ChatSocket = (io, socket) => {
       // Optional: Verify token if provided
       if (token) {
         try {
-          const email = await Authentication.DecodeToken(token);
+          const email = await AuthUtility.DecodeToken(token);
+    
           if (!email) {
             socket.emit('error', { message: 'Invalid token' });
             return;
@@ -56,6 +58,8 @@ const ChatSocket = (io, socket) => {
         content,
         avatar || '🧑'
       );
+
+
 
       await ChatService.saveMessage(userMessage);
 
@@ -110,6 +114,7 @@ const ChatSocket = (io, socket) => {
   // Handle user joining chat
   socket.on('userJoinedChat', (data) => {
     const { username, studentId } = data;
+    console.log(`User joined chat: ${username} (${studentId})`);
     if (username && studentId) {
       socket.to('chat-room').emit('userJoinedNotification', {
         username,

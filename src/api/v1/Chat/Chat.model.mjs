@@ -23,7 +23,7 @@ const ChatMessageSchema = new mongoose.Schema(
     content: {
       type: String,
       required: true,
-      maxlength: 500,
+      // maxlength: 500,
     },
     isAI: {
       type: Boolean,

@@ -81,6 +81,7 @@ class ForgotPasswordService {
   async validateOTPAndResetPassword(email, otp, newPassword) {
     // Check if user exists
     const user = await AuthenticationSchema.findOne({ email: email });
+    console.log('User found:', user);
     if (!user) {
       throw new Error(ForgotPasswordConstant.USER_NOT_FOUND);
     }
@@ -100,6 +101,7 @@ class ForgotPasswordService {
 
     // Verify OTP
     const isOTPValid = await bcrypt.compare(otp, otpRecord.otp);
+    console.log('OTP Valid:', isOTPValid);
     if (!isOTPValid) {
       throw new Error(ForgotPasswordConstant.OTP_INVALID);
     }
