@@ -11,4 +11,9 @@ router.post(
   AdmissionController.create
 );
 
+router.post(
+  '/v1/online/admission/testing-email',
+  AdmissionController.sendTestingAdmissionEmail
+);
+
 export { router as AdmissionRouter };

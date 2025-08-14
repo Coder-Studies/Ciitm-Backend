@@ -10,13 +10,13 @@ import { user } from '../../../routes/index.mjs';
 class AuthController {
   async SignUP_Admin(req, res) {
     try {
-      const { name, email, password, role } = req.body;
+      const { name, email, password } = req.body;
 
       const { CreatedUser, HashEmail } = await AuthService.CreateUser({
         name,
         email,
         password,
-        role,
+        role: 'admin',
       });
 
       res.cookie('token', HashEmail, {

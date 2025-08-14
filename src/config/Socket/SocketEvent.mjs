@@ -3,6 +3,7 @@ import DashBoard_Socket from '../../api/v1/Dashboard/Dashbord.socket.mjs';
 import io from './SocketServer.mjs';
 import StudentSocket from '../../api/v1/Student/Student.Socket.mjs';
 import ChatSocket from '../../api/v1/Chat/Chat.socket.mjs';
+import Course_Socket from '../../api/v1/Course/Course.socket.mjs';
 
 let SocketEvent = (socket) => {
   console.log('A user connected:', socket.id);
@@ -15,6 +16,7 @@ let SocketEvent = (socket) => {
   DashBoard_Socket(io, socket);
   StudentSocket(io, socket);
   ChatSocket(io, socket);
+  Course_Socket(io, socket);
 
   socket.emit('welcome', { message: 'Welcome to the Socket.IO Server' });
 };

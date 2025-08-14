@@ -34,7 +34,6 @@ const Student_course_Schema = new Schema(
 
     endDate: {
       type: Date,
-      default: new Date(),
       required: true,
     },
 
