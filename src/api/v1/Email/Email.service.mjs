@@ -1,7 +1,7 @@
 import EmailUtils from './Email.utils.mjs';
 import { Review_Validator } from './Email.validator.mjs';
 import Payment_Confirmation_Template from '../../../template/email/payment.template.js';
-import Admission_Confirmation_Template from '../../../template/email/admission.template.js';
+
 
 class Email_Service {
   sendReviewMail = async ({ recipientEmail, name, uniqueId }) => {
@@ -51,24 +51,6 @@ class Email_Service {
     }
   };
 
-  sendAdmissionConfirmation = async ({
-    studentName,
-    studentId,
-    email,
-    password,
-  }) => {
-    try {
-      const result = await Admission_Confirmation_Template({
-        studentName,
-        studentId,
-        email,
-        password,
-      });
-      return result; // ✅ Return the result
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
 }
 
 export default new Email_Service();

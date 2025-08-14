@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Admission Approved - CIITM Dhanbad</title>
+        <style>
+      body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+      .container { background: #fff; max-width: 600px; margin: 40px auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 32px; }
+      .header { background: #003366; color: #fff; padding: 16px 0; border-radius: 8px 8px 0 0; text-align: center; }
+      .content { padding: 24px 0; }
+      .footer { color: #888; font-size: 13px; text-align: center; margin-top: 32px; }
+      .highlight { color: #003366; font-weight: bold; }
+      .student-photo { display: block; margin: 0 auto 16px auto; border-radius: 50%; width: 100px; height: 100px; object-fit: cover; border: 2px solid #003366; }
+      .info-list { list-style: none; padding: 0; }
+      .info-list li { margin-bottom: 8px; }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h2>CIITM Dhanbad</h2>
+            </div>
+            <div class="content">
+                <img src="{{studentImageUrl}}" alt="Student Photo"
+                    class="student-photo" />
+                <p>Dear <span class="highlight">{{studentName}}</span>,</p>
+                <p>Congratulations! Your admission status is <span
+                        class="highlight">Approved</span>.</p>
+                <p>You are now a valued member of the CIITM Dhanbad family!</p>
+                <ul class="info-list">
+                    <li><b>Email:</b> {{studentEmail}}</li>
+                    <li><b>Password:</b> {{studentPassword}}</li>
+                </ul>
+                <p>If you wish to update any of your details, please log in to
+                    your student portal using the credentials above.</p>
+                <p>We look forward to supporting you throughout your academic
+                    journey.</p>
+                <p>Best regards,<br>CIITM Dhanbad Admissions Team</p>
+            </div>
+            <div class="footer">
+                &copy; {{year}} CIITM Dhanbad. All rights reserved.
+            </div>
+        </div>
+    </body>
+</html>

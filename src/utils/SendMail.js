@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import envConstant from '../constant/env.constant.mjs';
 dotenv.config();
 
 export let createTransport = () => {
@@ -9,8 +10,8 @@ export let createTransport = () => {
       port: 465,
       secure: true, // true for port 465, false for other ports
       auth: {
-        user: process.env.GMAIL_User,
-        pass: process.env.GMAIL_Password,
+        user: envConstant.GMAIL_User,
+        pass: envConstant.GMAIL_Password,
       },
     });
 
