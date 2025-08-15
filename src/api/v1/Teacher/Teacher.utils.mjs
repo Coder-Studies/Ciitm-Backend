@@ -22,6 +22,37 @@ class Teacher_Utils {
       throw new Error(error.message);
     }
   };
+
+  deleteTeacher = async (teacherId) => {
+    try {
+      let deletedTeacher = await TeacherSchema.findByIdAndDelete(teacherId);
+      if (!deletedTeacher) {
+        throw new Error('Teacher not found');
+      }
+      return deletedTeacher;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  updateTeacher = async (teacherId, updateData) => {
+    try {
+      let updatedTeacher = await TeacherSchema.findByIdAndUpdate(
+        teacherId,
+        updateData,
+        { new: true }
+      );
+      if (!updatedTeacher) {
+        throw new Error('Teacher not found');
+      }
+      return updatedTeacher;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+  
+
+
 }
 
 export default new Teacher_Utils();

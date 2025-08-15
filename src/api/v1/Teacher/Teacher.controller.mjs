@@ -67,6 +67,86 @@ class Teacher_Controller {
       );
     }
   }
+
+  async deleteTeacher(req, res) {
+    try {
+      const { id } = req.params;
+
+      if (!id) {
+        throw new Error(TeacherConstant.Teacher_IdRequired);
+      }
+
+      let deletedTeacher = await TeacherService.deleteTeacher(id);
+
+      if (!deletedTeacher) {
+        throw new Error(TeacherConstant.Teacher_NotDeleted);
+      }
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        TeacherConstant.TeacherDeleted,
+        deletedTeacher
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.NOT_FOUND,
+        error.message || TeacherConstant.Teacher_NotDeleted
+      );
+    }
+  }
+
+ 
+
+
+  async updateTeacher(req, res) {
+  try {
+    const { id } = req.params;
+
+    // Optional: handle new image upload
+    let imageUrl = null;
+    if (req.file && req.file.filename) {
+      const cloudinaryResult = await uploadOnCloudinary({
+        file: req.file.filename,
+        folder: 'Teachers',
+      });
+
+      if (!cloudinaryResult) {
+        throw new Error(TeacherConstant.Image_NotUploaded);
+      }
+      imageUrl = cloudinaryResult.url;
+    }
+
+  
+    await TeacherService.validateTeacherData(req.body);
+
+    const updatedTeacher = await TeacherService.updateTeacherById(id, {
+      ...req.body,
+      imageUrl: imageUrl || undefined,
+    });
+
+    if (!updatedTeacher) {
+      throw new Error(TeacherConstant.Teacher_NotFound);
+    }
+
+    SendResponse.success(
+      res,
+      StatusCodeConstant.SUCCESS,
+      TeacherConstant.TeacherUpdated,
+      updatedTeacher
+    );
+  } catch (error) {
+    SendResponse.error(
+      res,
+      StatusCodeConstant.NOT_FOUND,
+      error.message || TeacherConstant.Teacher_NotUpdated
+    );
+  }
+}
+
+
+  
 }
 
 export default new Teacher_Controller();

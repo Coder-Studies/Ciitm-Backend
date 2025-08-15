@@ -8,6 +8,18 @@ router.post(
   AuthMiddleware.Admin,
   TeacherController.createNewTeacher
 );
+router.delete(
+  '/v1/admin/teacher/:id/delete',
+  AuthMiddleware.Admin,
+  TeacherController.deleteTeacher
+);
+router.put(
+  '/v1/admin/teacher/:id/update',
+  AuthMiddleware.Admin,
+  TeacherController.updateTeacher
+);
+
+
 
 router.get('/v1/user/findAllTeachers', TeacherController.FindAllTeachers);
 
