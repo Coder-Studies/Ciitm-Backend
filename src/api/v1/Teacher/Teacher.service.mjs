@@ -81,10 +81,10 @@ class TeacherService {
       if (!teacherId) {
         throw new Error(TeacherConstant.Teacher_IdRequired);
       }
-      // this.validateTeacherData(teacherData);
-return TeacherUtils.updateTeacher(teacherId, teacherData);
+      
+      return TeacherUtils.updateTeacher(teacherId, teacherData);
     } catch (error) {
-    throw new Error(error.message || TeacherConstant.TeacherUpdate);
+    throw new Error(error.message || TeacherConstant.Teacher_NotUpdated);
     }
   }
 
