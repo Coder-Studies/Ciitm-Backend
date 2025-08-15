@@ -60,6 +60,37 @@ class TeacherService {
       throw new Error(error.details[0].message);
     }
   }
+  deleteTeacher(teacherId) {
+
+    try {
+      if (!teacherId) {
+      throw new Error(TeacherConstant.Teacher_IdRequired);
+      }
+    return TeacherUtils.deleteTeacher(teacherId);
+    } catch (error) {
+      throw new Error(error.message || TeacherConstant.Teacher_NotDeleted);
+     }
+
+
+    
+  }
+
+
+  updateTeacherById(teacherId, teacherData) {
+    try {
+      if (!teacherId) {
+        throw new Error(TeacherConstant.Teacher_IdRequired);
+      }
+      // this.validateTeacherData(teacherData);
+return TeacherUtils.updateTeacher(teacherId, teacherData);
+    } catch (error) {
+    throw new Error(error.message || TeacherConstant.TeacherUpdate);
+    }
+  }
+
+
+
+
 }
 
 export default new TeacherService();
