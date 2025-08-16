@@ -10,6 +10,9 @@ const TeacherConstant = {
   Find_Teacher_By_Email: 'Find Teacher by Email',
   Find_Teacher_By_Name: 'Find Teacher by Name',
   Find_Teacher_By_Specialization: 'Find Teacher by Specialization',
+  TeacherDeleted: 'Teacher Deleted Successfully',
+  Teacher_NotDeleted: 'Teacher Not Deleted',
+  Teacher_NotUpdated: 'Teacher Not Updated',
 };
 
 export default Object.freeze(TeacherConstant);
