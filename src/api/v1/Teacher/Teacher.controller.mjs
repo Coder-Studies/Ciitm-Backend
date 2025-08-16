@@ -69,4 +69,78 @@ class Teacher_Controller {
   }
 }
 
+const updateTeacher = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    // Validate required fields if needed
+    const allowedUpdates = ['name', 'email', 'subject', 'department', 'phone', 'qualification'];
+    const updates = Object.keys(updateData);
+    const isValidOperation = updates.every(update => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid updates'
+      });
+    }
+
+    const teacher = await Teacher.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true
+    });
+
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: 'Teacher not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Teacher updated successfully',
+      data: teacher
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error updating teacher',
+      error: error.message
+    });
+  }
+};
+
+// Delete Teacher
+const deleteTeacher = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const teacher = await Teacher.findByIdAndDelete(id);
+
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: 'Teacher not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Teacher deleted successfully',
+      data: teacher
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting teacher',
+      error: error.message
+    });
+  }
+};
+module.exports = {updateTeacher,deleteTeacher};
+
 export default new Teacher_Controller();
