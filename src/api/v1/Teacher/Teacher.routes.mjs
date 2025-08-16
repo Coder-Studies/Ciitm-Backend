@@ -11,4 +11,8 @@ router.post(
 
 router.get('/v1/user/findAllTeachers', TeacherController.FindAllTeachers);
 
+router.delete('/v1/admin/teacher/:id/delete', TeacherController.deleteTeacherByID);
+
+router.put('/v1/admin/teacher/:id/update', TeacherController.updateTeacherByID);
+
 export { router as TeacherRouter };

@@ -60,6 +60,39 @@ class TeacherService {
       throw new Error(error.details[0].message);
     }
   }
+
+  async deleteTeacherByID(id) {
+    // Find and delete the teacher by ID
+    const deletedTeacher = await TeacherSchema.findByIdAndDelete(id);
+    return deletedTeacher;
+  }
+
+  async updateTeacherByID(id, updateData) {
+    // Only update allowed fields
+    const allowedFields = [
+      'name',
+      'email',
+      'imageUrl',
+      'role',
+      'Specialization',
+      'Experience',
+      'social_media'
+    ];
+    const filteredData = {};
+    for (const key of allowedFields) {
+      if (updateData[key] !== undefined) {
+        filteredData[key] = updateData[key];
+      }
+    }
+
+    // Find and update teacher
+    const updatedTeacher = await Teacher.findByIdAndUpdate(
+      id,
+      { $set: filteredData },
+      { new: true }
+    );
+    return updatedTeacher;
+  }
 }
 
 export default new TeacherService();
