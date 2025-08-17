@@ -22,7 +22,7 @@ class AdmissionController {
     try {
       const data = req.body;
       let { courseName } = req.body;
-      console.log('Data received in create admission:', data);
+   
 
       if (!req.file) {
         throw new Error('No file uploaded');
@@ -32,7 +32,7 @@ class AdmissionController {
 
       const admissionInstance = new AdmissionSchema();
 
-      const uniqueId = await admissionInstance.generate_id(courseName);
+      const uniqueId = await admissionInstance.generate_id();
 
       let { error } = await AdmissionValidationSchema.validate(data);
 

@@ -31,11 +31,12 @@ class Admission_Utils {
     if (!name || !courseName || !semester || !admissionDate || !studentId) {
       throw new Error('Missing required fields for email template');
     }
+
     let AdmissionTemplate = null;
 
-
-
-    let FilePath =  path.join(process.cwd(), 'src','template', 'email', 'AdmissionTemplate.html');
+   
+    let FilePath =  path.join(path.resolve(), 'src','template', 'email', 'AdmissionTemplate.html');
+   
    AdmissionTemplate =  fs.readFileSync(FilePath, 'utf8')
 
    AdmissionTemplate = AdmissionTemplate
@@ -44,8 +45,10 @@ class Admission_Utils {
    .replace(/{{studentName}}/g, name)
    .replace(/{{courseName}}/g, courseName)
    .replace(/{{semester}}/g, semester)
-    .replace(/{{admissionDate}}/g, admissionDate)
+   .replace(/{{admissionDate}}/g, admissionDate)
     .replace(/{{studentId}}/g, studentId);
+
+   
 
     return AdmissionTemplate;
 

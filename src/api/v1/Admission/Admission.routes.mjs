@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import Admission from './Admission.model.mjs';
 
 import AdmissionController from './Admission.controller.mjs';
 import upload from '../../../utils/multerUtils.mjs';
