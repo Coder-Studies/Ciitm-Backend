@@ -22,6 +22,7 @@ class AdmissionController {
       const data = req.body;
       let { courseName } = req.body;
 
+      console.log('Received data:', data);
       if (!req.file) {
         throw new Error('No file uploaded');
       }
@@ -32,11 +33,12 @@ class AdmissionController {
 
       const uniqueId = await admissionInstance.generate_id();
 
-      let { error } = await AdmissionValidationSchema.validate(data);
+      let { error } = AdmissionValidationSchema.validate(data);
 
       if (error) {
         throw new Error(error.message);
       }
+
 
       const find_course = await courseUtils.FindBy_courseName(data.courseName);
 
@@ -95,7 +97,7 @@ class AdmissionController {
       createTransport().sendMail({
         date: new Date().toISOString(),
         from: envConstant.GMAIL_User,
-        to: email,
+        to: data.email,
         subject: 'Testing Admission Email',
         html: emailTemplate,
       });
