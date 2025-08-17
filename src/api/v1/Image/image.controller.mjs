@@ -36,8 +36,6 @@ class Image_Controller {
       }
 
       let Cloudinary = await uploadOnCloudinary(filename);
-    
-
 
       if (!Cloudinary) {
         throw new Error(AlbumConstant.CLOUDINARY_ERROR);
@@ -48,13 +46,9 @@ class Image_Controller {
         url: Cloudinary.url,
       });
 
-
-
       if (validationError) {
         throw new Error(validationError.message);
       }
-
-
 
       // userID: userID,
       // albumID: albumID,
@@ -133,8 +127,6 @@ class Image_Controller {
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
   };
-
-  
 }
 
 export default new Image_Controller();

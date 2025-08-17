@@ -16,10 +16,12 @@ const redis = new Redis(envConstant.REDIS_URL || 'redis://localhost:6379');
 
 const GEMINI_API_KEY = envConstant.GEMINI_API_KEY;
 if (!GEMINI_API_KEY) {
-  throw new Error('Google Gemini API key (GEMINI_API_KEY) is missing. Please set it in your environment variables.');
+  throw new Error(
+    'Google Gemini API key (GEMINI_API_KEY) is missing. Please set it in your environment variables.'
+  );
 }
 
-const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY }); 
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 class ChatService {
   constructor() {
@@ -32,7 +34,8 @@ class ChatService {
       this.systemPrompt = fs.readFileSync(promptPath, 'utf8');
     } catch (error) {
       console.error('Error loading prompt.txt:', error);
-      this.systemPrompt = 'You are a helpful student assistant for CIITM Dhanbad. Provide concise, clear answers without formatting.';
+      this.systemPrompt =
+        'You are a helpful student assistant for CIITM Dhanbad. Provide concise, clear answers without formatting.';
     }
   }
 
@@ -70,7 +73,14 @@ class ChatService {
     }
   }
 
-  createMessage(studentId, username, content, avatar = '🧑', isAI = false, originalQuestion = null) {
+  createMessage(
+    studentId,
+    username,
+    content,
+    avatar = '🧑',
+    isAI = false,
+    originalQuestion = null
+  ) {
     return {
       id: uuidv4(),
       studentId,
@@ -110,13 +120,16 @@ class ChatService {
       const prompt = `${this.systemPrompt}\n\nStudent Question: ${question}\n\nAnswer:`;
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash', // or 'gemini-1.5-flash' as needed
-  
+
         contents: prompt,
       });
       let aiResponse = response.text;
-  
+
       aiResponse = this.cleanResponseForSpeech(aiResponse);
-      return aiResponse || 'I apologize, but I cannot process your question right now. Please try again later.';
+      return (
+        aiResponse ||
+        'I apologize, but I cannot process your question right now. Please try again later.'
+      );
     } catch (error) {
       console.error('Gemini AI API Error:', error);
       return 'I apologize, but I cannot process your question right now. Please try again later.';
@@ -139,7 +152,7 @@ class ChatService {
 
   async processAiRequest(studentId, username, content, avatar) {
     const question = this.extractAiQuestion(content);
-    
+
     if (!question) {
       return this.createMessage(
         'system',
@@ -150,7 +163,7 @@ class ChatService {
       );
     }
 
-    if (!await this.canUserRequestAi(studentId)) {
+    if (!(await this.canUserRequestAi(studentId))) {
       return this.createMessage(
         'system',
         'AI',
@@ -164,7 +177,7 @@ class ChatService {
 
     try {
       const aiResponse = await this.callAiApi(question);
-      
+
       return this.createMessage(
         studentId,
         'AI',
@@ -200,16 +213,16 @@ class ChatService {
       const totalMessages = await ChatMessage.countDocuments();
       const aiMessages = await ChatMessage.countDocuments({ isAI: true });
       const userMessages = totalMessages - aiMessages;
-      
+
       const recentMessages = await ChatMessage.countDocuments({
-        createdAt: { $gte: new Date(Date.now() - RECENT_MESSAGES_WINDOW_MS) } // Last 24 hours
+        createdAt: { $gte: new Date(Date.now() - RECENT_MESSAGES_WINDOW_MS) }, // Last 24 hours
       });
 
       const topUsers = await ChatMessage.aggregate([
         { $match: { isAI: false } },
         { $group: { _id: '$username', messageCount: { $sum: 1 } } },
         { $sort: { messageCount: -1 } },
-        { $limit: 10 }
+        { $limit: 10 },
       ]);
 
       return {
@@ -217,7 +230,7 @@ class ChatService {
         userMessages,
         aiMessages,
         recentMessages,
-        topUsers
+        topUsers,
       };
     } catch (error) {
       console.error('Error getting chat stats:', error);

@@ -19,8 +19,6 @@ router.put(
   TeacherController.updateTeacher
 );
 
-
-
 router.get('/v1/user/findAllTeachers', TeacherController.FindAllTeachers);
 
 export { router as TeacherRouter };

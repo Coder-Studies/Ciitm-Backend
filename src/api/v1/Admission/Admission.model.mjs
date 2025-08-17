@@ -256,7 +256,6 @@ AdmissionSchema.methods.createStudentCourse = async function ({
       courseName: courseName,
     });
 
-   
     if (!foundCourse) {
       throw new Error('Course not found');
     }

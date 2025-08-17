@@ -50,9 +50,6 @@ class Teacher_Utils {
       throw new Error(error.message);
     }
   };
-  
-
-
 }
 
 export default new Teacher_Utils();

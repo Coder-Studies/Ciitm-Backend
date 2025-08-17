@@ -97,56 +97,49 @@ class Teacher_Controller {
     }
   }
 
- 
-
-
   async updateTeacher(req, res) {
-  try {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    // Optional: handle new image upload
-    let imageUrl = null;
-    if (req.file && req.file.filename) {
-      const cloudinaryResult = await uploadOnCloudinary({
-        file: req.file.filename,
-        folder: 'Teachers',
+      // Optional: handle new image upload
+      let imageUrl = null;
+      if (req.file && req.file.filename) {
+        const cloudinaryResult = await uploadOnCloudinary({
+          file: req.file.filename,
+          folder: 'Teachers',
+        });
+
+        if (!cloudinaryResult) {
+          throw new Error(TeacherConstant.Image_NotUploaded);
+        }
+        imageUrl = cloudinaryResult.url;
+      }
+
+      await TeacherService.validateTeacherData(req.body);
+
+      const updatedTeacher = await TeacherService.updateTeacherById(id, {
+        ...req.body,
+        imageUrl: imageUrl || undefined,
       });
 
-      if (!cloudinaryResult) {
-        throw new Error(TeacherConstant.Image_NotUploaded);
+      if (!updatedTeacher) {
+        throw new Error(TeacherConstant.Teacher_NotFound);
       }
-      imageUrl = cloudinaryResult.url;
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        TeacherConstant.TeacherUpdated,
+        updatedTeacher
+      );
+    } catch (error) {
+      SendResponse.error(
+        res,
+        StatusCodeConstant.NOT_FOUND,
+        error.message || TeacherConstant.Teacher_NotUpdated
+      );
     }
-
-  
-    await TeacherService.validateTeacherData(req.body);
-
-    const updatedTeacher = await TeacherService.updateTeacherById(id, {
-      ...req.body,
-      imageUrl: imageUrl || undefined,
-    });
-
-    if (!updatedTeacher) {
-      throw new Error(TeacherConstant.Teacher_NotFound);
-    }
-
-    SendResponse.success(
-      res,
-      StatusCodeConstant.SUCCESS,
-      TeacherConstant.TeacherUpdated,
-      updatedTeacher
-    );
-  } catch (error) {
-    SendResponse.error(
-      res,
-      StatusCodeConstant.NOT_FOUND,
-      error.message || TeacherConstant.Teacher_NotUpdated
-    );
   }
-}
-
-
-  
 }
 
 export default new Teacher_Controller();

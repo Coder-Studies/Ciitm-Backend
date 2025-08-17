@@ -8,7 +8,6 @@ class Student_Controller {
   async FindByCourseAndSemester(req, res) {
     try {
       const { course, semester, PerPage, Limit } = req.query;
-   
 
       let { error } = studentSearchQuerySchema.validate(req.query);
 
@@ -23,7 +22,6 @@ class Student_Controller {
         Limit,
       });
       // Log the students found for debugging
-    
 
       if (students.length === 0) {
         throw new Error(StudentConstant.STUDENT_NOT_FOUND);
@@ -44,13 +42,10 @@ class Student_Controller {
     }
   }
 
-  
-
-  async Get_BILLING_INVOICE(req , res){
+  async Get_BILLING_INVOICE(req, res) {
     try {
       const { uniqueId } = req.query;
 
-   
       if (!uniqueId) {
         throw new Error(StudentConstant.UNIQUE_ID_NOT_FOUND);
       }

@@ -7,7 +7,6 @@ import courseUtils from '../Course/course.utils.mjs';
 import feeUtils from '../Fee/fee.utils.mjs';
 import ImageUtils from '../Image/Image.utils.mjs';
 
-
 // This function will handle the logic of fetching the dashboard data
 let find_DashBoard_Data = async (io, socket) => {
   try {
@@ -95,7 +94,6 @@ let DashBoard_Socket = (io, socket) => {
   // Listen for the 'Request_DashBoard_Data' event from the client
 
   socket.on('Request_DashBoard_Data', async () => {
- 
     await find_DashBoard_Data(io, socket); // Call the function to fetch data and send it back to the client
   });
 };

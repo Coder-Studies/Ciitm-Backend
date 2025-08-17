@@ -10,7 +10,6 @@ let Env_Validator = Joi.object({
     'any.required': 'MONGO_URL is required',
     'string.uri': 'MONGO_URL must be a valid URI',
   }),
-  
 
   GEMINI_API_KEY: Joi.string().required().messages({
     'string.base': 'GEMINI_API_KEY must be a string',

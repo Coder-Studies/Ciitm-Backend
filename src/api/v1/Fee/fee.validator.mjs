@@ -1,6 +1,5 @@
 import Joi from 'joi';
 
-
 export let UpdateFee_Validator = Joi.object({
   uniqueId: Joi.string().required().messages({
     'string.empty': 'Unique ID is required',
@@ -20,7 +19,7 @@ export let UpdateFee_Validator = Joi.object({
         "Payment method must be one of 'Cash', 'Cheque', 'Online Transfer', 'UPI', or 'Card Payment'",
     }),
 
-    PaymentType: Joi.string()
+  PaymentType: Joi.string()
     .valid(
       'Admission Fee',
       'Farewell Fee',
@@ -28,7 +27,8 @@ export let UpdateFee_Validator = Joi.object({
       'Exam Fee',
       'Semester Fee',
       'Other'
-    ).required()
+    )
+    .required()
     .messages({
       'string.empty': 'Payment type is required',
       'any.required': 'Payment type is required',

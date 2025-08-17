@@ -26,12 +26,11 @@ class Course_Utils {
   FindAllCoursesName = async () => {
     try {
       const courses = await courseModel
-      .find({}, { courseName: 1, _id: 0 })
-      .sort({ createdAt: -1 })      
-      .lean();    
+        .find({}, { courseName: 1, _id: 0 })
+        .sort({ createdAt: -1 })
+        .lean();
 
-    return courses;
-
+      return courses;
     } catch (error) {
       throw new Error(error.message);
     }

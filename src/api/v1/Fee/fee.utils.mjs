@@ -69,10 +69,7 @@ class Fee_Utils {
     }
   };
 
-  Get_Earnings_By_Date_Range = async ({
-    startDate,
-    endDate,
-  }) => {
+  Get_Earnings_By_Date_Range = async ({ startDate, endDate }) => {
     try {
       const earnings = await Fee.aggregate([
         {
@@ -126,7 +123,6 @@ class Fee_Utils {
   TOTAL_FEE_PAID = async () => {
     try {
       let TOTAL_ADMISSION = await Admission.find({});
-  
 
       let Total_AMOUNT = 0;
       for (let i = 0; i < TOTAL_ADMISSION.length; i++) {

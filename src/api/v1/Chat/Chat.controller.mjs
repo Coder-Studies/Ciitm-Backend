@@ -8,7 +8,7 @@ class ChatController {
     try {
       const limit = parseInt(req.query.limit) || 50;
       const messages = await ChatService.getRecentMessages(limit);
-      
+
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
@@ -30,7 +30,7 @@ class ChatController {
     try {
       // This would typically include authentication check for admin
       const result = await ChatService.clearAllMessages();
-      
+
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
@@ -51,7 +51,7 @@ class ChatController {
   getStats = async (req, res) => {
     try {
       const stats = await ChatService.getChatStats();
-      
+
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,

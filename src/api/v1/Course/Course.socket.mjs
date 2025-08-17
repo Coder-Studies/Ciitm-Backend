@@ -1,9 +1,9 @@
-import courseUtils from "./course.utils.mjs";
+import courseUtils from './course.utils.mjs';
 
-let Course_Socket = async(io, socket) => {
-    socket.on('FindCourse' , async () => {
-        try {
-        const course = await courseUtils.FindAllCoursesName();
+let Course_Socket = async (io, socket) => {
+  socket.on('FindCourse', async () => {
+    try {
+      const course = await courseUtils.FindAllCoursesName();
       if (!course) {
         throw new Error('Course not found');
       }
@@ -12,8 +12,6 @@ let Course_Socket = async(io, socket) => {
       socket.emit('Error', error.message);
     }
   });
-
-
-}
+};
 
 export default Course_Socket;

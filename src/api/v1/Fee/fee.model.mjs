@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-
 const { Schema } = mongoose;
 
 const feeSchema = new Schema(
@@ -21,7 +20,6 @@ const feeSchema = new Schema(
       type: String,
       trim: true,
       unique: true,
-
     },
 
     amountPaid: {
@@ -59,7 +57,6 @@ const feeSchema = new Schema(
       required: true,
     },
 
-
     status: {
       type: String,
       enum: ['Pending', 'Completed'],
@@ -85,11 +82,6 @@ feeSchema.pre('save', function (next) {
 // If needed, you can define custom instance methods here
 // Example: feeSchema.methods.getSummary = function () { ... }
 
-
-
 const Fee = mongoose.model('Fee', feeSchema);
-
-
-
 
 export default Fee;

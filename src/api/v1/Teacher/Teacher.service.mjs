@@ -61,36 +61,27 @@ class TeacherService {
     }
   }
   deleteTeacher(teacherId) {
-
     try {
       if (!teacherId) {
-      throw new Error(TeacherConstant.Teacher_IdRequired);
+        throw new Error(TeacherConstant.Teacher_IdRequired);
       }
-    return TeacherUtils.deleteTeacher(teacherId);
+      return TeacherUtils.deleteTeacher(teacherId);
     } catch (error) {
       throw new Error(error.message || TeacherConstant.Teacher_NotDeleted);
-     }
-
-
-    
+    }
   }
-
 
   updateTeacherById(teacherId, teacherData) {
     try {
       if (!teacherId) {
         throw new Error(TeacherConstant.Teacher_IdRequired);
       }
-      
+
       return TeacherUtils.updateTeacher(teacherId, teacherData);
     } catch (error) {
-    throw new Error(error.message || TeacherConstant.Teacher_NotUpdated);
+      throw new Error(error.message || TeacherConstant.Teacher_NotUpdated);
     }
   }
-
-
-
-
 }
 
 export default new TeacherService();

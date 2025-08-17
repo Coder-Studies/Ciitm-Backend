@@ -2,7 +2,7 @@ let Admission_Constant = {
   NOT_ADMITTED: 'Student Not Admitted',
   ALREADY_REGISTERED: 'Student Already Registered',
   NOT_REGISTERED: 'Student Not Registered',
-  ADMITTED: 'Student Admitted',
+  ADMITTED: 'Student Admitted Please Check Your Email to Confirm Admission',
   ALREADY_ADMITTED: 'Student Already Admitted',
 
   ADMISSION_UPDATED: 'Admission Updated',

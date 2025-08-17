@@ -1,7 +1,10 @@
+import envConstant from '../../../constant/env.constant.mjs';
+import { createTransport } from '../../../utils/SendMail.js';
 import StudentConst from '../Student/Student.constant.mjs';
 import StudentUtils from '../Student/Student.utils.mjs';
 import StatusConstant from './Status.constant.mjs';
 import status from './Status.model.mjs';
+import StatusUtils from './Status.utils.mjs';
 
 class Status_Service {
   Update_Status = async ({ uniqueId, message, applicationStatus }) => {
@@ -45,6 +48,35 @@ class Status_Service {
       return create_new_Application_Status;
     } catch (error) {
       throw new Error(error.message || 'Failed to Create Status');
+    }
+  };
+
+  sendReviewMail = async ({ recipientEmail,  studentName, studentPassword }) => {
+    try {
+
+      let emailTemplate = await StatusUtils.Status_Template({
+        studentName:  studentName,
+        studentEmail: recipientEmail,
+        studentPassword: studentPassword,
+      });
+
+      if (!emailTemplate) {
+        throw new Error('Email template not found');
+      }
+
+      
+
+      createTransport().sendMail({
+       date: new Date().getDate().toString(),
+        from: envConstant.GMAIL_User,
+        to: recipientEmail,
+        subject: 'Testing Admission Email',
+        html: emailTemplate,
+      });
+
+      return emailTemplate;
+    } catch (error) {
+      throw Error(error.message);
     }
   };
 }

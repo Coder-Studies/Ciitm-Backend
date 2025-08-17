@@ -24,17 +24,17 @@ class AuthUtility {
   }
 
   DecodeToken = async function (token) {
-  try {
-    let { email } = jwt.verify(token, env_Constant.JWT_SECRET);
-  
-    if (!email) {
-      throw new Error('Unauthorized User: Missing email in token');
+    try {
+      let { email } = jwt.verify(token, env_Constant.JWT_SECRET);
+
+      if (!email) {
+        throw new Error('Unauthorized User: Missing email in token');
+      }
+      return email;
+    } catch (error) {
+      throw new Error(`Error decoding token: ${error.message}`);
     }
-    return email;
-  } catch (error) {
-    throw new Error(`Error decoding token: ${error.message}`);
-  }
-};
+  };
 
   FindByEmail = async (email) => {
     return Authentication.findOne({ email: email });

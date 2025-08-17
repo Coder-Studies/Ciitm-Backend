@@ -23,8 +23,6 @@ class ForgotPasswordService {
       throw Error(ForgotPasswordConstant.USER_NOT_FOUND);
     }
 
-
-
     // Generate OTP
     const otp = ForgotPassword.generateOTP();
     const otpExpiry = ForgotPassword.createOTPExpiry();
@@ -59,8 +57,6 @@ class ForgotPasswordService {
 
     // Get the HTML template
     const htmlTemplate = this.getForgotPasswordTemplate(email, userName, otp);
-
- 
 
     const mailOptions = {
       from: `"MERN Coding School" <${envConstant.GMAIL_User}>`,
@@ -134,15 +130,11 @@ class ForgotPasswordService {
 
     // Read the HTML template file
     const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
-   
-
 
     const processedTemplate = htmlTemplate
       .replace(/{{userName}}/g, userName)
       .replace(/{{otp}}/g, otp)
       .replace(/{{userEmail}}/g, email);
-
-  
 
     return processedTemplate;
   }

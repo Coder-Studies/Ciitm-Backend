@@ -12,7 +12,6 @@ class Admission_Utils {
     }
   };
 
-
   /*
     @param {Object} data - The data to be used in the email template.
      @returns {Promise<string>} - The formatted email template with the provided data.
@@ -24,37 +23,37 @@ class Admission_Utils {
     semester,
     admissionDate,
     studentId,
-    ImageUrl
+    ImageUrl,
   }) => {
-
-
     if (!name || !courseName || !semester || !admissionDate || !studentId) {
       throw new Error('Missing required fields for email template');
     }
 
     let AdmissionTemplate = null;
 
-   
-    let FilePath =  path.join(path.resolve(), 'src','template', 'email', 'AdmissionTemplate.html');
-   
-   AdmissionTemplate =  fs.readFileSync(FilePath, 'utf8')
+    let FilePath = path.join(
+      path.resolve(),
+      'src',
+      'template',
+      'email',
+      'AdmissionTemplate.html'
+    );
 
-   AdmissionTemplate = AdmissionTemplate
-   .replace(/{{year}}/g, new Date().getFullYear())
-   .replace(/{{studentImageUrl}}/g, ImageUrl)
-   .replace(/{{studentName}}/g, name)
-   .replace(/{{courseName}}/g, courseName)
-   .replace(/{{semester}}/g, semester)
-   .replace(/{{admissionDate}}/g, admissionDate)
-    .replace(/{{studentId}}/g, studentId);
+    AdmissionTemplate = fs.readFileSync(FilePath, 'utf8');
 
-   
+    AdmissionTemplate = AdmissionTemplate.replace(
+      /{{year}}/g,
+      new Date().getFullYear()
+    )
+      .replace(/{{studentImageUrl}}/g, ImageUrl)
+      .replace(/{{studentName}}/g, name)
+      .replace(/{{courseName}}/g, courseName)
+      .replace(/{{semester}}/g, semester)
+      .replace(/{{admissionDate}}/g, admissionDate)
+      .replace(/{{studentId}}/g, studentId);
 
     return AdmissionTemplate;
-
-
-  }
-      
+  };
 }
 
 export default new Admission_Utils();

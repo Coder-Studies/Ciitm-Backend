@@ -16,13 +16,11 @@ import AdmissionUtils from './Admission.utils.mjs';
 import { createTransport } from '../../../utils/SendMail.js';
 import envConstant from '../../../constant/env.constant.mjs';
 
-
 class AdmissionController {
   create = async (req, res) => {
     try {
       const data = req.body;
       let { courseName } = req.body;
-   
 
       if (!req.file) {
         throw new Error('No file uploaded');
@@ -46,8 +44,6 @@ class AdmissionController {
         throw new Error(courseConstant.COURSE_NOT_FOUND);
       }
 
-    
-
       let find_student = await AuthUtils.FindByEmail(data.email);
 
       if (find_student) {
@@ -59,8 +55,6 @@ class AdmissionController {
       if (Cloudinary.error) {
         throw new Error('Failed to Upload Image');
       }
-
-
 
       let Admission = await AdmissionService.Create_Student({
         data: data,
@@ -79,20 +73,20 @@ class AdmissionController {
         throw new Error(StatusConstant.NOT_CREATED);
       }
 
-
       await StudentCourseService.create({
         studentId: Admission._id,
         courseId: find_course._id,
         mode: data.mode,
         university: data.university,
-        endDate: Number(new Date().getFullYear() + parseInt(find_course.courseDuration.split(' ')[0])),
+        endDate: Number(
+          new Date().getFullYear() +
+            parseInt(find_course.courseDuration.split(' ')[0])
+        ),
       });
-      
-  
 
       const emailTemplate = await AdmissionUtils.Admission_Template({
-        name : data.firstName + ' ' + data.lastName,
-        courseName : data.courseName,
+        name: data.firstName + ' ' + data.lastName,
+        courseName: data.courseName,
         semester: 1,
         admissionDate: Admission.dateOfAdmission,
         studentId: uniqueId,
@@ -100,15 +94,12 @@ class AdmissionController {
 
       createTransport().sendMail({
         date: new Date().toISOString(),
-        from:envConstant.GMAIL_User,
+        from: envConstant.GMAIL_User,
         to: email,
         subject: 'Testing Admission Email',
         html: emailTemplate,
       });
-      
 
-      
-   
       SendResponse.success(
         res,
         StatusCodeConstant.CREATED,
@@ -127,9 +118,8 @@ class AdmissionController {
 
   sendTestingAdmissionEmail = async (req, res) => {
     try {
-      const { name, courseName, semester, admissionDate, studentId , email } = req.body;
-
-   
+      const { name, courseName, semester, admissionDate, studentId, email } =
+        req.body;
 
       const emailTemplate = await AdmissionUtils.Admission_Template({
         name,
@@ -141,18 +131,16 @@ class AdmissionController {
 
       createTransport().sendMail({
         date: new Date().toISOString(),
-        from:envConstant.GMAIL_User,
+        from: envConstant.GMAIL_User,
         to: email,
         subject: 'Testing Admission Email',
         html: emailTemplate,
       });
-      
 
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
-        'Check your email We send you a testing email regarding your admission',
-
+        'Check your email We send you a testing email regarding your admission'
       );
     } catch (error) {
       console.error('Error in sendTestingAdmissionEmail:', error);
@@ -162,7 +150,7 @@ class AdmissionController {
         error.message || 'Failed to generate email template'
       );
     }
-  } 
+  };
 }
 
 export default new AdmissionController();

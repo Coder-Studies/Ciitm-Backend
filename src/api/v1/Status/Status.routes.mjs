@@ -11,4 +11,9 @@ router.put(
   StatusController.Update_Student_Status_Controller
 );
 
+router.post(
+  '/v1/send-status-test-email',
+  StatusController.send_StatusTest_Email
+);
+
 export { router as StatusRouter };

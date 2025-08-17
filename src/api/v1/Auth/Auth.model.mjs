@@ -80,8 +80,6 @@ AuthenticationSchema.methods.hashEmail = async function (email) {
 
 AuthenticationSchema.methods.comparePassword = async function (password, hash) {
   try {
-  
-
     const match = await bcrypt.compare(password, hash);
     if (!match) {
       throw new Error('Failed to Match Password');
@@ -103,7 +101,6 @@ AuthenticationSchema.statics.checkRole = async function (email) {
     throw new Error(`Error checking user role: ${error.message}`);
   }
 };
-
 
 const Authentication = model('Authentication', AuthenticationSchema);
 

@@ -32,7 +32,9 @@ const ChatSocket = (io, socket) => {
 
       // Validate content length
       if (content.length > 500) {
-        socket.emit('error', { message: 'Message too long. Maximum 500 characters allowed.' });
+        socket.emit('error', {
+          message: 'Message too long. Maximum 500 characters allowed.',
+        });
         return;
       }
 
@@ -40,7 +42,7 @@ const ChatSocket = (io, socket) => {
       if (token) {
         try {
           const email = await AuthUtility.DecodeToken(token);
-    
+
           if (!email) {
             socket.emit('error', { message: 'Invalid token' });
             return;
@@ -58,8 +60,6 @@ const ChatSocket = (io, socket) => {
         content,
         avatar || '🧑'
       );
-
-
 
       await ChatService.saveMessage(userMessage);
 
@@ -92,7 +92,7 @@ const ChatSocket = (io, socket) => {
           } catch (error) {
             console.error('Error processing AI request:', error);
             io.to('chat-room').emit('aiTyping', { isTyping: false });
-            
+
             const errorMessage = ChatService.createMessage(
               'system',
               'AI',
@@ -100,7 +100,7 @@ const ChatSocket = (io, socket) => {
               '🤖',
               true
             );
-            
+
             io.to('chat-room').emit('messageReceived', errorMessage);
           }
         }, 2000);

@@ -11,11 +11,7 @@ class Fee_Service {
     paymentMethod,
     PaymentType,
   }) => {
-  
     try {
-   
-
-  
       // Await the findOne call
       let foundStudent = await Admission.findOne({ uniqueId: uniqueId });
 
@@ -25,7 +21,7 @@ class Fee_Service {
 
       // Ensure fee object exists
       let currentPaid = foundStudent.fee?.amount_paid || 0;
-      let currentDue = foundStudent.fee?.amount_due || (totalFee - currentPaid);
+      let currentDue = foundStudent.fee?.amount_due || totalFee - currentPaid;
 
       let updatedFee = await Admission.findOneAndUpdate(
         { uniqueId: uniqueId },
@@ -38,7 +34,7 @@ class Fee_Service {
         { new: true, runValidators: true }
       );
 
-      if(!updatedFee){
+      if (!updatedFee) {
         throw new Error('Failed to update fee for the student');
       }
 
@@ -54,13 +50,11 @@ class Fee_Service {
       });
 
       return feeCreate;
-
     } catch (error) {
       console.log('Error:', error);
       throw new Error(error.message || 'Failed to Update Fee');
     }
   };
-
 
   get_StudentBillByPaymentId = async (paymentId) => {
     try {
@@ -69,8 +63,6 @@ class Fee_Service {
           $match: {
             PaymentId: paymentId,
           },
-         
-        
         },
         {
           $lookup: {
@@ -78,53 +70,54 @@ class Fee_Service {
             localField: 'studentId',
             foreignField: '_id',
             as: 'studentInfo',
-          }
-         
-
-        },{
+          },
+        },
+        {
           $unwind: '$studentInfo',
-         
-        },{
+        },
+        {
           $lookup: {
             from: 'courses',
             localField: 'studentInfo.course_Id',
             foreignField: '_id',
             as: 'CourseDetail',
           },
-        },{
+        },
+        {
           $unwind: '$CourseDetail',
         },
         {
           $project: {
-          Date: '$paymentDate',
-          BillNo: '$PaymentId',
-          CourseName: '$CourseDetail.courseName',
-          Semester: '$studentInfo.semester',
-          StudentName: {
-            $concat: [
-              '$studentInfo.student.firstName',
-              ' ',
-              '$studentInfo.student.lastName',
-            ],
+            Date: '$paymentDate',
+            BillNo: '$PaymentId',
+            CourseName: '$CourseDetail.courseName',
+            Semester: '$studentInfo.semester',
+            StudentName: {
+              $concat: [
+                '$studentInfo.student.firstName',
+                ' ',
+                '$studentInfo.student.lastName',
+              ],
+            },
+            StudentId: '$studentInfo.uniqueId',
+            paymentMethod: '$paymentMethod',
+            PaymentStatus: '$status',
+            PaymentType: '$PaymentType',
+            AmountPaid: '$amountPaid',
           },
-          StudentId: '$studentInfo.uniqueId',
-          paymentMethod: '$paymentMethod',
-          PaymentStatus: '$status',
-          PaymentType: '$PaymentType',
-          AmountPaid: '$amountPaid',
-        }
-      }
-      ])
-    if (studentBill.length === 0) {
+        },
+      ]);
+      if (studentBill.length === 0) {
         throw new Error('No student bill found for the provided payment ID');
       }
       return studentBill;
     } catch (error) {
       console.error('Error in get_StudentBillByPaymentId:', error);
-      throw new Error(error.message || 'Failed to fetch student bill by payment ID');
+      throw new Error(
+        error.message || 'Failed to fetch student bill by payment ID'
+      );
     }
   };
-
 }
 
 export default new Fee_Service();

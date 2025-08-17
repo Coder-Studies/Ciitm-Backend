@@ -16,7 +16,6 @@ class Album_Controller {
       let { albumName, albumDescription } = req.body;
       let { filename } = req.file;
 
-
       if (!filename) {
         throw new Error(AlbumConstant.IMAGE_NOT_FOUND);
       }
@@ -133,7 +132,7 @@ class Album_Controller {
     } catch (error) {
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
-  }
+  };
 }
 
 export default new Album_Controller();

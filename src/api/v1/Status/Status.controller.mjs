@@ -16,6 +16,7 @@ import AuthConstant from '../Auth/Auth.constant.mjs';
 import AuthService from '../Auth/Auth.service.mjs';
 import { Update_Status_Validation } from './status.validator.mjs';
 import StudentConstant from '../Student/Student.constant.mjs';
+import path from 'path';
 
 class Status_Controller {
   Find_Student_Status = async (req, res) => {
@@ -23,7 +24,6 @@ class Status_Controller {
       let { uniqueId } = req.params;
 
       let find_Status = await StatusUtils.FIND_STATUS_BY_STUDENT_ID(uniqueId);
-
 
       if (!find_Status) {
         throw new Error(StatusConstant.STATUS_NOT_FOUND);
@@ -38,6 +38,32 @@ class Status_Controller {
     } catch (error) {
       console.log('error', error);
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
+    }
+  };
+
+  send_StatusTest_Email = async (req, res) => {
+    try {
+      let { recipientEmail, studentName, studentPassword } = req.body;
+      console.log('req.body', req.body);
+
+      await StatusService.sendReviewMail({
+        recipientEmail: recipientEmail,
+        studentName:  studentName,
+       studentPassword: studentPassword
+      });
+
+      SendResponse.success(
+        res,
+        StatusCodeConstant.SUCCESS,
+        `Send Status Testing Email ${recipientEmail}`
+      );
+    } catch (error) {
+      console.error('Error sending email:', error);
+      SendResponse.error(
+        res,
+        StatusCodeConstant.INTERNAL_SERVER_ERROR,
+        error.message
+      );
     }
   };
 
@@ -58,7 +84,7 @@ class Status_Controller {
         message,
         applicationStatus,
       });
-   
+
       if (validate.error) {
         throw new Error(validate.error.message);
       }
@@ -70,11 +96,7 @@ class Status_Controller {
       });
 
       if (applicationStatus !== 'Approved') {
-        await EmailService.sendReviewMail({
-          recipientEmail: find_Student.student.email[0],
-          name: find_Student.student.firstName,
-          uniqueId: uniqueId,
-        });
+        
       } else {
         // Generate a more secure password
         const password =
@@ -102,14 +124,11 @@ class Status_Controller {
         }
 
         // Send admission confirmation email with login details
-        await EmailService.sendAdmissionConfirmation({
-          studentName:
-            find_Student.student.firstName +
-            ' ' +
-            find_Student.student.lastName,
-          studentId: uniqueId,
-          email: find_Student.student.email[0],
-          password: password, // Send the original password before hashing
+        await StatusService.sendReviewMail({
+          recipientEmail: find_Student.student.email[0],
+          studentName: find_Student.student.firstName,
+          studentPassword: password,
+  
         });
       }
 

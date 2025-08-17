@@ -23,7 +23,7 @@ class Student_Utils {
   }) => {
     try {
       const Find_Course = await courseModel.findOne({ courseName: course });
-     
+
       if (!Find_Course) {
         throw new Error(courseConstant.COURSE_NOT_FOUND);
       }
@@ -31,8 +31,6 @@ class Student_Utils {
         semester: semester,
         course_Id: String(Find_Course._id),
       };
-
- 
 
       const options = {
         limit: Limit || 50,
@@ -44,7 +42,6 @@ class Student_Utils {
       );
 
       return a.exec().then((students) => {
-    
         return students;
       });
     } catch (error) {
