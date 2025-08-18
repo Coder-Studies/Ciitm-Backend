@@ -99,16 +99,10 @@ class Status_Controller {
         
       } else {
         // Generate a more secure password
-        const password =
-          crypto.randomBytes(8).toString('hex') +
-          crypto.randomInt(1000, 9999).toString() +
-          '!@#$%^&*'[crypto.randomInt(0, 8)];
+        const password = "Ciitm@"+crypto.randomBytes(8).toString('hex')
+          
 
-        let HashPassword = await Authentication_Instance.hashPassword(password);
-
-        if (!HashPassword) {
-          throw new Error(AuthConstant.HASH_FAILED);
-        }
+      
 
         let Sign_Up_new_Student = await AuthService.CreateUser({
           name:
@@ -116,7 +110,10 @@ class Status_Controller {
             ' ' +
             find_Student.student.lastName,
           email: find_Student.student.email[0],
-          password: HashPassword,
+          picture: find_Student.student.avtar,
+          role: 'student',
+          password: password,
+
         });
 
         if (!Sign_Up_new_Student) {

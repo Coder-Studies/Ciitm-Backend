@@ -16,11 +16,7 @@ import { Find_Social_link } from '../controllers/SocialMedia.controller.js';
 //   Find_Student_Status_Controller,
 //   Handle_newStudent_Record,
 // } from '../controllers/StudentAdmission.controller.js';
-import {
-  Delete_Testimonial_Controller,
-  Create_Testimonial_Controller,
-  Find_Testimonial_Controller,
-} from '../controllers/Tertimonials.controller.js';
+
 
 // import { SignUp_Admin } from '../controllers/Admin_Sign_Up.controller.js';
 
@@ -71,15 +67,7 @@ router.get('/link', Find_Social_link);
 
 // router.get('/image/:Album__Name', findImage);
 
-router.post(
-  '/create/testimonial',
-  upload.single('image'),
-  Create_Testimonial_Controller
-);
 
-router.delete('/delete/testimonial/:id', Delete_Testimonial_Controller);
-
-router.get('/find/testimonial', Find_Testimonial_Controller);
 
 // router.post('/forgot/password', ForgotPassword_Controller);
 // router.post('/reset/password', ResetPassword_Controller);
