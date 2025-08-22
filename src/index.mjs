@@ -21,6 +21,12 @@ import { fileURLToPath } from 'url';
 import SocketEvent from './config/Socket/SocketEvent.mjs';
 import Socket_Middleware from './config/Socket/SocketMiddleWare.mjs';
 
+
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome to CIITM Backend API');
+})
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -51,6 +57,9 @@ app.use(
   '/api/images',
   express.static(path.join(path.resolve(), 'public', 'images'))
 );
+
+
+
 
 app.use((req, res, next) => {
   envConstant.isDevelopment
