@@ -28,6 +28,7 @@ class Status_Utility {
 
       let SendMailTemplate = fs.readFileSync(FilePath, 'utf8');
 
+
       SendMailTemplate = SendMailTemplate.replace(/{{studentName}}/g,
       studentName
       )
@@ -35,7 +36,7 @@ class Status_Utility {
         .replace(/{{studentPassword}}/g, studentPassword)
         .replace(/{{year}}/g, new Date().getFullYear());
 
-      
+
       return SendMailTemplate;
     } catch (error) {
       throw new Error(error.message);

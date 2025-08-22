@@ -51,6 +51,7 @@ class Status_Service {
     }
   };
 
+
   sendReviewMail = async ({ recipientEmail,  studentName, studentPassword }) => {
     try {
 
@@ -63,6 +64,7 @@ class Status_Service {
       if (!emailTemplate) {
         throw new Error('Email template not found');
       }
+
 
       
 
