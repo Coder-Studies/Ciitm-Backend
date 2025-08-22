@@ -14,5 +14,8 @@ router.get(
   FeeController.get_StudentBillByPaymentId
 );
 
+router.post('/v1/Student/createOrder', FeeController.pay_Online);
+router.post('/v1/Student/verifyPayment', FeeController.verify_Online_Payment);
+
 export { router as Fee_Routes };
 // /api/find/student/payment/info?uniqueId=${Student_Id}

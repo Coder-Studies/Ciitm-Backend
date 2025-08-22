@@ -39,7 +39,6 @@ class AdmissionController {
         throw new Error(error.message);
       }
 
-
       const find_course = await courseUtils.FindBy_courseName(data.courseName);
 
       if (!find_course) {

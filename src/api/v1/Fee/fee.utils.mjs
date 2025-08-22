@@ -116,10 +116,12 @@ class Fee_Utils {
 
   TOTAL_FEE_PAID_BY_UNIQUE_ID = async (uniqueId) => {
     let fee = Admission.findOne({ uniqueId }).select(
-      'fee.course_Fee fee.amount_paid , _id'
+      'fee.course_Fee fee.amount_paid , fee.amount_due , _id'
     );
     return fee;
   };
+
+  
   TOTAL_FEE_PAID = async () => {
     try {
       let TOTAL_ADMISSION = await Admission.find({});

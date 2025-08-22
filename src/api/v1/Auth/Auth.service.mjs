@@ -2,7 +2,7 @@ import AuthenticationSchema from './Auth.model.mjs';
 import AuthConstant from './Auth.constant.mjs';
 
 class AuthService {
-  async CreateUser({ name, email, password, role , picture }) {
+  async CreateUser({ name, email, password, role, picture }) {
     try {
       let Authentication_Instance = new AuthenticationSchema();
       let HashPassword = await Authentication_Instance.hashPassword(password);
