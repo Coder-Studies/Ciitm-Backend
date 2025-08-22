@@ -10,8 +10,8 @@ class Fee_Service {
     paymentId,
 
     PaymentType,
-    status
-    paymentMethod,
+    status,
+    paymentMethod
 
   }) => {
     try {
