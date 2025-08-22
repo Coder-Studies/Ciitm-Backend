@@ -59,13 +59,13 @@ const feeSchema = new Schema(
 
     status: {
       type: String,
-      enum: ['Pending', 'Completed'],
+      enum: ['Pending', 'Completed', 'Failed'],
       default: 'Pending',
     },
 
     paymentMethod: {
       type: String,
-      enum: ['Cash', 'Cheque', 'Online Transfer', 'UPI', 'Card Payment'],
+      enum: ['Cash', 'Cheque', 'Online Transfer', 'UPI', 'Card Payment', 'N/A'],
       required: true,
     },
   },

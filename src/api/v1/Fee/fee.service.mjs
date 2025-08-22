@@ -11,8 +11,7 @@ class Fee_Service {
 
     PaymentType,
     status,
-    paymentMethod
-
+    paymentMethod,
   }) => {
     try {
       // Await the findOne call
@@ -25,7 +24,6 @@ class Fee_Service {
       // Ensure fee object exists
       let currentPaid = foundStudent.fee?.amount_paid || 0;
       let currentDue = foundStudent.fee?.amount_due || totalFee - currentPaid;
-
 
       let updatedFee = await Admission.findOneAndUpdate(
         { uniqueId: uniqueId },
@@ -64,7 +62,6 @@ class Fee_Service {
     }
   };
 
-
   createFee = async ({
     uniqueId,
     studentId,
@@ -77,7 +74,6 @@ class Fee_Service {
     status,
   }) => {
     try {
-    
       let feeCreate = await Fee.create({
         uniqueId: uniqueId,
         studentId: studentId,
@@ -96,7 +92,6 @@ class Fee_Service {
       throw new Error(error.message || 'Failed to create fee');
     }
   };
-
 
   get_StudentBillByPaymentId = async (paymentId) => {
     try {

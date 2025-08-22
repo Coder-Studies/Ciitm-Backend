@@ -51,12 +51,10 @@ class Status_Service {
     }
   };
 
-
-  sendReviewMail = async ({ recipientEmail,  studentName, studentPassword }) => {
+  sendReviewMail = async ({ recipientEmail, studentName, studentPassword }) => {
     try {
-
       let emailTemplate = await StatusUtils.Status_Template({
-        studentName:  studentName,
+        studentName: studentName,
         studentEmail: recipientEmail,
         studentPassword: studentPassword,
       });
@@ -65,11 +63,8 @@ class Status_Service {
         throw new Error('Email template not found');
       }
 
-
-      
-
       createTransport().sendMail({
-       date: new Date().getDate().toString(),
+        date: new Date().getDate().toString(),
         from: envConstant.GMAIL_User,
         to: recipientEmail,
         subject: 'Testing Admission Email',

@@ -23,4 +23,3 @@ class Testimonial_Utils {
 }
 
 export default new Testimonial_Utils();
-

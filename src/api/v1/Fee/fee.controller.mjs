@@ -10,6 +10,7 @@ import feeUtils from './fee.utils.mjs';
 import { UpdateFee_Validator } from './fee.validator.mjs';
 import cf from '../../../utils/cashfree.mjs';
 import Fee from './fee.model.mjs';
+import Admission from '../Admission/Admission.model.mjs';
 
 const FeeController = {
   // ✅ Get student fee info by unique ID
@@ -35,6 +36,7 @@ const FeeController = {
     }
   },
 
+  // ✅ Create order only once
   pay_Online: async (req, res) => {
     try {
       const {
@@ -45,13 +47,9 @@ const FeeController = {
         customer_email,
         uniqueId,
         PaymentType,
-        discount = 0
+        discount = 0,
       } = req.body;
 
-
-    
-
-   
       if (
         !order_amount ||
         !customer_phone ||
@@ -64,9 +62,13 @@ const FeeController = {
         );
       }
 
-      const { fee, _id } = await feeUtils.TOTAL_FEE_PAID_BY_UNIQUE_ID(uniqueId);
+      const { fee } = await feeUtils.TOTAL_FEE_PAID_BY_UNIQUE_ID(uniqueId);
+      if (!fee) throw new Error('Student fee details not found.');
 
-      const order_id = 'ORDER_' + crypto.randomBytes(2).toString('hex');
+      let find_Student = await StudentUtils.FindByStudentId(uniqueId);
+
+      const order_id = 'ORDER_' + crypto.randomBytes(8).toString('hex');
+
       const orderRequest = {
         order_id,
         order_amount: parseFloat(order_amount),
@@ -77,50 +79,61 @@ const FeeController = {
           customer_phone: customer_phone.toString(),
           customer_email,
         },
+        metadata: {
+          uniqueId,
+          discount,
+          paymentType: PaymentType,
+        },
       };
 
       const response = await cf.PGCreateOrder(orderRequest);
- 
-      console.log('Cashfree order creation response:', response.data);
-      if(!response.data.order_id){
-        throw new Error('Failed to create payment order.');
-      }
+      const cfData = response?.data;
+      if (!cfData?.order_id) throw new Error('Failed to create payment order.');
 
+      // uniqueId,
+      // studentId,
+      // amountPaid,
+      // totalFee,
+      // dueFee,
+      // PaymentType,
+      // paymentMethod,
+      // PaymentId,
+      // status,
 
-      const paymentStatus =
-        response.data.order_status === 'PAID' ? 'Completed' : 'Pending';
-
-
-       
-      
-      const feeRecord = await feeService.Update_Student_fee({
+      await feeService.createFee({
         uniqueId,
-        Paid_amount: parseFloat(order_amount),
+        studentId: find_Student._id,
+        Paid_amount: order_amount,
         totalFee: fee.course_Fee,
+        dueFee: fee.course_Fee,
         PaymentType,
-        paymentId: order_id,
-        status: paymentStatus,
-      })
+        PaymentId: cfData.order_id,
+        status: 'Pending',
+        paymentMethod: 'N/A',
+      });
 
-      const hashString = `${response.data.order_id}${response.data.order_amount}${process.env.CASHFREE_CLIENT_SECRET}`;
-      const hash_Response = crypto.createHash('sha256').update(hashString).digest('hex');
+      const hashString = `${cfData.order_id}${cfData.order_amount}${process.env.CASHFREE_CLIENT_SECRET}`;
+      const hash_Response = crypto
+        .createHash('sha256')
+        .update(hashString)
+        .digest('hex');
 
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
         Payment_Constant.ORDER_CREATED_SUCCESSFULLY,
         {
-          payment_session_id: response.data.payment_session_id,
-          order_id: response.data.order_id,
+          payment_session_id: cfData.payment_session_id,
+          order_id: cfData.order_id,
+          order_status: 'Pending',
+          payment_method: 'N/A',
           hash: hash_Response,
-          cashfree_response: response.data,
-          fee: feeRecord,
         }
       );
     } catch (error) {
       console.error(
         'Cashfree order creation error:',
-        error?.response?.data || error.message || error
+        error?.response?.data || error.message
       );
       SendResponse.error(
         res,
@@ -134,16 +147,10 @@ const FeeController = {
   get_fee_InfoByStudents: async (req, res) => {
     try {
       const { uniqueId } = req.query;
-
-      if (!uniqueId) {
-        throw new Error(Payment_Constant.UNIQE_ID_NOT_FOUND);
-      }
+      if (!uniqueId) throw new Error(Payment_Constant.UNIQE_ID_NOT_FOUND);
 
       const Student_Info = await StudentUtils.FindByStudentId(uniqueId);
-
-      if (!Student_Info) {
-        throw new Error(StudentConstant.STUDENT_NOT_FOUND);
-      }
+      if (!Student_Info) throw new Error(StudentConstant.STUDENT_NOT_FOUND);
 
       SendResponse.success(
         res,
@@ -164,10 +171,7 @@ const FeeController = {
   get_StudentBillByPaymentId: async (req, res) => {
     try {
       const PaymentId = req.query.paymentId;
-
-      if (!PaymentId) {
-        throw new Error('Please provide Payment ID');
-      }
+      if (!PaymentId) throw new Error('Please provide Payment ID');
 
       const getBillInfo =
         await feeService.get_StudentBillByPaymentId(PaymentId);
@@ -191,10 +195,7 @@ const FeeController = {
   get_Earnings: async (req, res) => {
     try {
       let { startDate, endDate } = req.query;
-
-      if (!startDate) {
-        throw new Error(Payment_Constant.MISSING_QUERY_PARAMS);
-      }
+      if (!startDate) throw new Error(Payment_Constant.MISSING_QUERY_PARAMS);
 
       if (!endDate) endDate = startDate;
 
@@ -213,7 +214,7 @@ const FeeController = {
         earnings
       );
     } catch (error) {
-      console.error('Error in get_Earnings:', error.message, error.stack);
+      console.error('Error in get_Earnings:', error.message);
       SendResponse.error(
         res,
         StatusCodeConstant.BAD_REQUEST,
@@ -222,16 +223,13 @@ const FeeController = {
     }
   },
 
-  // ✅ Update student fee
+  // ✅ Update student fee manually
   Update_Fee: async (req, res) => {
     try {
       const { uniqueId, paymentMethod, Paid_amount, PaymentType } = req.body;
 
       const { fee, _id } = await feeUtils.TOTAL_FEE_PAID_BY_UNIQUE_ID(uniqueId);
-
-      if (!fee || !_id) {
-        throw new Error(StudentConstant.STUDENT_NOT_FOUND);
-      }
+      if (!fee || !_id) throw new Error(StudentConstant.STUDENT_NOT_FOUND);
 
       const { error } = UpdateFee_Validator.validate({
         uniqueId,
@@ -242,9 +240,7 @@ const FeeController = {
         totalFee: fee.course_Fee,
       });
 
-      if (error) {
-        throw new Error(error.details[0].message);
-      }
+      if (error) throw new Error(error.details[0].message);
 
       const Update_Fee = await feeService.Update_Student_fee({
         totalFee: fee.course_Fee,
@@ -258,49 +254,106 @@ const FeeController = {
         Update_Fee
       );
     } catch (error) {
-      console.error('Error in Update_Fee:', error.message || error);
+      console.error('Error in Update_Fee:', error.message);
       SendResponse.error(res, StatusCodeConstant.BAD_REQUEST, error.message);
     }
   },
 
-  // ✅ Verify payment status
+  // ✅ Verify payment and update fee status
   verify_Online_Payment: async (req, res) => {
     try {
-      const { order_id } = req.body;
-      if (!order_id) {
-        throw new Error('Order ID is required for verification.');
+      const { order_id } = req.query;
+      if (!order_id) throw new Error('Order ID is required for verification.');
+
+      const existingFee = await Fee.findOne({ PaymentId: order_id });
+      if (!existingFee) throw new Error('Fee record not found.');
+
+      if (existingFee.status === 'Completed') {
+        throw new Error('Payment has already been verified and completed.');
       }
 
       const response = await cf.PGFetchOrder(order_id);
+      const data = response?.data;
+    
 
-      const paymentStatus =
-        response.data.order_status === 'PAID' ? 'Completed' : 'Pending';
+      const cfOrderStatus = data?.order_status || 'UNKNOWN';
 
-      const updatedFee = await Fee.findOneAndUpdate(
-        { PaymentId: order_id },
-        { status: paymentStatus },
-        { new: true }
-      );
+      let paymentStatus = 'Pending';
+      if (cfOrderStatus === 'PAID') {
+        paymentStatus = 'Completed';
+      } else if (['FAILED', 'CANCELLED', 'ACTIVE'].includes(cfOrderStatus)) {
+        paymentStatus = 'Failed';
+        throw new Error('Payment failed or cancelled.');
+      }
+
+      let updatedFee = null;
+      let { uniqueId } = existingFee;
+
+      const foundStudent = await Admission.findOne({ uniqueId });
+
+      if (!foundStudent) {
+        throw new Error('Student not found');
+      }
+
+
+      const currentPaid = foundStudent?.fee?.amount_paid || 0;
+      const currentDue =
+        foundStudent?.fee?.amount_due;
+
+
+      // Update Admission record if payment is successful
+      if (paymentStatus === 'Completed') {
+        updatedFee = await Fee.findOneAndUpdate(
+          { PaymentId: order_id },
+          {
+            status: paymentStatus,
+            paymentMethod: 'Online Transfer',
+            amountPaid: data?.order_amount || 0,
+            dueFee: currentDue - (data?.order_amount || 0),
+            totalFee: foundStudent.fee.course_Fee,
+
+          },
+          { new: true }
+        );
+
+        if (!updatedFee) throw new Error('Failed to update fee status.');
+
+        const { uniqueId } = updatedFee;
+        const Paid_amount = updatedFee.Paid_amount || 0;
+        const totalFee = updatedFee.totalFee || 0;
+
+       
+      
+
+        await Admission.findOneAndUpdate(
+          { uniqueId },
+          {
+            $set: {
+              'fee.amount_paid': Number(currentPaid) + Number(data?.order_amount),
+              'fee.amount_due': Number(currentDue) - Number(data?.order_amount),
+            },
+          },
+          { new: true, runValidators: true }
+        );
+      }
 
       SendResponse.success(
         res,
         StatusCodeConstant.SUCCESS,
         `Payment status is ${paymentStatus}.`,
         {
-          cashfree_status: response.data.order_status,
+          cashfree_status: cfOrderStatus,
           fee_status: paymentStatus,
+          payment_method: 'Online Transfer',
           fee: updatedFee,
         }
       );
     } catch (error) {
-      console.error(
-        'Cashfree payment verification error:',
-        error?.response?.data || error.message || error
-      );
+      console.error('Cashfree payment verification error:', error?.message);
       SendResponse.error(
         res,
         StatusCodeConstant.INTERNAL_SERVER_ERROR,
-        error?.response?.data?.message || 'Failed to verify payment.'
+        error.message || 'Failed to verify payment.'
       );
     }
   },
