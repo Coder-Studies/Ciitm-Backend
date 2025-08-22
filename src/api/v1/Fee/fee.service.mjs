@@ -8,8 +8,11 @@ class Fee_Service {
     Paid_amount,
     totalFee,
     paymentId,
+
     PaymentType,
     status
+    paymentMethod,
+
   }) => {
     try {
       // Await the findOne call
@@ -23,8 +26,6 @@ class Fee_Service {
       let currentPaid = foundStudent.fee?.amount_paid || 0;
       let currentDue = foundStudent.fee?.amount_due || totalFee - currentPaid;
 
-      console.log('Current Paid:', currentPaid);
-      console.log('Current Due:', currentDue);
 
       let updatedFee = await Admission.findOneAndUpdate(
         { uniqueId: uniqueId },
@@ -51,6 +52,9 @@ class Fee_Service {
         paymentMethod: 'Online Transfer',
         PaymentId: paymentId || `PAY-${Crypto.randomBytes(16).toString('hex')}`,
         status: status || 'Pending',
+
+        paymentMethod: paymentMethod,
+        PaymentId: paymentId || `PAY-${Crypto.randomBytes(16).toString('hex')}`,
       });
 
       return feeCreate;
@@ -59,6 +63,7 @@ class Fee_Service {
       throw new Error(error.message || 'Failed to Update Fee');
     }
   };
+
 
   createFee = async ({
     uniqueId,
@@ -91,6 +96,7 @@ class Fee_Service {
       throw new Error(error.message || 'Failed to create fee');
     }
   };
+
 
   get_StudentBillByPaymentId = async (paymentId) => {
     try {

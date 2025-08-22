@@ -6,6 +6,7 @@ import Testimonial_Service from './Testimonial.service.mjs';
 import Testimonial from './Testimonial.model.mjs';
 
 class Testimonial_Controller {
+
   Create_Testimonial_Controller = async (req, res) => {
     try {
       let data = req.body;
@@ -104,3 +105,5 @@ class Testimonial_Controller {
 }
 
 export default new Testimonial_Controller();
+
+

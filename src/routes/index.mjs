@@ -17,6 +17,7 @@ import { Find_Social_link } from '../controllers/SocialMedia.controller.js';
 //   Handle_newStudent_Record,
 // } from '../controllers/StudentAdmission.controller.js';
 
+
 // import { SignUp_Admin } from '../controllers/Admin_Sign_Up.controller.js';
 
 // import {
@@ -65,6 +66,7 @@ router.get('/link', Find_Social_link);
 // router.get('/gallery/image', findAllImages);
 
 // router.get('/image/:Album__Name', findImage);
+
 
 // router.post('/forgot/password', ForgotPassword_Controller);
 // router.post('/reset/password', ResetPassword_Controller);
