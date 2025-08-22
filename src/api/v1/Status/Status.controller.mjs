@@ -48,8 +48,9 @@ class Status_Controller {
 
       await StatusService.sendReviewMail({
         recipientEmail: recipientEmail,
-        studentName:  studentName,
-       studentPassword: studentPassword
+        studentName: studentName,
+        studentPassword: studentPassword,
+
       });
 
       SendResponse.success(
@@ -96,13 +97,11 @@ class Status_Controller {
       });
 
       if (applicationStatus !== 'Approved') {
-        
+
       } else {
         // Generate a more secure password
-        const password = "Ciitm@"+crypto.randomBytes(8).toString('hex')
-          
+        const password = 'Ciitm@' + crypto.randomBytes(8).toString('hex');
 
-      
 
         let Sign_Up_new_Student = await AuthService.CreateUser({
           name:
@@ -113,6 +112,8 @@ class Status_Controller {
           picture: find_Student.student.avtar,
           role: 'student',
           password: password,
+
+
 
         });
 
@@ -125,7 +126,7 @@ class Status_Controller {
           recipientEmail: find_Student.student.email[0],
           studentName: find_Student.student.firstName,
           studentPassword: password,
-  
+
         });
       }
 

@@ -68,7 +68,6 @@ router.get('/link', Find_Social_link);
 // router.get('/image/:Album__Name', findImage);
 
 
-
 // router.post('/forgot/password', ForgotPassword_Controller);
 // router.post('/reset/password', ResetPassword_Controller);
 

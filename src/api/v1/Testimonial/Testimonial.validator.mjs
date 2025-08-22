@@ -25,4 +25,7 @@ export const TestimonialValidator = Joi.object({
     'number.max': 'Star rating cannot be more than 5',
     'any.required': 'Star rating is required',
   }),
+
 });
+
+
