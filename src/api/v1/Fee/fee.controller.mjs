@@ -88,6 +88,7 @@ const FeeController = {
 
       const response = await cf.PGCreateOrder(orderRequest);
       const cfData = response?.data;
+      console.log('Cashfree order creation response:', cfData);
       if (!cfData?.order_id) throw new Error('Failed to create payment order.');
 
       // uniqueId,
